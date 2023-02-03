@@ -5,9 +5,9 @@ const cx = classNames.bind(styles);
 
 function Home() {
     return (
-        <container classNames={cx('wrapper')}>
+        <div className={cx('wrapper')}>
             <h1>Home</h1>
-        </container>
+        </div>
     );
 }
 export default Home;

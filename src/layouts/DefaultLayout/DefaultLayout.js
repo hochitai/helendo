@@ -9,7 +9,7 @@ function DefaultLayout({ children }) {
     return (
         <div className={cx('wrapper')}>
             <Header />
-            <container className={cx('content')}>{children}</container>
+            <div className={cx('content')}>{children}</div>
             <Footer />
         </div>
     );
