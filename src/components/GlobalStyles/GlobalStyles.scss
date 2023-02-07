@@ -36,3 +36,146 @@ a[href] {
     color: var(--text-color);
     text-decoration: none;
 }
+
+.text-primary {
+    color: var(--primary);
+}
+
+.text-primary-hover {
+    color: var(--black);
+
+    &:hover {
+        color: var(--primary);
+    }
+}
+
+.wrapper {
+    .swiper-container {
+        width: 100%;
+        height: 100%;
+    }
+
+    .swiper-slide span {
+        transform: translateY(40px);
+        opacity: 0;
+    }
+
+    .swiper-slide h2 {
+        transform: translateY(60px);
+        opacity: 0;
+    }
+
+    .swiper-slide p {
+        transform: translateY(60px);
+        opacity: 0;
+    }
+
+    .swiper-slide .shopping-link {
+        transform: translateY(60px);
+        opacity: 0;
+    }
+
+    .swiper-slide.swiper-slide-active span {
+        animation: fadeIn1 1.6s linear forwards;
+    }
+
+    .swiper-slide.swiper-slide-active h2 {
+        animation: fadeIn2 2s ease forwards;
+    }
+
+    .swiper-slide.swiper-slide-active p {
+        animation: fadeIn3 2s ease forwards;
+    }
+
+    .swiper-slide.swiper-slide-active .shopping-link {
+        animation: fadeIn4 2s ease forwards;
+    }
+
+    @keyframes fadeIn1 {
+        40% {
+            transform: translateY(40px);
+            opacity: 0;
+        }
+        100% {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    }
+
+    @keyframes fadeIn2 {
+        50% {
+            transform: translateY(60px);
+            opacity: 0;
+        }
+        100% {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    }
+
+    @keyframes fadeIn3 {
+        60% {
+            transform: translateY(60px);
+            opacity: 0;
+        }
+        100% {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    }
+    @keyframes fadeIn4 {
+        70% {
+            transform: translateY(60px);
+            opacity: 0;
+        }
+        100% {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    }
+
+    .swiper-horizontal > .swiper-pagination-bullets,
+    .swiper-pagination-bullets.swiper-pagination-horizontal,
+    .swiper-pagination-custom,
+    .swiper-pagination-fraction {
+        left: auto;
+        bottom: auto;
+        top: 50%;
+        right: 100px;
+        transform: translateY(-50%);
+        width: auto;
+        height: 100px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    .swiper-pagination-bullet {
+        width: auto;
+        height: auto;
+        font-size: 1.8rem;
+        margin: 0 var(--swiper-pagination-bullet-horizontal-gap, 4px) 15px !important;
+        background-color: transparent;
+        position: relative;
+    }
+
+    .swiper-pagination-bullet::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        width: 40px;
+        height: 2px;
+        background-color: currentColor;
+        transition: width 0.2s linear;
+    }
+
+    .swiper-pagination-bullet-active {
+        color: var(--black);
+        background-color: transparent;
+    }
+
+    .swiper-pagination-bullet-active.swiper-pagination-bullet::after {
+        width: 60px;
+    }
+}
