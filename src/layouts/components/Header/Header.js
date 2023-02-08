@@ -1,15 +1,33 @@
+import { useState, useEffect } from 'react';
 import classNames from 'classnames/bind';
 import { Link, NavLink } from 'react-router-dom';
 import Tippy from '@tippyjs/react/headless';
 
 import routes from '~/config/routes';
 import images from '~/assets/images';
-import { MiniCartIcon, UserIcon } from '~/components/Icons';
+import { ArroUpIcon, ExitIcon, MiniCartIcon, UserIcon } from '~/components/Icons';
+import MiniCartItem from './MiniCartItem';
 import styles from './Header.module.scss';
+import { Button } from '~/components/Button';
 
 const cx = classNames.bind(styles);
 
 function Header() {
+    const [showCart, setShowCart] = useState(false);
+    const [scrollTop, setScrollTop] = useState(0);
+
+    useEffect(() => {
+        const handleScroll = (event) => {
+            setScrollTop(window.scrollY);
+        };
+
+        window.addEventListener('scroll', handleScroll);
+
+        return () => {
+            window.removeEventListener('scroll', handleScroll);
+        };
+    }, []);
+
     return (
         <header className={cx('container mx-auto flex justify-between items-center absolute inset-x-0 top-0 z-10')}>
             <Link to={routes.home}>
@@ -34,7 +52,10 @@ function Header() {
                     <UserIcon />
                 </Link>
 
-                <button className={cx('action-btn', 'flex justify-end items-center mr-14')}>
+                <button
+                    className={cx('action-btn', 'flex justify-end items-center mr-14')}
+                    onClick={() => setShowCart(true)}
+                >
                     <MiniCartIcon />
                     <span className={cx('badge')}>1</span>
                 </button>
@@ -55,6 +76,40 @@ function Header() {
                     </button>
                 </Tippy>
             </div>
+            <div className={cx('minicart-area', { active: showCart })} onClick={() => setShowCart(false)}>
+                <div className={cx('minicart-inner', 'fixed inset-y-0 right-0')}>
+                    <button className="text-4xl" onClick={() => setShowCart(false)}>
+                        <ExitIcon />
+                    </button>
+                    <div className={cx('minicart-list', 'pt-10 flex-1')}>
+                        <MiniCartItem />
+                        <MiniCartItem />
+                        <MiniCartItem />
+                    </div>
+                    <div className="minicart-subtotal flex justify-between text-[24px] font-medium pt-[40px]">
+                        <span>Subtotal:</span>
+                        <span>$202.00</span>
+                    </div>
+                    <Button second className="mt-[40px]">
+                        View cart
+                    </Button>
+                    <Button primary>Checkout</Button>
+                </div>
+            </div>
+
+            <button
+                className={cx(
+                    'scroll-top',
+                    'fixed right-14 bottom-14 w-[60px] h-[60px] flex justify-center items-center rounded-full',
+                    {
+                        block: scrollTop >= 100,
+                        hidden: scrollTop < 100,
+                    },
+                )}
+                onClick={() => window.scrollTo({ top: 0, left: 0, behavior: 'smooth' })}
+            >
+                <ArroUpIcon />
+            </button>
         </header>
     );
 }

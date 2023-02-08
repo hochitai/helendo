@@ -100,6 +100,7 @@ export const MiniCartIcon = ({ width = '2.4rem', height = '2.4rem', className })
         ></path>
     </svg>
 );
+
 export const ArrowRightIcon = ({ width = '1.8rem', height = '1.8rem', className }) => (
     <svg
         stroke="currentColor"
@@ -117,6 +118,49 @@ export const ArrowRightIcon = ({ width = '1.8rem', height = '1.8rem', className 
             strokeLinejoin="round"
             strokeWidth="48"
             d="M268 112l144 144-144 144m124-144H100"
+        ></path>
+    </svg>
+);
+
+export const ArroUpIcon = ({ width = '2.4rem', height = '2.4rem', className }) => (
+    <svg
+        stroke="currentColor"
+        fill="currentColor"
+        strokeWidth="0"
+        viewBox="0 0 512 512"
+        className="h-8 w-8"
+        aria-hidden="true"
+        height={height}
+        width={width}
+        xmlns="http://www.w3.org/2000/svg"
+    >
+        <path
+            fill="none"
+            strokeLinecap="square"
+            strokeMiterlimit="10"
+            strokeWidth="48"
+            d="M112 244l144-144 144 144M256 120v292"
+        ></path>
+    </svg>
+);
+
+export const ExitIcon = ({ width = '3.2rem', height = '3.2rem', className }) => (
+    <svg
+        stroke="currentColor"
+        fill="currentColor"
+        strokeWidth="0"
+        viewBox="0 0 512 512"
+        className={`text-[#212121] text-[32px] cursor-pointer ${className || ''}`}
+        height={height}
+        width={width}
+        xmlns="http://www.w3.org/2000/svg"
+    >
+        <path
+            fill="none"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="32"
+            d="M368 368L144 144m224 0L144 368"
         ></path>
     </svg>
 );

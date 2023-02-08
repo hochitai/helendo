@@ -1,0 +1,28 @@
+.wapper {
+    width: 100%;
+    padding: 16px;
+    font-size: 1.6rem;
+    font-weight: 500;
+    border: 2px solid transparent;
+    transition: all 0.4s linear;
+
+    &.primary {
+        background-color: var(--black);
+        color: var(--white);
+    }
+
+    &.second {
+        background-color: var(--white);
+        color: var(--black);
+        border-color: var(--black);
+
+        &:hover {
+            background-color: var(--black);
+            color: var(--white);
+        }
+    }
+}
+
+.wapper + .wapper {
+    margin-top: 15px;
+}
