@@ -8,9 +8,6 @@
     }
 }
 
-.actions {
-}
-
 .action-btn {
     transition: color 0.2s linear;
     cursor: pointer;
@@ -78,9 +75,4 @@
 
 .minicart-item + .minicart-item {
     margin-top: 20px;
-}
-
-.scroll-top {
-    background-color: var(--primary);
-    color: var(--white);
 }

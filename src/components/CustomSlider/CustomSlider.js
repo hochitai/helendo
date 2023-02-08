@@ -42,7 +42,14 @@ function CustomeSlider() {
                         <div className={cx('recommend-product', 'mx-auto flex px-6')}>
                             <div className="mt-24 w-3/6">
                                 <span className="text-primary text-[24px] block mb-[25px]">Helendo store</span>
-                                <h2 className="text-[60px] leading-[66px] mb-[30px] font-medium">Spice jars</h2>
+                                <h2
+                                    className={cx(
+                                        'slide-title',
+                                        'text-[60px] leading-[66px] mb-[30px] font-medium relative pb-8',
+                                    )}
+                                >
+                                    Spice jars
+                                </h2>
                                 <p className="block text-[16px] leading-relaxed">
                                     There are many variations of passages of Lorem Ipsum available, but
                                     <br />
@@ -68,7 +75,14 @@ function CustomeSlider() {
                         <div className={cx('recommend-product', 'mx-auto flex px-6')}>
                             <div className="mt-24 w-3/6">
                                 <span className="text-primary text-[24px] block mb-[25px]">Helendo store</span>
-                                <h2 className="text-[60px] leading-[66px] mb-[30px] font-medium">Rattan Bag</h2>
+                                <h2
+                                    className={cx(
+                                        'slide-title',
+                                        'text-[60px] leading-[66px] mb-[30px] font-medium relative pb-8',
+                                    )}
+                                >
+                                    Rattan Bag
+                                </h2>
                                 <p className="block text-[16px] leading-relaxed">
                                     There are many variations of passages of Lorem Ipsum available, but
                                     <br />
@@ -94,7 +108,14 @@ function CustomeSlider() {
                         <div className={cx('recommend-product', 'mx-auto flex px-6')}>
                             <div className="mt-24 w-3/6">
                                 <span className="text-primary text-[24px] block mb-[25px]">Helendo store</span>
-                                <h2 className="text-[60px] leading-[66px] mb-[30px] font-medium">Alarm Clock</h2>
+                                <h2
+                                    className={cx(
+                                        'slide-title',
+                                        'text-[60px] leading-[66px] mb-[30px] font-medium relative pb-8',
+                                    )}
+                                >
+                                    Alarm Clock
+                                </h2>
                                 <p className="block text-[16px] leading-relaxed">
                                     There are many variations of passages of Lorem Ipsum available, but
                                     <br />

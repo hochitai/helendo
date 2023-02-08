@@ -1,10 +1,13 @@
 .wapper {
+    display: flex;
+    align-items: center;
     width: 100%;
     padding: 16px;
     font-size: 1.6rem;
     font-weight: 500;
     border: 2px solid transparent;
     transition: all 0.4s linear;
+    user-select: none;
 
     &.primary {
         background-color: var(--black);
@@ -20,6 +23,19 @@
             background-color: var(--black);
             color: var(--white);
         }
+    }
+
+    &.small {
+        width: auto;
+        padding: 0px 35px;
+        font-size: 1.5rem;
+        line-height: 3.8rem;
+        border-width: 1px;
+    }
+
+    &.disabled {
+        pointer-events: none;
+        opacity: 0.5;
     }
 }
 

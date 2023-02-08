@@ -5,28 +5,15 @@ import Tippy from '@tippyjs/react/headless';
 
 import routes from '~/config/routes';
 import images from '~/assets/images';
-import { ArroUpIcon, ExitIcon, MiniCartIcon, UserIcon } from '~/components/Icons';
+import { ExitIcon, MiniCartIcon, UserIcon } from '~/components/Icons';
 import MiniCartItem from './MiniCartItem';
 import styles from './Header.module.scss';
-import { Button } from '~/components/Button';
+import Button from '~/components/Button';
 
 const cx = classNames.bind(styles);
 
 function Header() {
     const [showCart, setShowCart] = useState(false);
-    const [scrollTop, setScrollTop] = useState(0);
-
-    useEffect(() => {
-        const handleScroll = (event) => {
-            setScrollTop(window.scrollY);
-        };
-
-        window.addEventListener('scroll', handleScroll);
-
-        return () => {
-            window.removeEventListener('scroll', handleScroll);
-        };
-    }, []);
 
     return (
         <header className={cx('container mx-auto flex justify-between items-center absolute inset-x-0 top-0 z-10')}>
@@ -96,20 +83,6 @@ function Header() {
                     <Button primary>Checkout</Button>
                 </div>
             </div>
-
-            <button
-                className={cx(
-                    'scroll-top',
-                    'fixed right-14 bottom-14 w-[60px] h-[60px] flex justify-center items-center rounded-full',
-                    {
-                        block: scrollTop >= 100,
-                        hidden: scrollTop < 100,
-                    },
-                )}
-                onClick={() => window.scrollTo({ top: 0, left: 0, behavior: 'smooth' })}
-            >
-                <ArroUpIcon />
-            </button>
         </header>
     );
 }

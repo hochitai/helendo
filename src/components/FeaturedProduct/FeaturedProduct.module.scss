@@ -1,8 +1,8 @@
-.recommend-product {
+.wrapper {
     width: var(--content-width);
 }
 
-.slide-title::after {
+.featured-product-title::after {
     content: '';
     position: absolute;
     bottom: 0;
