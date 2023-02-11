@@ -164,3 +164,38 @@ export const ExitIcon = ({ width = '3.2rem', height = '3.2rem', className }) => 
         ></path>
     </svg>
 );
+
+export const PlusIcon = ({ width = '2.4rem', height = '2.4rem', className }) => (
+    <svg
+        className={className}
+        stroke="currentColor"
+        fill="currentColor"
+        strokeWidth="0"
+        viewBox="0 0 512 512"
+        height={height}
+        width={width}
+        xmlns="http://www.w3.org/2000/svg"
+    >
+        <path
+            fill="none"
+            strokeLinecap="square"
+            strokeLinejoin="round"
+            strokeWidth="32"
+            d="M256 112v288m144-144H112"
+        ></path>
+    </svg>
+);
+export const MinusIcon = ({ width = '2.4rem', height = '2.4rem', className }) => (
+    <svg
+        className={className}
+        stroke="currentColor"
+        fill="currentColor"
+        strokeWidth="0"
+        viewBox="0 0 512 512"
+        height={height}
+        width={width}
+        xmlns="http://www.w3.org/2000/svg"
+    >
+        <path fill="none" strokeLinecap="square" strokeLinejoin="round" strokeWidth="32" d="M400 256H112"></path>
+    </svg>
+);
