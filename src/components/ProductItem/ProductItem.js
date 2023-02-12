@@ -21,10 +21,10 @@ function ProductItem() {
                 )}
             >
                 <Link to={routes.products} className="z-[5]">
-                    <span class="bg-[#f14705] text-[14px] text-white block rounded-full absolute top-[15px] left-[15px] w-[45px] h-[45px] leading-[45px] text-center z-[1]">
+                    <span className="bg-[#f14705] text-[14px] text-white block rounded-full absolute top-[15px] left-[15px] w-[45px] h-[45px] leading-[45px] text-center z-[1]">
                         Sale
                     </span>
-                    <span class="bg-[#98d8ca] text-[14px] text-white block rounded-full absolute top-[70px] left-[15px] w-[45px] h-[45px] leading-[45px] text-center z-[1]">
+                    <span className="bg-[#98d8ca] text-[14px] text-white block rounded-full absolute top-[70px] left-[15px] w-[45px] h-[45px] leading-[45px] text-center z-[1]">
                         -10%
                     </span>
                     <span className="bg-black text-white block leading-[28px] absolute top-[15px] right-[15px] px-[15px] z-[1]">

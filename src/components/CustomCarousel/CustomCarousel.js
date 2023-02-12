@@ -7,24 +7,27 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import SwiperCore, { Navigation } from 'swiper';
 import 'swiper/css';
 import 'swiper/css/navigation';
-
-import ProductItem from '~/components/ProductItem';
 import styles from './CustomCarousel.module.scss';
 
 const cx = classNames.bind(styles);
 
 SwiperCore.use([Navigation]);
 
-function CustomCarousel({ title }) {
+function CustomCarousel({ title, quantityInSlide, comp, propsComp, className }) {
     const navigationPrevRef = useRef(null);
     const navigationNextRef = useRef(null);
+    const Comp = comp;
     return (
-        <div className="width-content pt-[120px] mx-auto relative">
-            <div className={cx('section-title', 'text-[36px] font-medium text-center pb-[10px] mb-[50px] relative ')}>
+        <div className={cx('width-content mx-auto relative', { [className]: className })}>
+            <div
+                className={cx(
+                    'section-title after:bottom-0 after:left-1/2 after:-translate-x-1/2 text-[36px] font-medium text-center pb-[10px] mb-[50px] relative ',
+                )}
+            >
                 <h2>{title}</h2>
             </div>
             <Swiper
-                slidesPerView={4}
+                slidesPerView={quantityInSlide}
                 spaceBetween={25}
                 modules={[Navigation]}
                 navigation={{
@@ -38,20 +41,20 @@ function CustomCarousel({ title }) {
                 className="relative"
             >
                 <SwiperSlide>
-                    <ProductItem />
+                    <Comp {...propsComp} />
                 </SwiperSlide>
                 <SwiperSlide>
-                    <ProductItem />
+                    <Comp {...propsComp} />
                 </SwiperSlide>
                 <SwiperSlide>
-                    <ProductItem />
+                    <Comp {...propsComp} />
+                </SwiperSlide>
+                {/* <SwiperSlide>
+                    <Comp {...propsComp} />
                 </SwiperSlide>
                 <SwiperSlide>
-                    <ProductItem />
-                </SwiperSlide>
-                <SwiperSlide>
-                    <ProductItem />
-                </SwiperSlide>
+                    <Comp {...propsComp} />
+                </SwiperSlide> */}
             </Swiper>
 
             <div ref={navigationPrevRef} className="absolute top-3/4 -left-20 -translate-y-full text-4xl p-2 z-30">

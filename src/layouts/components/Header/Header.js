@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import classNames from 'classnames/bind';
 import { Link, NavLink } from 'react-router-dom';
 import Tippy from '@tippyjs/react/headless';
@@ -77,10 +77,12 @@ function Header() {
                         <span>Subtotal:</span>
                         <span>$202.00</span>
                     </div>
-                    <Button second className="mt-[40px]">
+                    <Button second className="mt-[40px] w-full justify-center">
                         View cart
                     </Button>
-                    <Button primary>Checkout</Button>
+                    <Button primary className="w-full justify-center">
+                        Checkout
+                    </Button>
                 </div>
             </div>
         </header>

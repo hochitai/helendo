@@ -1,13 +1,18 @@
 .wapper {
     display: flex;
     align-items: center;
-    width: 100%;
     padding: 16px;
     font-size: 1.6rem;
     font-weight: 500;
     border: 2px solid transparent;
-    transition: all 0.4s linear;
     user-select: none;
+    cursor: pointer;
+
+    &.text {
+        padding: 0;
+        border: none;
+        font-weight: 400;
+    }
 
     &.primary {
         background-color: var(--black);
@@ -26,7 +31,7 @@
     }
 
     &.small {
-        width: auto;
+        width: fit-content;
         padding: 0px 35px;
         font-size: 1.5rem;
         line-height: 3.8rem;

@@ -10,6 +10,8 @@ const images = {
     featuredProduct1: require('~/assets/images/featured-product-1.png'),
     featuredProduct2: require('~/assets/images/featured-product-2.png'),
     featuredProduct3: require('~/assets/images/featured-product-3.png'),
+    countdown: require('~/assets/images/countdown.jpg'),
+    blog1: require('~/assets/images/blog1.jpg'),
 };
 
 export default images;

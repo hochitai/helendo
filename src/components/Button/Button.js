@@ -5,6 +5,7 @@ import styles from './Button.module.scss';
 const cx = classNames.bind(styles);
 
 function Button({
+    text,
     primary,
     second,
     small,
@@ -41,7 +42,7 @@ function Button({
         props.href = href;
     }
 
-    const classes = cx('wapper', { primary, second, small, disabled, [className]: className });
+    const classes = cx('wapper', { text, primary, second, small, disabled, [className]: className });
 
     return (
         <Comp className={classes} {...props}>

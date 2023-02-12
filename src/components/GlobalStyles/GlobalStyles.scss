@@ -78,6 +78,27 @@ a[href] {
     background-color: var(--primary);
 }
 
+.bg-primary-hover {
+    position: relative;
+    &::after {
+        content: '';
+        position: absolute;
+        background-color: var(--primary);
+    }
+}
+
+.border-primary-focus:focus {
+    border-color: var(--primary);
+}
+
+.section-title::after {
+    content: '';
+    position: absolute;
+    background-color: var(--primary);
+    width: 70px;
+    height: 4px;
+}
+
 .wrapper {
     .swiper-container {
         width: 100%;
