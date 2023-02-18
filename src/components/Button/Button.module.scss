@@ -7,6 +7,11 @@
     border: 2px solid transparent;
     user-select: none;
     cursor: pointer;
+    transition: all 0.15s linear;
+
+    span {
+        margin: 0 4px;
+    }
 
     &.text {
         padding: 0;
@@ -20,12 +25,15 @@
     }
 
     &.second {
-        background-color: var(--white);
         color: var(--black);
         border-color: var(--black);
 
         &:hover {
             background-color: var(--black);
+            color: var(--white);
+        }
+
+        &:hover svg {
             color: var(--white);
         }
     }

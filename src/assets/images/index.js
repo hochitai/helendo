@@ -12,6 +12,8 @@ const images = {
     featuredProduct3: require('~/assets/images/featured-product-3.png'),
     countdown: require('~/assets/images/countdown.jpg'),
     blog1: require('~/assets/images/blog1.jpg'),
+    columns03: require('~/assets/images/columns-03.png'),
+    columns04: require('~/assets/images/columns-04.png'),
 };
 
 export default images;

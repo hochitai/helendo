@@ -68,7 +68,7 @@ function QuickView() {
                         <Button primary className="mr-[15px] w-[162px] h-[46px] justify-center">
                             Add to cart
                         </Button>
-                        <button className="border border-[#dddddd] border-solid text-[20px] w-[46px] h-[46px] leading-[46px] inline-flex justify-center items-center transition-all text-primary-hover ">
+                        <button className="border border-[#dddddd] border-solid text-[20px] w-[46px] h-[46px] leading-[46px] inline-flex justify-center items-center transition-all hover:text-primary ">
                             <HeartIcon width="2rem" height="2rem" />
                         </button>
                     </div>
@@ -79,17 +79,17 @@ function QuickView() {
                     <div className="flex">
                         <span className="text-black font-medium">Categories:</span>
                         <Link to={routes.products}>
-                            <button className="transition-all text-primary-hover capitalize text-[#666666] font-medium ml-[10px]">
+                            <button className="transition-all hover:text-primary capitalize text-[#666666] font-medium ml-[10px]">
                                 accessory
                             </button>
                         </Link>
                         <Link to={routes.products}>
-                            <button className="transition-all text-primary-hover capitalize text-[#666666] font-medium ml-[10px]">
+                            <button className="transition-all hover:text-primary capitalize text-[#666666] font-medium ml-[10px]">
                                 decoration
                             </button>
                         </Link>
                         <Link to={routes.products}>
-                            <button className="transition-all text-primary-hover capitalize text-[#666666] font-medium ml-[10px]">
+                            <button className="transition-all hover:text-primary capitalize text-[#666666] font-medium ml-[10px]">
                                 furniture
                             </button>
                         </Link>
@@ -97,27 +97,27 @@ function QuickView() {
                     <div className="flex">
                         <span className="text-black font-medium">Tags:</span>
                         <Link to={routes.products}>
-                            <button className="transition-all text-primary-hover capitalize text-[#666666] font-medium ml-[10px]">
+                            <button className="transition-all hover:text-primary capitalize text-[#666666] font-medium ml-[10px]">
                                 <span className="accessories">accessories</span>
                             </button>
                         </Link>
                         <Link to={routes.products}>
-                            <button className="transition-all text-primary-hover capitalize text-[#666666] font-medium ml-[10px]">
+                            <button className="transition-all hover:text-primary capitalize text-[#666666] font-medium ml-[10px]">
                                 <span className="chair">chair</span>
                             </button>
                         </Link>
                         <Link to={routes.products}>
-                            <button className="transition-all text-primary-hover capitalize text-[#666666] font-medium ml-[10px]">
+                            <button className="transition-all hover:text-primary capitalize text-[#666666] font-medium ml-[10px]">
                                 <span className="glass">glass</span>
                             </button>
                         </Link>
                         <Link to={routes.products}>
-                            <button className="transition-all text-primary-hover capitalize text-[#666666] font-medium ml-[10px]">
+                            <button className="transition-all hover:text-primary capitalize text-[#666666] font-medium ml-[10px]">
                                 <span className="deco">deco</span>
                             </button>
                         </Link>
                         <Link to={routes.products}>
-                            <button className="transition-all text-primary-hover capitalize text-[#666666] font-medium ml-[10px]">
+                            <button className="transition-all hover:text-primary capitalize text-[#666666] font-medium ml-[10px]">
                                 <span className="table">table</span>
                             </button>
                         </Link>

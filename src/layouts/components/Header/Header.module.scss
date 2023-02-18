@@ -76,3 +76,18 @@
 .minicart-item + .minicart-item {
     margin-top: 20px;
 }
+
+header.transparent {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    background-color: transparent;
+    z-index: 10;
+}
+
+header.isSticky {
+    position: fixed;
+    background-color: white;
+    box-shadow: 0 1px 2px #f0f0f0;
+}

@@ -34,15 +34,15 @@ function ProductItem() {
                 </Link>
                 <div className="flex justify-center absolute w-full top-1/2 left-auto transform -translate-y-1/2 z-[1]">
                     <button
-                        className="bg-white rounded-full flex justify-center items-center text-[21px] w-[45px] h-[45px] leading-[48px] text-primary-hover transition-all opacity-0 invisible ease-in-out transform translate-y-20 duration-[.5s] group-hover:translate-y-0 group-hover:opacity-100 group-hover:visible mr-[15px] group-hover:delay-[0s] "
+                        className="bg-white rounded-full flex justify-center items-center text-[21px] w-[45px] h-[45px] leading-[48px] hover:text-primary transition-all opacity-0 invisible ease-in-out transform translate-y-20 duration-[.5s] group-hover:translate-y-0 group-hover:opacity-100 group-hover:visible mr-[15px] group-hover:delay-[0s] "
                         onClick={handleShowQuickView}
                     >
                         <PlusIcon width="2.1rem" height="2.1rem" />
                     </button>
-                    <button className="bg-white rounded-full flex justify-center items-center text-[21px] w-[45px] h-[45px] leading-[48px] text-primary-hover transition-all opacity-0 invisible ease-in-out transform translate-y-20 duration-[.5s] group-hover:translate-y-0 group-hover:opacity-100 group-hover:visible mr-[15px] group-hover:delay-[0.15s] ">
+                    <button className="bg-white rounded-full flex justify-center items-center text-[21px] w-[45px] h-[45px] leading-[48px] hover:text-primary transition-all opacity-0 invisible ease-in-out transform translate-y-20 duration-[.5s] group-hover:translate-y-0 group-hover:opacity-100 group-hover:visible mr-[15px] group-hover:delay-[0.15s] ">
                         <MiniCartIcon width="2.1rem" height="2.1rem" />
                     </button>
-                    <button className="bg-white rounded-full flex justify-center items-center text-[21px] w-[45px] h-[45px] leading-[48px] text-primary-hover transition-all opacity-0 invisible ease-in-out transform translate-y-20 duration-[.5s] group-hover:translate-y-0 group-hover:opacity-100 group-hover:visible mr-[15px] group-hover:delay-[0.3s] ">
+                    <button className="bg-white rounded-full flex justify-center items-center text-[21px] w-[45px] h-[45px] leading-[48px] hover:text-primary transition-all opacity-0 invisible ease-in-out transform translate-y-20 duration-[.5s] group-hover:translate-y-0 group-hover:opacity-100 group-hover:visible mr-[15px] group-hover:delay-[0.3s] ">
                         <HeartIcon width="2.1rem" height="2.1rem" />
                     </button>
                 </div>
@@ -50,7 +50,7 @@ function ProductItem() {
             <div className="product-content text-center">
                 <h3 className="mb-[5px]">
                     <a
-                        className="transition-all hover:text-primary text-[16px] leading-[4.6rem] font-medium text-primary-hover"
+                        className="transition-all hover:text-primary text-[16px] leading-[4.6rem] font-medium hover:text-primary"
                         href="/products/animi-dolor-pariatur"
                     >
                         Animi Dolor Pariatur

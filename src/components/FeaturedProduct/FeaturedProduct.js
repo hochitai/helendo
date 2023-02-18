@@ -9,7 +9,7 @@ const cx = classNames.bind(styles);
 
 function FeaturedProduct({ type = 'leftImg', img, name, desc, price }) {
     return (
-        <div className={cx('wrapper', 'flex justify-between items-center mx-auto pt-[120px]')}>
+        <div className={cx('wrapper', 'flex justify-between items-center mx-auto xl:pt-[120px] lg:pt-[100px]')}>
             <Link
                 to={routes.products}
                 className={cx('block transition-all duration-500 hover:scale-[1.05] w-3/6', {
@@ -24,10 +24,7 @@ function FeaturedProduct({ type = 'leftImg', img, name, desc, price }) {
                     Featured Product
                 </span>
                 <h2 className={cx('featured-product-title', 'relative pb-[10px] mb-[30px] ')}>
-                    <Link
-                        to={routes.products}
-                        className="transition-all hover:text-primary text-[36px] text-primary-hover"
-                    >
+                    <Link to={routes.products} className="transition-all hover:text-primary text-[36px] ">
                         {name}
                     </Link>
                 </h2>

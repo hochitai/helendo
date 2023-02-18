@@ -21,7 +21,7 @@ function Footer() {
                                 <li className="flex items-center mb-[5px]">
                                     <FontAwesomeIcon icon={faPhone} className="w-[16px] h-[16px]" />
                                     <a
-                                        className="font-normal text-[16px] text-primary-hover transition-all ml-[10px]"
+                                        className="font-normal text-[16px] hover:text-primary transition-all ml-[10px]"
                                         href="tel:846677028028"
                                     >
                                         +846677028028
@@ -33,25 +33,25 @@ function Footer() {
                                     <Button
                                         text
                                         href="https://www.facebook.com/"
-                                        className="text-primary-hover transition-all"
+                                        className="hover:text-primary transition-all"
                                     >
                                         <FacebookIcon />
                                     </Button>
                                 </li>
-                                <li className="mr-[25px] text-primary-hover transition-all">
+                                <li className="mr-[25px] hover:text-primary transition-all">
                                     <Button
                                         text
                                         href="https://twitter.com/"
-                                        className="text-primary-hover transition-all"
+                                        className="hover:text-primary transition-all"
                                     >
                                         <TwitterIcon />
                                     </Button>
                                 </li>
-                                <li className="mr-[25px] text-primary-hover transition-all">
+                                <li className="mr-[25px] hover:text-primary transition-all">
                                     <Button
                                         text
                                         href="https://www.tumblr.com/"
-                                        className="text-primary-hover transition-all"
+                                        className="hover:text-primary transition-all"
                                     >
                                         <TumblrIcon />
                                     </Button>
@@ -66,7 +66,7 @@ function Footer() {
                                 <li className="mb-[5px]">
                                     <Button
                                         text
-                                        className="font-normal leading-[28px] transition-all text-primary-hover"
+                                        className="font-normal leading-[28px] transition-all hover:text-primary"
                                         href="/contact"
                                     >
                                         Help &amp; Contact Us
@@ -75,7 +75,7 @@ function Footer() {
                                 <li className="mb-[5px]">
                                     <Button
                                         text
-                                        className="font-normal leading-[28px] transition-all text-primary-hover"
+                                        className="font-normal leading-[28px] transition-all hover:text-primary"
                                         href="/contact"
                                     >
                                         Returns &amp; Refunds
@@ -84,7 +84,7 @@ function Footer() {
                                 <li className="mb-[5px]">
                                     <Button
                                         text
-                                        className="font-normal leading-[28px] transition-all text-primary-hover"
+                                        className="font-normal leading-[28px] transition-all hover:text-primary"
                                         href="/"
                                     >
                                         Online Stores
@@ -93,7 +93,7 @@ function Footer() {
                                 <li className="mb-[5px]">
                                     <Button
                                         text
-                                        className="font-normal leading-[28px] transition-all text-primary-hover"
+                                        className="font-normal leading-[28px] transition-all hover:text-primary"
                                         href="/contact"
                                     >
                                         Terms &amp; Conditions
@@ -109,7 +109,7 @@ function Footer() {
                                 <li className="mb-[5px]">
                                     <Button
                                         text
-                                        className="font-normal leading-[28px] transition-all text-primary-hover"
+                                        className="font-normal leading-[28px] transition-all hover:text-primary"
                                         href="/about"
                                     >
                                         About Us
@@ -118,7 +118,7 @@ function Footer() {
                                 <li className="mb-[5px]">
                                     <Button
                                         text
-                                        className="font-normal leading-[28px] transition-all text-primary-hover"
+                                        className="font-normal leading-[28px] transition-all hover:text-primary"
                                         href="/about"
                                     >
                                         What We Do
@@ -127,7 +127,7 @@ function Footer() {
                                 <li className="mb-[5px]">
                                     <Button
                                         text
-                                        className="font-normal leading-[28px] transition-all text-primary-hover"
+                                        className="font-normal leading-[28px] transition-all hover:text-primary"
                                         href="/about"
                                     >
                                         FAQ Page
@@ -136,7 +136,7 @@ function Footer() {
                                 <li className="mb-[5px]">
                                     <Button
                                         text
-                                        className="font-normal leading-[28px] transition-all text-primary-hover"
+                                        className="font-normal leading-[28px] transition-all hover:text-primary"
                                         href="/about"
                                     >
                                         Contact Us
@@ -154,7 +154,7 @@ function Footer() {
                                         type="email"
                                         name="email"
                                         placeholder="Your email address"
-                                        className="bg-transparent border-0 border-b border-[rgba(0,0,0,.25)] border-solid outline-none w-full p-[10px_35px_10px_0] border-primary-focus"
+                                        className="bg-transparent border-0 border-b border-[rgba(0,0,0,.25)] border-solid outline-none w-full p-[10px_35px_10px_0] focus:border-primary"
                                     />
                                     <button
                                         type="submit"
@@ -168,7 +168,7 @@ function Footer() {
                                 <li className="mr-[30px]">
                                     <Button
                                         text
-                                        className="font-normal leading-[28px] transition-all text-primary-hover"
+                                        className="font-normal leading-[28px] transition-all hover:text-primary"
                                         href="/about"
                                     >
                                         Term & Condition
@@ -177,7 +177,7 @@ function Footer() {
                                 <li className="mr-[30px]">
                                     <Button
                                         text
-                                        className="font-normal leading-[28px] transition-all text-primary-hover"
+                                        className="font-normal leading-[28px] transition-all hover:text-primary"
                                         href="/about"
                                     >
                                         Policy
@@ -186,7 +186,7 @@ function Footer() {
                                 <li className="mr-[30px]">
                                     <Button
                                         text
-                                        className="font-normal leading-[28px] transition-all text-primary-hover"
+                                        className="font-normal leading-[28px] transition-all hover:text-primary"
                                         href="/about"
                                     >
                                         Map
@@ -203,7 +203,7 @@ function Footer() {
                         <li className="mr-[30px]">
                             <Button
                                 text
-                                className="font-normal leading-[28px] transition-all text-primary-hover"
+                                className="font-normal leading-[28px] transition-all hover:text-primary"
                                 href="/about"
                             >
                                 Term & Condition
@@ -212,7 +212,7 @@ function Footer() {
                         <li className="mr-[30px]">
                             <Button
                                 text
-                                className="font-normal leading-[28px] transition-all text-primary-hover"
+                                className="font-normal leading-[28px] transition-all hover:text-primary"
                                 href="/about"
                             >
                                 Policy
@@ -221,7 +221,7 @@ function Footer() {
                         <li className="mr-[30px]">
                             <Button
                                 text
-                                className="font-normal leading-[28px] transition-all text-primary-hover"
+                                className="font-normal leading-[28px] transition-all hover:text-primary"
                                 href="/about"
                             >
                                 Map
@@ -234,17 +234,17 @@ function Footer() {
                     <ul className="flex">
                         <h2 className="text-[16px] pr-[65px]">Follow Us On Social</h2>
                         <li className="mr-[25px] ">
-                            <Button text href="https://www.facebook.com/" className="text-primary-hover transition-all">
+                            <Button text href="https://www.facebook.com/" className="hover:text-primary transition-all">
                                 <FacebookIcon />
                             </Button>
                         </li>
-                        <li className="mr-[25px] text-primary-hover transition-all">
-                            <Button text href="https://twitter.com/" className="text-primary-hover transition-all">
+                        <li className="mr-[25px] hover:text-primary transition-all">
+                            <Button text href="https://twitter.com/" className="hover:text-primary transition-all">
                                 <TwitterIcon />
                             </Button>
                         </li>
-                        <li className="mr-[25px] text-primary-hover transition-all">
-                            <Button text href="https://www.tumblr.com/" className="text-primary-hover transition-all">
+                        <li className="mr-[25px] hover:text-primary transition-all">
+                            <Button text href="https://www.tumblr.com/" className="hover:text-primary transition-all">
                                 <TumblrIcon />
                             </Button>
                         </li>
@@ -252,11 +252,8 @@ function Footer() {
                 </div>
             </div>
             <div className="footer-copyright w-full pt-[35px] pb-[25px]">
-                <span className="flex justify-center items-center">
-                    © 2023 Helendo.
-                    <a className="font-normal ml-[5px]" href="https://hasthemes.com/">
-                        All Rights Reserved.
-                    </a>
+                <span className="flex font-normal justify-center items-center">
+                    © 2023 Helendo. All Rights Reserved.
                 </span>
             </div>
         </footer>

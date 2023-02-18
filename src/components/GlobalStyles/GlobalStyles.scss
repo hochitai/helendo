@@ -64,33 +64,6 @@ a[href] {
     width: var(--content-width);
 }
 
-.text-primary {
-    color: var(--primary);
-}
-
-.text-primary-hover {
-    &:hover {
-        color: var(--primary);
-    }
-}
-
-.bg-primary {
-    background-color: var(--primary);
-}
-
-.bg-primary-hover {
-    position: relative;
-    &::after {
-        content: '';
-        position: absolute;
-        background-color: var(--primary);
-    }
-}
-
-.border-primary-focus:focus {
-    border-color: var(--primary);
-}
-
 .section-title::after {
     content: '';
     position: absolute;

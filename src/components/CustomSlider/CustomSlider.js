@@ -58,7 +58,7 @@ function CustomeSlider() {
                                 <div className="mt-[60px] shopping-link">
                                     <Link
                                         to={routes.products}
-                                        className="text-[18px] transition-all text-primary-hover font-medium flex items-center"
+                                        className="text-[18px] transition-all hover:text-primary font-medium flex items-center"
                                     >
                                         Shop Now
                                         <ArrowRightIcon />
@@ -91,7 +91,7 @@ function CustomeSlider() {
                                 <div className="mt-[60px] shopping-link">
                                     <Link
                                         to={routes.products}
-                                        className="text-[18px] transition-all text-primary-hover font-medium flex items-center"
+                                        className="text-[18px] transition-all hover:text-primary font-medium flex items-center"
                                     >
                                         Shop Now
                                         <ArrowRightIcon />
@@ -124,7 +124,7 @@ function CustomeSlider() {
                                 <div className="mt-[60px] shopping-link">
                                     <Link
                                         to={routes.products}
-                                        className="text-[18px] transition-all text-primary-hover font-medium flex items-center"
+                                        className="text-[18px] transition-all hover:text-primary font-medium flex items-center"
                                     >
                                         Shop Now
                                         <ArrowRightIcon />

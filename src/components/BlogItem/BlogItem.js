@@ -25,7 +25,7 @@ function BlogItem() {
             <div className="blog-content pt-[25px]">
                 <h2 className="text-[20px] leading-[28px]  ">
                     <Link
-                        className="relative block pb-[15px] mb-[10px] before:bg-[#cacaca] before:absolute before:left-0 before:bottom-[-3px] before:h-[1.5px] before:w-[70px] before:transition before:ease-in-out before:duration-[800ms] bg-primary-hover after:absolute after:left-0 after:bottom-[-3px] after:h-[1.5px] after:w-0 after:transform after:transition-all after:duration-500 group-hover:after:w-[70px]"
+                        className="relative block pb-[15px] mb-[10px] before:bg-[#cacaca] before:absolute before:left-0 before:bottom-[-3px] before:h-[1.5px] before:w-[70px] before:transition before:ease-in-out before:duration-[800ms] after:bg-primary after:absolute after:left-0 after:bottom-[-3px] after:h-[1.5px] after:w-0 after:transform after:transition-all after:duration-500 group-hover:after:w-[70px]"
                         to={routes.blogs}
                     >
                         Unique products that will impress your home in 2023.
@@ -36,14 +36,14 @@ function BlogItem() {
                         November 27, 2023
                     </span>
                     <a
-                        className='author font-normal text-primary-hover transition-all after:text-[#999999] after:px-[8px] after:content-["/"]'
+                        className='author font-normal hover:text-primary transition-all after:text-[#999999] after:px-[8px] after:content-["/"]'
                         href="https://www.example.com/"
                     >
                         Admin
                     </a>
                     <span>
                         <span className="text-[#999999] mr-[5px]">in</span>
-                        <Link className="category font-normal text-primary-hover transition-all" to={routes.blogs}>
+                        <Link className="category font-normal hover:text-primary transition-all" to={routes.blogs}>
                             deco
                         </Link>
                     </span>

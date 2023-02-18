@@ -16,7 +16,7 @@ function MiniCartItem() {
             </Link>
             <div className={cx('content', 'pl-[20px]')}>
                 <h3 className="leading-[21px]">
-                    <Link to={routes.products} className="text-primary-hover transition-all font-medium">
+                    <Link to={routes.products} className="hover:text-primary transition-all font-medium">
                         Art Deco Home
                     </Link>
                     <div className="font-medium text-[15px] leading-[26px]">

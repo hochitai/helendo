@@ -4,7 +4,16 @@ module.exports = {
 
     theme: {
         screens: {
-            '2xl': '1320px',
+            sm: '640px',
+            md: '768px',
+            lg: '1024px',
+            xl: '1200px',
+            // '2xl': '1320px',
+        },
+        extend: {
+            colors: {
+                primary: 'var(--primary)',
+            },
         },
     },
     plugins: [],
