@@ -36,7 +36,7 @@ function ScrollOnTop() {
         <button
             className={cx(
                 'scroll-top',
-                'fixed right-14 bottom-14 w-[60px] h-[60px] flex justify-center items-center rounded-full z-30',
+                'fixed right-14 bottom-14 w-[60px] h-[60px] flex justify-center items-center rounded-full',
                 {
                     block: isVisible,
                     hidden: !isVisible,

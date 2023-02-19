@@ -50,7 +50,7 @@ function ProductItem() {
             <div className="product-content text-center">
                 <h3 className="mb-[5px]">
                     <a
-                        className="transition-all hover:text-primary text-[16px] leading-[4.6rem] font-medium hover:text-primary"
+                        className="transition-all text-[16px] leading-[4.6rem] font-medium hover:text-primary"
                         href="/products/animi-dolor-pariatur"
                     >
                         Animi Dolor Pariatur

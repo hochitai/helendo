@@ -32,7 +32,12 @@ function Header({ type = 'block' }) {
     }, []);
 
     return (
-        <header className={cx('w-full bg-white z-10', { transparent: type === 'transparent', isSticky })}>
+        <header
+            className={cx('w-full bg-white z-[100]', {
+                transparent: type === 'transparent',
+                isSticky,
+            })}
+        >
             <div className="container mx-auto flex justify-between items-center   ">
                 <Link to={routes.home}>
                     <img className={cx('object-contain')} src={images.logo} alt="Helendo" />
@@ -101,7 +106,7 @@ function Header({ type = 'block' }) {
                         <Button second className="mt-[40px] w-full justify-center">
                             View cart
                         </Button>
-                        <Button primary className="w-full justify-center text-primary">
+                        <Button primary className="w-full justify-center text-primary mt-[15px]">
                             Checkout
                         </Button>
                     </div>

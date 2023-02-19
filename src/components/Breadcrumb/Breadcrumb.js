@@ -5,7 +5,7 @@ const cx = classNames.bind(styles);
 
 function Breadcrumb({ title }) {
     return (
-        <div className="breadcrumb bg-[#f4f5f7] py-[80px]">
+        <div className={cx('breadcrumb bg-[#f4f5f7] py-[80px]')}>
             <div className="container mx-auto">
                 <div className="grid grid-cols-12 items-center">
                     <div className="lg:col-span-6 col-span-12">

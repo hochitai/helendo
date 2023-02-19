@@ -9,8 +9,8 @@
     cursor: pointer;
     transition: all 0.15s linear;
 
-    span {
-        margin: 0 4px;
+    & > .icon {
+        margin: 4px;
     }
 
     &.text {
@@ -50,8 +50,4 @@
         pointer-events: none;
         opacity: 0.5;
     }
-}
-
-.wapper + .wapper {
-    margin-top: 15px;
 }

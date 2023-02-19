@@ -1,4 +1,4 @@
-import { Fragment } from 'react';
+import { Fragment, useState } from 'react';
 import classNames from 'classnames/bind';
 
 import Header from '~/layouts/components/Header';
@@ -13,7 +13,61 @@ import ProductItem from '~/components/ProductItem';
 
 const cx = classNames.bind(styles);
 
+const cateList = [
+    {
+        id: 1,
+        value: 'accessory',
+        type: 'cate',
+    },
+    {
+        id: 2,
+        value: 'decoration',
+        type: 'cate',
+    },
+    {
+        id: 3,
+        value: 'furniture',
+        type: 'cate',
+    },
+];
+
 function Products() {
+    const [filterProduct, setFilterProduct] = useState([]);
+    const handleAddFilter = (id, value, type) => {
+        switch (type) {
+            case 'cate':
+                const newData = filterProduct.filter((item) => item.type === 'cate');
+                const isExisted = newData.filter((item) => item.id === id).length > 0;
+                if (!isExisted) {
+                    setFilterProduct((prev) => [
+                        ...prev,
+                        {
+                            id: id,
+                            value: value,
+                            type: type,
+                        },
+                    ]);
+                }
+                break;
+            default:
+                throw new Error('Invalid type');
+        }
+    };
+
+    const handleDeleteFilter = (id, type) => {
+        switch (type) {
+            case 'cate':
+                setFilterProduct(filterProduct.filter((item) => item.type === type && item.id !== id));
+                break;
+            default:
+                throw new Error('Invalid type');
+        }
+    };
+
+    const handleClearAll = () => setFilterProduct([]);
+
+    console.log(filterProduct);
+
     return (
         <Fragment>
             <Header />
@@ -27,7 +81,7 @@ function Products() {
                                     <div className="product-sidebar-widget border-b border-[#dddddd] pb-[30px] mb-[25px]">
                                         <h2 className="widget-title text-[18px] font-medium">Categories</h2>
                                         <div className="flex flex-col items-start pt-[20px]">
-                                            <Button
+                                            {/* <Button
                                                 text
                                                 className="transition-all hover:text-primary capitalize mb-[10px] last:mb-0"
                                             >
@@ -44,7 +98,18 @@ function Products() {
                                                 className="transition-all hover:text-primary capitalize mb-[10px] last:mb-0"
                                             >
                                                 furniture
-                                            </Button>
+                                            </Button> */}
+
+                                            {cateList.map((cate, index) => (
+                                                <Button
+                                                    key={cate.id}
+                                                    text
+                                                    className="transition-all hover:text-primary capitalize mb-[10px] last:mb-0"
+                                                    onClick={() => handleAddFilter(cate.id, cate.value, 'cate')}
+                                                >
+                                                    {cate.value}
+                                                </Button>
+                                            ))}
                                         </div>
                                     </div>
                                     <div className="product-sidebar-widget border-b border-[#dddddd] pb-[30px] mb-[25px]">
@@ -216,7 +281,7 @@ function Products() {
                             </div>
                             <div className="lg:col-span-9 col-span-12">
                                 <ul className="active-filter-list flex flex-wrap items-center pb-[20px] -mb-[10px]">
-                                    <li className="mr-[10px] mb-[10px]">
+                                    {/* <li className="mr-[10px] mb-[10px]">
                                         <Button
                                             second
                                             className="bg-[#e8e8e8] text-[14px] font-normal py-[6px] px-[8px] border-none rounded-[20px]"
@@ -232,7 +297,39 @@ function Products() {
                                         >
                                             Clear All
                                         </Button>
-                                    </li>
+                                    </li> */}
+                                    {filterProduct.length > 0 &&
+                                        filterProduct
+                                            .slice(0)
+                                            .reverse()
+                                            .map((item, index) => (
+                                                <li key={index} className="mr-[10px] mb-[10px]">
+                                                    <Button
+                                                        second
+                                                        className="bg-[#e8e8e8] text-[14px] font-normal py-[6px] px-[8px] border-none rounded-[20px]"
+                                                        rightIcon={
+                                                            <span
+                                                                onClick={() => handleDeleteFilter(item.id, item.type)}
+                                                            >
+                                                                <ExitIcon width="1.4rem" height="1.4rem" />
+                                                            </span>
+                                                        }
+                                                    >
+                                                        {item.value}
+                                                    </Button>
+                                                </li>
+                                            ))}
+                                    {filterProduct.length > 0 && (
+                                        <li className="mb-[10px]">
+                                            <Button
+                                                text
+                                                className="clear-btn text-[14px] transition-all hover:text-primary"
+                                                onClick={handleClearAll}
+                                            >
+                                                Clear All
+                                            </Button>
+                                        </li>
+                                    )}
                                 </ul>
                                 <div className="product-toolbar grid grid-cols-12 pb-[25px]">
                                     <div className="md:col-span-6 sm:col-span-8 col-span-12">
@@ -249,11 +346,11 @@ function Products() {
                                                             className="ml-2 w-[14px] h-[12px]"
                                                         />
                                                     </span>
-                                                    <ul class="sort-subitems bg-white border border-[#dddddd] absolute top-[calc(100%+30px)] sm:left-0 max-xs:left-1/2 max-xs:-translate-x-1/2 w-[210px] p-[10px] transition-all invisible opacity-0 group-hover:top-full group-hover:visible group-hover:opacity-100 z-[9]">
+                                                    <ul className="sort-subitems bg-white border border-[#dddddd] absolute top-[calc(100%+30px)] sm:left-0 max-xs:left-1/2 max-xs:-translate-x-1/2 w-[210px] p-[10px] transition-all invisible opacity-0 group-hover:top-full group-hover:visible group-hover:opacity-100 z-[9]">
                                                         <li>
                                                             <button
                                                                 type="button"
-                                                                class="text-[#777777] text-[15px] leading-[24px] transition-all hover:text-[#222222] py-[5px] px-[10px] rounded-[4px]"
+                                                                className="text-[#777777] text-[15px] leading-[24px] transition-all hover:text-[#222222] py-[5px] px-[10px] rounded-[4px]"
                                                             >
                                                                 Default sorting
                                                             </button>
@@ -261,7 +358,7 @@ function Products() {
                                                         <li>
                                                             <button
                                                                 type="button"
-                                                                class="text-[#777777] text-[15px] leading-[24px] transition-all hover:text-[#222222] py-[5px] px-[10px] rounded-[4px]"
+                                                                className="text-[#777777] text-[15px] leading-[24px] transition-all hover:text-[#222222] py-[5px] px-[10px] rounded-[4px]"
                                                             >
                                                                 Sort by popularity
                                                             </button>
@@ -269,7 +366,7 @@ function Products() {
                                                         <li>
                                                             <button
                                                                 type="button"
-                                                                class="text-[#777777] text-[15px] leading-[24px] transition-all hover:text-[#222222] py-[5px] px-[10px] rounded-[4px]"
+                                                                className="text-[#777777] text-[15px] leading-[24px] transition-all hover:text-[#222222] py-[5px] px-[10px] rounded-[4px]"
                                                             >
                                                                 Sort by latest
                                                             </button>
@@ -277,7 +374,7 @@ function Products() {
                                                         <li>
                                                             <button
                                                                 type="button"
-                                                                class="text-[#777777] text-[15px] leading-[24px] transition-all hover:text-[#222222] py-[5px] px-[10px] rounded-[4px]"
+                                                                className="text-[#777777] text-[15px] leading-[24px] transition-all hover:text-[#222222] py-[5px] px-[10px] rounded-[4px]"
                                                             >
                                                                 Sort by price: low to high
                                                             </button>
@@ -285,7 +382,7 @@ function Products() {
                                                         <li>
                                                             <button
                                                                 type="button"
-                                                                class="text-[#777777] text-[15px] leading-[24px] transition-all hover:text-[#222222] py-[5px] px-[10px] rounded-[4px]"
+                                                                className="text-[#777777] text-[15px] leading-[24px] transition-all hover:text-[#222222] py-[5px] px-[10px] rounded-[4px]"
                                                             >
                                                                 Sort by price: high to low
                                                             </button>
@@ -297,11 +394,11 @@ function Products() {
                                     </div>
                                     <div className="md:col-span-6 sm:col-span-4 col-span-12">
                                         <div className="right-side flex items-center sm:justify-end justify-center pt-[25px] sm:pt-0">
-                                            <ul class="flex">
-                                                <li class="grid-03 item opacity-100 cursor-pointer transition-all hover:opacity-100 pr-[17px] last:px-0">
+                                            <ul className="flex">
+                                                <li className="grid-03 item opacity-100 cursor-pointer transition-all hover:opacity-100 pr-[17px] last:px-0">
                                                     <img src={images.columns03} alt="Grid Product" />
                                                 </li>
-                                                <li class="grid-04 active opacity-50 item cursor-pointer transition-all hover:opacity-100 pr-[17px] last:px-0">
+                                                <li className="grid-04 active opacity-50 item cursor-pointer transition-all hover:opacity-100 pr-[17px] last:px-0">
                                                     <img src={images.columns04} alt="Grid Product" />
                                                 </li>
                                             </ul>
@@ -320,27 +417,27 @@ function Products() {
                                 <div className="grid-content-04 tab-style-common">
                                     <div className="grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-x-[25px] gap-y-[40px]"></div>
                                 </div>
-                                <ul class="pagination flex justify-center pt-[40px]">
-                                    <li class="px-[5px]">
+                                <ul className="pagination flex justify-center pt-[40px]">
+                                    <li className="px-[5px]">
                                         <button
-                                            class=" bg-[#f5f5f5] cursor-pointer flex items-center text-[14px] px-[13px] h-[34px]"
+                                            className=" bg-[#f5f5f5] cursor-pointer flex items-center text-[14px] px-[13px] h-[34px]"
                                             type="button"
                                             disabled=""
                                         >
                                             Prev
                                         </button>
                                     </li>
-                                    <li class="px-[5px]">
+                                    <li className="px-[5px]">
                                         <span
-                                            class="active bg-[#f5f5f5] cursor-pointer flex items-center px-[13px] h-[34px] text-[12px] font-medium"
+                                            className="active bg-[#f5f5f5] cursor-pointer flex items-center px-[13px] h-[34px] text-[12px] font-medium"
                                             id="1"
                                         >
                                             1
                                         </span>
                                     </li>
-                                    <li class="px-[5px]">
+                                    <li className="px-[5px]">
                                         <button
-                                            class=" bg-[#f5f5f5] cursor-pointer flex items-center text-[14px] px-[13px] h-[34px]"
+                                            className=" bg-[#f5f5f5] cursor-pointer flex items-center text-[14px] px-[13px] h-[34px]"
                                             type="button"
                                             disabled=""
                                         >
