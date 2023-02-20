@@ -15,49 +15,163 @@ const cx = classNames.bind(styles);
 
 const cateList = [
     {
-        id: 1,
+        id: 'cate1',
         value: 'accessory',
         type: 'cate',
     },
     {
-        id: 2,
+        id: 'cate2',
         value: 'decoration',
         type: 'cate',
     },
     {
-        id: 3,
+        id: 'cate3',
         value: 'furniture',
         type: 'cate',
     },
 ];
 
+const availList = [
+    {
+        id: 'avail1',
+        value: 'In stock',
+        type: 'avail',
+    },
+    {
+        id: 'avail2',
+        value: 'Out of stock',
+        type: 'avail',
+    },
+];
+
+const sizeList = [
+    {
+        id: 'size1',
+        value: 'Large',
+        type: 'size',
+    },
+    {
+        id: 'size2',
+        value: 'Medium',
+        type: 'size',
+    },
+    {
+        id: 'size3',
+        value: 'Small',
+        type: 'size',
+    },
+];
+
+const tagList = [
+    {
+        id: 'tag1',
+        value: 'accessory',
+        type: 'tag',
+    },
+    {
+        id: 'tag2',
+        value: 'chair',
+        type: 'tag',
+    },
+    {
+        id: 'tag3',
+        value: 'glass',
+        type: 'tag',
+    },
+    {
+        id: 'tag4',
+        value: 'deco',
+        type: 'tag',
+    },
+    {
+        id: 'tag5',
+        value: 'table',
+        type: 'tag',
+    },
+];
+
+// const colorList = [
+//     {
+//         id: 'color1',
+//         value: 'black',
+//         type: 'color',
+//     },
+//     {
+//         id: 'color2',
+//         value: 'green',
+//         type: 'color',
+//     },
+//     {
+//         id: 'color3',
+//         value: 'gray',
+//         type: 'color',
+//     },
+//     {
+//         id: 'color4',
+//         value: 'red',
+//         type: 'color',
+//     },
+//     {
+//         id: 'color5',
+//         value: 'yellow',
+//         type: 'color',
+//     },
+// ];
+
 function Products() {
     const [filterProduct, setFilterProduct] = useState([]);
-    const handleAddFilter = (id, value, type) => {
-        switch (type) {
-            case 'cate':
-                const newData = filterProduct.filter((item) => item.type === 'cate');
-                const isExisted = newData.filter((item) => item.id === id).length > 0;
-                if (!isExisted) {
-                    setFilterProduct((prev) => [
-                        ...prev,
-                        {
-                            id: id,
-                            value: value,
-                            type: type,
-                        },
-                    ]);
-                }
-                break;
-            default:
-                throw new Error('Invalid type');
-        }
+    const [grid, setGrid] = useState(3);
+
+    const handleFilterPrice = (e) => {
+        e.preventDefault();
+        const priceFrom = e.target.elements.priceFrom.value;
+        const priceTo = e.target.elements.priceTo.value;
+
+        handleFilter('price', `$${priceFrom} - $${[priceTo]}`, 'price');
     };
 
-    const handleDeleteFilter = (id, type) => {
+    const addFilter = (id, value, type) => {
+        setFilterProduct((prev) => [
+            ...prev,
+            {
+                id: id,
+                value: value,
+                type: type,
+            },
+        ]);
+    };
+
+    const deleteFilter = (id) => {
+        setFilterProduct((prev) => prev.filter((item) => item.id !== id));
+    };
+
+    const updateFilter = (id, value) => {
+        setFilterProduct((prev) => prev.map((item) => (item.id === id ? { ...item, value } : item)));
+    };
+
+    const handleFilter = (id, value, type) => {
+        const isExisted = filterProduct.filter((item) => item.id === id).length > 0;
         switch (type) {
+            case 'tag':
             case 'cate':
-                setFilterProduct(filterProduct.filter((item) => item.type === type && item.id !== id));
+                if (!isExisted) {
+                    addFilter(id, value, type);
+                }
+                break;
+            case 'avail':
+            case 'size':
+                if (!isExisted) {
+                    addFilter(id, value, type);
+                } else {
+                    deleteFilter(id);
+                }
+                break;
+            case 'price':
+                if (!isExisted) {
+                    addFilter(id, value, type);
+                } else {
+                    updateFilter(id, value);
+                }
                 break;
             default:
                 throw new Error('Invalid type');
@@ -100,12 +214,12 @@ function Products() {
                                                 furniture
                                             </Button> */}
 
-                                            {cateList.map((cate, index) => (
+                                            {cateList.map((cate) => (
                                                 <Button
                                                     key={cate.id}
                                                     text
                                                     className="transition-all hover:text-primary capitalize mb-[10px] last:mb-0"
-                                                    onClick={() => handleAddFilter(cate.id, cate.value, 'cate')}
+                                                    onClick={() => handleFilter(cate.id, cate.value, 'cate')}
                                                 >
                                                     {cate.value}
                                                 </Button>
@@ -115,13 +229,13 @@ function Products() {
                                     <div className="product-sidebar-widget border-b border-[#dddddd] pb-[30px] mb-[25px]">
                                         <h2 className="widget-title text-[18px] font-medium">Availability</h2>
                                         <ul className="flex flex-col pt-[20px]">
-                                            <li className="mb-[10px]">
+                                            {/* <li className="mb-[10px]">
                                                 <label
                                                     htmlFor="filter-availability-1"
                                                     className="cursor-pointer transition-all hover:text-primary"
                                                 >
                                                     <input
-                                                        className="mr-[10px]"
+                                                        className="mr-[10px] cursor-pointer"
                                                         type="checkbox"
                                                         id="filter-availability-1"
                                                     />
@@ -134,24 +248,51 @@ function Products() {
                                                     className="cursor-pointer transition-all hover:text-primary"
                                                 >
                                                     <input
-                                                        className="mr-[10px]"
+                                                        className="mr-[10px] cursor-pointer"
                                                         type="checkbox"
                                                         id="filter-availability-2"
                                                     />
                                                     Out of stock (2)
                                                 </label>
-                                            </li>
+                                            </li> */}
+
+                                            {availList.map((avail, index) => (
+                                                <li key={avail.id} className="mb-[10px] select-none">
+                                                    <label
+                                                        htmlFor={`filter-availability-${index}`}
+                                                        className="cursor-pointer transition-all hover:text-primary"
+                                                    >
+                                                        <input
+                                                            className="mr-[10px] cursor-pointer"
+                                                            type="checkbox"
+                                                            id={`filter-availability-${index}`}
+                                                            checked={
+                                                                filterProduct.filter((item) => item.id === avail.id)
+                                                                    .length > 0
+                                                            }
+                                                            onChange={() =>
+                                                                handleFilter(avail.id, avail.value, 'avail')
+                                                            }
+                                                        />
+                                                        {avail.value} (17)
+                                                    </label>
+                                                </li>
+                                            ))}
                                         </ul>
                                     </div>
                                     <div className="product-sidebar-widget border-b border-[#dddddd] pb-[30px] mb-[25px]">
                                         <h2 className="widget-title text-[18px] font-medium">Size</h2>
                                         <ul className="flex flex-col pt-[20px]">
-                                            <li className="mb-[10px]">
+                                            {/* <li className="mb-[10px]">
                                                 <label
                                                     htmlFor="lg-size"
                                                     className="cursor-pointer transition-all hover:text-primary"
                                                 >
-                                                    <input className="mr-[10px]" type="checkbox" id="lg-size" />
+                                                    <input
+                                                        className="mr-[10px] cursor-pointer"
+                                                        type="checkbox"
+                                                        id="lg-size"
+                                                    />
                                                     Large (9)
                                                 </label>
                                             </li>
@@ -160,7 +301,11 @@ function Products() {
                                                     htmlFor="md-size"
                                                     className="cursor-pointer transition-all hover:text-primary"
                                                 >
-                                                    <input className="mr-[10px]" type="checkbox" id="md-size" />
+                                                    <input
+                                                        className="mr-[10px] cursor-pointer"
+                                                        type="checkbox"
+                                                        id="md-size"
+                                                    />
                                                     Medium (7)
                                                 </label>
                                             </li>
@@ -169,29 +314,53 @@ function Products() {
                                                     htmlFor="sm-size"
                                                     className="cursor-pointer transition-all hover:text-primary"
                                                 >
-                                                    <input className="mr-[10px]" type="checkbox" id="sm-size" />
+                                                    <input
+                                                        className="mr-[10px] cursor-pointer"
+                                                        type="checkbox"
+                                                        id="sm-size"
+                                                    />
                                                     Small (3)
                                                 </label>
-                                            </li>
+                                            </li> */}
+                                            {sizeList.map((size, index) => (
+                                                <li key={size.id} className="mb-[10px] select-none">
+                                                    <label
+                                                        htmlFor={`size-${index}`}
+                                                        className="cursor-pointer transition-all hover:text-primary"
+                                                    >
+                                                        <input
+                                                            className="mr-[10px] cursor-pointer"
+                                                            type="checkbox"
+                                                            id={`size-${index}`}
+                                                            checked={
+                                                                filterProduct.filter((item) => item.id === size.id)
+                                                                    .length > 0
+                                                            }
+                                                            onChange={() => handleFilter(size.id, size.value, 'size')}
+                                                        />
+                                                        {size.value} (3)
+                                                    </label>
+                                                </li>
+                                            ))}
                                         </ul>
                                     </div>
                                     <div className="product-sidebar-widge border-b border-[#dddddd] pb-[30px] mb-[25px]">
                                         <h2 className="widget-title text-[18px] font-medium">Price</h2>
-                                        <form className="price-filter-form pt-[20px]">
+                                        <form className="price-filter-form pt-[20px]" onSubmit={handleFilterPrice}>
                                             <div className="price-form-field mb-[15px]">
-                                                <label className="flex mb-[5px]" htmlFor="priceForm">
+                                                <label className="flex mb-[5px]" htmlFor="priceFrom">
                                                     Form
                                                 </label>
                                                 <div className="flex items-center border border-[#dddddd] px-[10px] h-[45px]">
                                                     <span className="text-[#777777] pr-[5px]">$</span>
                                                     <input
                                                         required=""
-                                                        id="priceForm"
+                                                        id="priceFrom"
+                                                        name="priceFrom"
                                                         type="number"
                                                         className="w-full focus:outline-none"
                                                         placeholder="0"
                                                         min="0"
-                                                        max="90"
                                                     />
                                                 </div>
                                             </div>
@@ -204,11 +373,11 @@ function Products() {
                                                     <input
                                                         required=""
                                                         id="priceTo"
+                                                        name="priceTo"
                                                         type="number"
                                                         className="w-full focus:outline-none"
-                                                        placeholder="90"
+                                                        placeholder="100"
                                                         min="0"
-                                                        max="90"
                                                     />
                                                 </div>
                                             </div>
@@ -222,7 +391,7 @@ function Products() {
                                             </div>
                                         </form>
                                     </div>
-                                    <div className="product-sidebar-widget border-b border-[#dddddd] pb-[30px] mb-[25px]">
+                                    {/* <div className="product-sidebar-widget border-b border-[#dddddd] pb-[30px] mb-[25px]">
                                         <h2 className="widget-title text-[18px] font-medium">Color</h2>
                                         <ul className="flex flex-wrap pt-[20px]">
                                             <li className="mr-[20px] mb-[6px]">
@@ -241,40 +410,50 @@ function Products() {
                                                 <span className="w-[18px] h-[18px] rounded-full inline-block cursor-pointer opacity-80 yellow"></span>
                                             </li>
                                         </ul>
-                                    </div>
+                                    </div> */}
                                     <div className="product-sidebar-widget">
                                         <h2 className="widget-title text-[18px] font-medium">Tags</h2>
                                         <div className="flex flex-wrap pt-[20px]">
-                                            <Button
+                                            {/* <Button
                                                 text
-                                                className='transition-all hover:text-primary mr-[10px] capitalize after:content-[","] last:after:content-none'
+                                                className='transition-all hover:text-primary mb-[10px] mr-[10px] capitalize after:content-[","] last:after:content-none'
                                             >
                                                 <span className="accessories">accessories</span>
                                             </Button>
                                             <Button
                                                 text
-                                                className='transition-all hover:text-primary mr-[10px] capitalize after:content-[","] last:after:content-none'
+                                                className='transition-all hover:text-primary mb-[10px] mr-[10px] capitalize after:content-[","] last:after:content-none'
                                             >
                                                 <span className="chair">chair</span>
                                             </Button>
                                             <Button
                                                 text
-                                                className='transition-all hover:text-primary mr-[10px] capitalize after:content-[","] last:after:content-none'
+                                                className='transition-all hover:text-primary mb-[10px] mr-[10px] capitalize after:content-[","] last:after:content-none'
                                             >
                                                 <span className="glass">glass</span>
                                             </Button>
                                             <Button
                                                 text
-                                                className='transition-all hover:text-primary mr-[10px] capitalize after:content-[","] last:after:content-none'
+                                                className='transition-all hover:text-primary mb-[10px] mr-[10px] capitalize after:content-[","] last:after:content-none'
                                             >
                                                 <span className="deco">deco</span>
                                             </Button>
                                             <Button
                                                 text
-                                                className='transition-all hover:text-primary  capitalize after:content-[","] last:after:content-none'
+                                                className='transition-all hover:text-primary mb-[10px] mr-[10px] capitalize after:content-[","] last:after:content-none'
                                             >
                                                 <span className="table">table</span>
-                                            </Button>
+                                            </Button> */}
+                                            {tagList.map((tag) => (
+                                                <Button
+                                                    key={tag.id}
+                                                    text
+                                                    className='transition-all hover:text-primary mb-[10px] mr-[10px] capitalize after:content-[","] last:after:content-none'
+                                                    onClick={() => handleFilter(tag.id, tag.value, 'tag')}
+                                                >
+                                                    <span className="table">{tag.value}</span>
+                                                </Button>
+                                            ))}
                                         </div>
                                     </div>
                                 </div>
@@ -308,9 +487,7 @@ function Products() {
                                                         second
                                                         className="bg-[#e8e8e8] text-[14px] font-normal py-[6px] px-[8px] border-none rounded-[20px]"
                                                         rightIcon={
-                                                            <span
-                                                                onClick={() => handleDeleteFilter(item.id, item.type)}
-                                                            >
+                                                            <span onClick={() => deleteFilter(item.id)}>
                                                                 <ExitIcon width="1.4rem" height="1.4rem" />
                                                             </span>
                                                         }
@@ -395,27 +572,53 @@ function Products() {
                                     <div className="md:col-span-6 sm:col-span-4 col-span-12">
                                         <div className="right-side flex items-center sm:justify-end justify-center pt-[25px] sm:pt-0">
                                             <ul className="flex">
-                                                <li className="grid-03 item opacity-100 cursor-pointer transition-all hover:opacity-100 pr-[17px] last:px-0">
+                                                <li
+                                                    className={cx(
+                                                        'grid-03 item cursor-pointer transition-all hover:opacity-100 pr-[17px] last:px-0',
+                                                        { 'active opacity-100': grid === 3, 'opacity-50': grid !== 3 },
+                                                    )}
+                                                    onClick={() => setGrid(3)}
+                                                >
                                                     <img src={images.columns03} alt="Grid Product" />
                                                 </li>
-                                                <li className="grid-04 active opacity-50 item cursor-pointer transition-all hover:opacity-100 pr-[17px] last:px-0">
+                                                <li
+                                                    className={cx(
+                                                        'grid-04  item cursor-pointer transition-all hover:opacity-100 pr-[17px] last:px-0',
+                                                        { 'active opacity-100': grid === 4, 'opacity-50': grid !== 4 },
+                                                    )}
+                                                    onClick={() => setGrid(4)}
+                                                >
                                                     <img src={images.columns04} alt="Grid Product" />
                                                 </li>
                                             </ul>
                                         </div>
                                     </div>
                                 </div>
-                                <div className="grid-content-03 tab-style-common active">
+                                <div className="grid-content-03 tab-style-common">
                                     <div className="grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-x-[25px] gap-y-[40px]">
-                                        <ProductItem />
-                                        <ProductItem />
-                                        <ProductItem />
-                                        <ProductItem />
-                                        <ProductItem />
+                                        {grid === 3 && (
+                                            <Fragment>
+                                                <ProductItem />
+                                                <ProductItem />
+                                                <ProductItem />
+                                                <ProductItem />
+                                                <ProductItem />
+                                            </Fragment>
+                                        )}
                                     </div>
                                 </div>
                                 <div className="grid-content-04 tab-style-common">
-                                    <div className="grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-x-[25px] gap-y-[40px]"></div>
+                                    <div className="grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-x-[25px] gap-y-[40px]">
+                                        {grid === 4 && (
+                                            <Fragment>
+                                                <ProductItem />
+                                                <ProductItem />
+                                                <ProductItem />
+                                                <ProductItem />
+                                                <ProductItem />
+                                            </Fragment>
+                                        )}
+                                    </div>
                                 </div>
                                 <ul className="pagination flex justify-center pt-[40px]">
                                     <li className="px-[5px]">
