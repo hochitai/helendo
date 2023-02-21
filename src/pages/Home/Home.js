@@ -125,11 +125,15 @@ function Home() {
                     </div>
                     <form className="newsletter-form relative flex w-1/2">
                         <input
-                            className="w-full bg-[#f4f5f7] h-[54px] p-[10px_170px_10px_20px] focus:outline-none"
+                            className="w-full bg-[#f4f5f7] h-[54px] lm:p-[10px_170px_10px_20px] p-[10px] focus:outline-none"
                             type="email"
                             placeholder="Your email address"
                         />
-                        <Button primary type="submit" className="absolute top-0 right-0 px-[40px] h-[54px]">
+                        <Button
+                            primary
+                            type="submit"
+                            className="lm:absolute lm:top-0 lm:right-0 px-[40px] h-[54px] max-sm:mt-[30px]"
+                        >
                             Subscribe
                         </Button>
                     </form>

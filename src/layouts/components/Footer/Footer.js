@@ -10,7 +10,7 @@ function Footer() {
         <footer className="width-content mx-auto">
             <div className="footer-top py-[115px]">
                 <div className="grid grid-cols-12 gap-y-0">
-                    <div className="col-span-4">
+                    <div className="md:col-span-4 lm:col-span-6 col-span-12">
                         <div className="footer-widget">
                             <h2 className="text-[18px] mb-[15px] font-medium">Address</h2>
                             <ul>
@@ -59,7 +59,7 @@ function Footer() {
                             </ul>
                         </div>
                     </div>
-                    <div className="col-span-3">
+                    <div className="md:col-span-3 lm:col-span-6 col-span-12">
                         <div className="footer-widget">
                             <h2 className="text-[18px] mb-[15px] font-medium">Help & Information</h2>
                             <ul>
@@ -102,7 +102,7 @@ function Footer() {
                             </ul>
                         </div>
                     </div>
-                    <div className="col-span-2">
+                    <div className="md:col-span-2 lm:col-span-6 col-span-12">
                         <div className="footer-widget">
                             <h2 className="text-[18px] mb-[15px] font-medium">About Us</h2>
                             <ul>
@@ -145,7 +145,7 @@ function Footer() {
                             </ul>
                         </div>
                     </div>
-                    <div className="col-span-3">
+                    <div className="md:col-span-3 lm:col-span-6 col-span-12">
                         <div className="footer-widget">
                             <h2 className="text-[18px] mb-[15px] font-medium">Newsletter</h2>
                             <form>

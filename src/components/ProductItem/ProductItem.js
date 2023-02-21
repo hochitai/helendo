@@ -20,7 +20,7 @@ function ProductItem() {
                     'relative group after:bg-[rgba(0,0,0,.1)] after:absolute after:top-0 after:left-0 after:h-full after:w-full after:opacity-0 after:transition-all after:pointer-events-none hover:after:opacity-100',
                 )}
             >
-                <Link to={routes.products} className="z-[5]">
+                <Link to={routes.products + '/animi-dolor-pariatur'} className="z-[5]">
                     <span className="bg-[#f14705] text-[14px] text-white block rounded-full absolute top-[15px] left-[15px] w-[45px] h-[45px] leading-[45px] text-center z-[1]">
                         Sale
                     </span>

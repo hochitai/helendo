@@ -118,9 +118,12 @@ const tagList = [
 //     },
 // ];
 
+const GRID_3 = 3;
+const GRID_4 = 4;
+
 function Products() {
     const [filterProduct, setFilterProduct] = useState([]);
-    const [grid, setGrid] = useState(3);
+    const [grid, setGrid] = useState(GRID_3);
 
     const handleFilterPrice = (e) => {
         e.preventDefault();
@@ -575,18 +578,24 @@ function Products() {
                                                 <li
                                                     className={cx(
                                                         'grid-03 item cursor-pointer transition-all hover:opacity-100 pr-[17px] last:px-0',
-                                                        { 'active opacity-100': grid === 3, 'opacity-50': grid !== 3 },
+                                                        {
+                                                            'active opacity-100': grid === GRID_3,
+                                                            'opacity-50': grid !== GRID_3,
+                                                        },
                                                     )}
-                                                    onClick={() => setGrid(3)}
+                                                    onClick={() => setGrid(GRID_3)}
                                                 >
                                                     <img src={images.columns03} alt="Grid Product" />
                                                 </li>
                                                 <li
                                                     className={cx(
                                                         'grid-04  item cursor-pointer transition-all hover:opacity-100 pr-[17px] last:px-0',
-                                                        { 'active opacity-100': grid === 4, 'opacity-50': grid !== 4 },
+                                                        {
+                                                            'active opacity-100': grid === GRID_4,
+                                                            'opacity-50': grid !== GRID_4,
+                                                        },
                                                     )}
-                                                    onClick={() => setGrid(4)}
+                                                    onClick={() => setGrid(GRID_4)}
                                                 >
                                                     <img src={images.columns04} alt="Grid Product" />
                                                 </li>

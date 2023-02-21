@@ -56,15 +56,16 @@ input::-webkit-inner-spin-button {
 //     -moz-appearance: textfield;
 // }
 
-button {
+button,
+[tabindex] {
     cursor: pointer;
+    border: none;
 }
 
 button,
 input,
 [tabindex] {
     outline: none;
-    border: none;
 }
 
 a[href] {
@@ -218,5 +219,20 @@ a[href] {
         cursor: none;
         pointer-events: none;
         color: #e5e7eb;
+    }
+}
+
+// Reponsive
+h3 {
+    font-size: 25px;
+}
+@media (min-width: 1200px) {
+    h3 {
+        font-size: 30px;
+    }
+}
+@media (min-width: 768px) {
+    h3 {
+        font-size: 28px;
     }
 }
