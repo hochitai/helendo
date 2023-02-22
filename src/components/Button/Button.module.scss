@@ -22,6 +22,9 @@
     &.primary {
         background-color: var(--black);
         color: var(--white);
+        &:hover {
+            opacity: 0.85;
+        }
     }
 
     &.second {
