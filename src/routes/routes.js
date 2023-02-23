@@ -3,6 +3,7 @@ import Home from '~/pages/Home';
 import Products from '~/pages/Products';
 import ProductDetail from '~/pages/ProductDetail';
 import Auth from '~/pages/Auth';
+import Cart from '~/pages/Cart';
 
 // Public Routes
 const publicRoutes = [
@@ -21,6 +22,10 @@ const publicRoutes = [
     {
         path: config.routes.auth,
         component: Auth,
+    },
+    {
+        path: config.routes.cart,
+        component: Cart,
     },
 ];
 

@@ -100,6 +100,26 @@ export const MiniCartIcon = ({ width = '2.4rem', height = '2.4rem', className })
         ></path>
     </svg>
 );
+export const ArrowLeftIcon = ({ width = '1.6rem', height = '1.6rem', className }) => (
+    <svg
+        className={className}
+        stroke="currentColor"
+        fill="currentColor"
+        strokeWidth="0"
+        viewBox="0 0 512 512"
+        height={height}
+        width={width}
+        xmlns="http://www.w3.org/2000/svg"
+    >
+        <path
+            fill="none"
+            strokeLinecap="square"
+            strokeMiterlimit="10"
+            strokeWidth="48"
+            d="M244 400L100 256l144-144M120 256h292"
+        ></path>
+    </svg>
+);
 
 export const ArrowRightIcon = ({ width = '1.8rem', height = '1.8rem', className }) => (
     <svg

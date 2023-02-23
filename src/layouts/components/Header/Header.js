@@ -103,10 +103,10 @@ function Header({ type = 'block' }) {
                             <span>Subtotal:</span>
                             <span>$202.00</span>
                         </div>
-                        <Button second className="mt-[40px] w-full justify-center">
+                        <Button second to={routes.cart} className="mt-[40px] w-full justify-center">
                             View cart
                         </Button>
-                        <Button primary className="w-full justify-center text-primary mt-[15px]">
+                        <Button primary to={routes.checkout} className="w-full justify-center text-primary mt-[15px]">
                             Checkout
                         </Button>
                     </div>

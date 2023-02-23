@@ -15,7 +15,7 @@ function Breadcrumb({ title }) {
                     </div>
                     <div className="lg:col-span-6 col-span-12">
                         <ul className="breadcrumb-list flex lg:justify-end justify-center uppercase text-[14px]">
-                            <li className='relative after:pr-[15px] after:ml-[15px] after:content-["/"]'>
+                            <li className='relative after:pr-[15px] after:ml-[15px] after:content-["/"] font-medium'>
                                 <a href="/">Home</a>
                             </li>
                             <li>

@@ -4,7 +4,7 @@ const routes = {
     productDetail: '/products/:name',
     blogs: '/blog',
     auth: '/auth',
-    cart: 'cart',
+    cart: '/cart',
     checkout: '/checkout',
 };
 
