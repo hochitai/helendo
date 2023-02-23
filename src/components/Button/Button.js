@@ -42,7 +42,14 @@ function Button({
         props.href = href;
     }
 
-    const classes = cx('wapper', { text, primary, second, small, disabled, [className]: className });
+    const classes = cx('wapper', {
+        text,
+        primary,
+        second,
+        small,
+        disabled,
+        [className]: className,
+    });
 
     return (
         <Comp className={classes} {...props}>

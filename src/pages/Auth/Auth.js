@@ -35,7 +35,7 @@ function Auth() {
         },
         {
             id: 2,
-            name: 'regPassword',
+            name: 'password',
             type: 'password',
             label: 'Password',
             errorMessage:

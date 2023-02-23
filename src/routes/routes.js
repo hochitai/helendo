@@ -4,6 +4,7 @@ import Products from '~/pages/Products';
 import ProductDetail from '~/pages/ProductDetail';
 import Auth from '~/pages/Auth';
 import Cart from '~/pages/Cart';
+import Checkout from '~/pages/Checkout';
 
 // Public Routes
 const publicRoutes = [
@@ -26,6 +27,10 @@ const publicRoutes = [
     {
         path: config.routes.cart,
         component: Cart,
+    },
+    {
+        path: config.routes.checkout,
+        component: Checkout,
     },
 ];
 
