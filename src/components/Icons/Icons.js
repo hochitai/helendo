@@ -280,6 +280,7 @@ export const RightTriangleIcon = ({ width = '1.6rem', height = '1.6rem', classNa
         <path d="M8 5v14l11-7z"></path>
     </svg>
 );
+
 export const StarIcon = ({ width = '1.6rem', height = '1.6rem', className }) => (
     <svg
         className={className}
@@ -293,5 +294,20 @@ export const StarIcon = ({ width = '1.6rem', height = '1.6rem', className }) => 
     >
         <path fill="none" d="M0 0h24v24H0V0z"></path>
         <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21 12 17.27z"></path>
+    </svg>
+);
+
+export const CommaIcon = ({ width = '1.6rem', height = '1.6rem', className }) => (
+    <svg
+        className={className}
+        stroke="currentColor"
+        fill="currentColor"
+        strokeWidth="0"
+        viewBox="0 0 512 512"
+        height={height}
+        width={width}
+        xmlns="http://www.w3.org/2000/svg"
+    >
+        <path d="M464 32H336c-26.5 0-48 21.5-48 48v128c0 26.5 21.5 48 48 48h80v64c0 35.3-28.7 64-64 64h-8c-13.3 0-24 10.7-24 24v48c0 13.3 10.7 24 24 24h8c88.4 0 160-71.6 160-160V80c0-26.5-21.5-48-48-48zm-288 0H48C21.5 32 0 53.5 0 80v128c0 26.5 21.5 48 48 48h80v64c0 35.3-28.7 64-64 64h-8c-13.3 0-24 10.7-24 24v48c0 13.3 10.7 24 24 24h8c88.4 0 160-71.6 160-160V80c0-26.5-21.5-48-48-48z"></path>
     </svg>
 );

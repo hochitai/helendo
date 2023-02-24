@@ -13,6 +13,7 @@ const images = {
     featuredProduct3: require('~/assets/images/featured-product-3.png'),
     countdown: require('~/assets/images/countdown.jpg'),
     blog1: require('~/assets/images/blog1.jpg'),
+    blog1Big: require('~/assets/images/blog1-big.jpg'),
     columns03: require('~/assets/images/columns-03.png'),
     columns04: require('~/assets/images/columns-04.png'),
 };

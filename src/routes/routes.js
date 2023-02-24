@@ -5,6 +5,8 @@ import ProductDetail from '~/pages/ProductDetail';
 import Auth from '~/pages/Auth';
 import Cart from '~/pages/Cart';
 import Checkout from '~/pages/Checkout';
+import Blogs from '~/pages/Blogs';
+import BlogDetail from '~/pages/BlogDetail';
 
 // Public Routes
 const publicRoutes = [
@@ -31,6 +33,14 @@ const publicRoutes = [
     {
         path: config.routes.checkout,
         component: Checkout,
+    },
+    {
+        path: config.routes.blogs,
+        component: Blogs,
+    },
+    {
+        path: config.routes.blogDetail,
+        component: BlogDetail,
     },
 ];
 
