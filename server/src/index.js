@@ -1,7 +1,7 @@
 const express = require("express");
 const morgan = require("morgan");
 const app = express();
-const port = 8321;
+const port = 3000;
 
 const route = require("./routes");
 const db = require("./config/db");

@@ -13,7 +13,7 @@ const OPTION_1 = 'description';
 const OPTION_2 = 'additional';
 const OPTION_3 = 'reviews';
 
-function MoreInfomation() {
+function MoreInfomation({ description, features, weight, dimensions, name }) {
     const [infoProduct, setInfoProduct] = useState(OPTION_1);
     const [values, setValues] = useState({
         star: 5,
@@ -101,12 +101,7 @@ function MoreInfomation() {
                                 <div className="lm:col-span-7 col-span-12 self-center">
                                     <div>
                                         <h2 className="text-[24px] mb-[10px] font-medium">Description</h2>
-                                        <p className="text-justify leading-[28px]">
-                                            Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit
-                                            quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda
-                                            est, omnis dolor repellendus. Temporibus autem quibusdam et aut officiis
-                                            debitis aut rerum omnis voluptas assumenda.
-                                        </p>
+                                        <p className="text-justify leading-[28px]">{description}</p>
                                     </div>
                                 </div>
                                 <div className="lm:col-span-5 col-span-12">
@@ -120,7 +115,15 @@ function MoreInfomation() {
                                     <div>
                                         <h2 className="text-[24px] mb-[10px] font-medium">Features</h2>
                                         <ul className="features-list">
-                                            <li className="mb-[5px] last:mb-0">
+                                            {features.map((feature, index) => (
+                                                <li className="mb-[5px] last:mb-0" key={index}>
+                                                    <span className="flex items-center cursor-pointer transition-all hover:text-primary">
+                                                        <RightTriangleIcon className="mr-[10px]" />
+                                                        {feature}
+                                                    </span>
+                                                </li>
+                                            ))}
+                                            {/* <li className="mb-[5px] last:mb-0">
                                                 <span className="flex items-center cursor-pointer transition-all hover:text-primary">
                                                     <RightTriangleIcon className="mr-[10px]" />
                                                     Fully padded back panel, web hauded handle
@@ -149,7 +152,7 @@ function MoreInfomation() {
                                                     <RightTriangleIcon className="mr-[10px]" />
                                                     Premium cotton canvas fabric
                                                 </span>
-                                            </li>
+                                            </li> */}
                                         </ul>
                                     </div>
                                 </div>
@@ -174,14 +177,14 @@ function MoreInfomation() {
                                             className="pb-4 pr-6 text-gray-900 whitespace-nowrap text-[16px]"
                                         >
                                             <span className="font-bold">Weight</span>
-                                            <span className="font-normal ml-[5px]">1.2 kg</span>
+                                            <span className="font-normal ml-[5px]">{weight} kg</span>
                                         </th>
                                         <th
                                             scope="row"
                                             className="pb-4 pr-6 text-gray-900 whitespace-nowrap text-[16px]"
                                         >
                                             <span className="font-bold">Dimensions</span>
-                                            <span className="font-normal ml-[5px]">12 x 2 x 1.5 cm</span>
+                                            <span className="font-normal ml-[5px]">{dimensions}</span>
                                         </th>
                                     </tr>
                                 </tbody>
@@ -195,7 +198,7 @@ function MoreInfomation() {
                         })}
                     >
                         <div className="reviews-wrap pt-[25px]">
-                            <h2 className="text-[26px] font-medium">Be the first to review “Wooden chair”</h2>
+                            <h2 className="text-[26px] font-medium">Be the first to review “{name}”</h2>
                             <span className="block mb-[10px]">Your rating</span>
                             <ul className="product-rating flex">
                                 {[...Array(5)].map((value, index) => {

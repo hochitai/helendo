@@ -13,7 +13,7 @@ const cx = classNames.bind(styles);
 
 SwiperCore.use([Navigation]);
 
-function CustomCarousel({ title, quantityInSlide, comp, propsComp, className }) {
+function CustomCarousel({ title, quantityInSlide, comp, data = [], className }) {
     const navigationPrevRef = useRef(null);
     const navigationNextRef = useRef(null);
     const Comp = comp;
@@ -40,20 +40,26 @@ function CustomCarousel({ title, quantityInSlide, comp, propsComp, className }) 
                 }}
                 className="relative"
             >
-                <SwiperSlide>
-                    <Comp {...propsComp} />
-                </SwiperSlide>
-                <SwiperSlide>
-                    <Comp {...propsComp} />
-                </SwiperSlide>
-                <SwiperSlide>
-                    <Comp {...propsComp} />
-                </SwiperSlide>
                 {/* <SwiperSlide>
-                    <Comp {...propsComp} />
+                    <Comp />
                 </SwiperSlide>
                 <SwiperSlide>
-                    <Comp {...propsComp} />
+                    <Comp />
+                </SwiperSlide>
+                <SwiperSlide>
+                    <Comp />
+                </SwiperSlide> */}
+
+                {data.map((value) => (
+                    <SwiperSlide key={value._id}>
+                        <Comp data={value} />
+                    </SwiperSlide>
+                ))}
+                {/* <SwiperSlide>
+                    <Comp />
+                </SwiperSlide>
+                <SwiperSlide>
+                    <Comp {...data} />
                 </SwiperSlide> */}
             </Swiper>
 

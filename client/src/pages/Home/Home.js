@@ -1,6 +1,7 @@
-import { useState, createContext, Fragment } from 'react';
+import { useState, createContext, Fragment, useEffect } from 'react';
 import classNames from 'classnames/bind';
 
+import request from '~/utils/httpRequest';
 import images from '~/assets/images';
 import routes from '~/config/routes';
 import { ArrowRightIcon } from '~/components/Icons';
@@ -19,18 +20,30 @@ const cx = classNames.bind(styles);
 export const QuickViewContext = createContext();
 
 function Home() {
-    const [showQuickView, setShowQuickView] = useState(false);
-    const handleShowQuickView = () => {
-        setShowQuickView(!showQuickView);
+    const [dataQuickView, setDataQuickView] = useState({});
+    const handleSetDataQuickView = (data) => {
+        setDataQuickView(data);
+    };
+
+    const [productList, setProductList] = useState([]);
+
+    useEffect(() => {
+        request.get('/products').then((res) => {
+            setProductList(res.data);
+        });
+    }, []);
+
+    const checkedObjectIsEmpty = (data) => {
+        return Object.keys(data).length !== 0;
     };
 
     return (
         <Fragment>
             <Header type="transparent" />
             <div className={cx('wrapper')}>
-                {showQuickView && (
-                    <QuickViewContext.Provider value={handleShowQuickView}>
-                        <QuickView />
+                {checkedObjectIsEmpty(dataQuickView) && (
+                    <QuickViewContext.Provider value={handleSetDataQuickView}>
+                        <QuickView data={dataQuickView} />
                     </QuickViewContext.Provider>
                 )}
                 <CustomSlider />
@@ -53,11 +66,12 @@ function Home() {
                     price="30"
                     img={images.featuredProduct3}
                 />
-                <QuickViewContext.Provider value={handleShowQuickView}>
+                <QuickViewContext.Provider value={handleSetDataQuickView}>
                     <CustomCarousel
                         title="Best Selling"
-                        quantityInSlide={3}
+                        quantityInSlide={4}
                         comp={ProductItem}
+                        data={productList}
                         className="pt-[120px]"
                     />
                 </QuickViewContext.Provider>
