@@ -11,7 +11,7 @@ import ProductDetailItem from '~/components/ProductDetailItem';
 const cx = classNames.bind(styles);
 
 function ProductDetail() {
-    let { name } = useParams();
+    const { name } = useParams();
 
     const [product, setProduct] = useState({});
 

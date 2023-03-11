@@ -27,6 +27,7 @@ const Product = new Schema(
     },
     {
         timestamps: true,
+        colletion: "products",
     }
 );
 

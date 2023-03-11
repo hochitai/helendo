@@ -2,17 +2,17 @@ const Product = require("../models/Product");
 
 class ProductsControll {
     // [GET] products
-    index(req, res, next) {
+    async getAll(req, res, next) {
         res.header("Access-Control-Allow-Origin", "*");
-        Product.find({})
+        await Product.find({})
             .then((products) => res.json(products))
             .catch(next);
     }
 
     // [GET] /products/:slug
-    show(req, res, next) {
+    async getBySlug(req, res, next) {
         res.header("Access-Control-Allow-Origin", "*");
-        Product.findOne({ slug: req.params.slug })
+        await Product.findOne({ slug: req.params.slug })
             .then((product) => res.json(product))
             .catch(next);
     }

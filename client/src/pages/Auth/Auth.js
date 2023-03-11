@@ -1,10 +1,12 @@
 import { Fragment, useState } from 'react';
 import classNames from 'classnames/bind';
 
+import request from '~/utils/httpRequest';
 import Header from '~/layouts/components/Header';
 import Breadcrumb from '~/components/Breadcrumb';
 import styles from './Auth.module.scss';
 import Button from '~/components/Button';
+import FormInput from '~/components/FormInput';
 
 const cx = classNames.bind(styles);
 
@@ -19,9 +21,9 @@ function Auth() {
         rememberPass: false,
         regName: '',
         regPassword: '',
-        regEmail: '',
+        regNickName: '',
+        regPhone: '',
     });
-
     const inputLogins = [
         {
             id: 1,
@@ -51,9 +53,9 @@ function Auth() {
             name: 'regName',
             type: 'text',
             label: 'Username',
-            errorMessage: "Name should be 1-16 characters and shouldn't include any special character!",
+            errorMessage: "Name should be 3-16 characters and shouldn't include any special character!",
             pattern:
-                '^[a-zA-Z_ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\\s]{1,16}$',
+                '^[a-zA-Z0-9_ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\\s]{3,16}$',
             required: true,
         },
         {
@@ -68,10 +70,21 @@ function Auth() {
         },
         {
             id: 6,
-            name: 'regEmail',
-            type: 'email',
-            label: 'Email',
-            errorMessage: 'It should be a valid email address!',
+            name: 'regNickName',
+            type: 'text',
+            label: 'Nickname',
+            errorMessage: "Name should be 3-16 characters and shouldn't include any special character!",
+            pattern:
+                '^[a-zA-Z0-9_ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\\s]{1,16}$',
+            required: true,
+        },
+        {
+            id: 7,
+            name: 'regPhone',
+            type: 'text',
+            label: 'Phone',
+            errorMessage: "Phone number should be 10 numbers and shouldn't include any special character!",
+            pattern: '(0[3|5|7|8|9])+([0-9]{8})',
             required: true,
         },
     ];
@@ -92,7 +105,19 @@ function Auth() {
 
     const handleRegister = (e) => {
         e.preventDefault();
-        console.log('Register');
+        request
+            .post('/customers/register', {
+                userName: values.regName,
+                passWord: values.regPassword,
+                name: values.regNickName,
+                phone: values.regPhone,
+            })
+            .then((res) => {
+                console.log(res);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
     };
 
     return (
@@ -183,16 +208,18 @@ function Auth() {
                                 />
                             </div> */}
                             {inputRegisters.map((input) => (
-                                <div key={input.id} className="single-field mb-[30px]">
-                                    <input
-                                        className="border border-[#cccccc] focus-visible:outline-0 text-[#666666] py-[10px] px-[20px] w-full h-[50px]"
-                                        type={input.type}
-                                        name={input.name}
-                                        placeholder={input.label}
-                                        value={values[input.name]}
-                                        onChange={onChangeValue}
-                                    />
-                                </div>
+                                <FormInput
+                                    key={input.id}
+                                    className="mb-[30px]"
+                                    classOfForm="border border-[#cccccc] focus-visible:outline-0 text-[#666666] py-[10px] px-[20px] w-full h-[50px]"
+                                    type={input.type}
+                                    name={input.name}
+                                    placeholder={input.label}
+                                    value={values[input.name]}
+                                    onChange={onChangeValue}
+                                    // hasLabel={false}
+                                    {...input}
+                                />
                             ))}
                             <p className="lg:max-w-[495px] mt-[20px] mb-[25px] leading-[28px]">
                                 Your personal data will be used to support your experience throughout this website, to
