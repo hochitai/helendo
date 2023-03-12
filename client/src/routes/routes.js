@@ -25,6 +25,7 @@ const publicRoutes = [
     {
         path: config.routes.auth,
         component: Auth,
+        isAuth: true,
     },
     {
         path: config.routes.cart,

@@ -1,5 +1,8 @@
 import { Fragment, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useCookies } from 'react-cookie';
 import classNames from 'classnames/bind';
+import BounceLoader from 'react-spinners/BounceLoader';
 
 import request from '~/utils/httpRequest';
 import Header from '~/layouts/components/Header';
@@ -14,9 +17,14 @@ const SHOW_LOGIN = 'login';
 const SHOW_REGISTER = 'register';
 
 function Auth() {
+    const [cookies, setCookie] = useCookies(['token']);
+    const navigate = useNavigate();
+    const [loading, setLoading] = useState(false);
+    const [resultRegister, setResultRegister] = useState({});
+    const [resultLogin, setResultLogin] = useState({});
     const [option, setOption] = useState(SHOW_LOGIN);
     const [values, setValues] = useState({
-        name: '',
+        userName: '',
         password: '',
         rememberPass: false,
         regName: '',
@@ -24,10 +32,11 @@ function Auth() {
         regNickName: '',
         regPhone: '',
     });
+
     const inputLogins = [
         {
             id: 1,
-            name: 'name',
+            name: 'userName',
             type: 'text',
             label: 'Username',
             errorMessage: "Name should be 1-16 characters and shouldn't include any special character!",
@@ -98,32 +107,63 @@ function Auth() {
         console.log(e.target.value);
     };
 
-    const handleLogin = (e) => {
+    const handleLogin = async (e) => {
         e.preventDefault();
-        console.log('Login');
+
+        if (values.userName && values.password) {
+            setLoading(true);
+            await request
+                .post('/customers/login', {
+                    userName: values.userName,
+                    password: values.password,
+                })
+                .then((res) => {
+                    setResultLogin(res.data);
+                    setCookie('token', res.data.token, { path: '/' });
+                    setCookie('info', res.data.data, { path: '/' });
+                    navigate('/');
+                })
+                .catch((error) => {
+                    setResultLogin(error.response.data);
+                });
+            setLoading(false);
+            setValues({ ...values, regName: '', regPassword: '', regNickName: '', regPhone: '' });
+        }
     };
 
-    const handleRegister = (e) => {
+    const handleRegister = async (e) => {
         e.preventDefault();
-        request
-            .post('/customers/register', {
-                userName: values.regName,
-                passWord: values.regPassword,
-                name: values.regNickName,
-                phone: values.regPhone,
-            })
-            .then((res) => {
-                console.log(res);
-            })
-            .catch((error) => {
-                console.log(error);
-            });
+        if (values.regName && values.regPassword && values.regNickName && values.regPhone) {
+            setLoading(true);
+            await request
+                .post('/customers/register', {
+                    userName: values.regName,
+                    password: values.regPassword,
+                    name: values.regNickName,
+                    phone: values.regPhone,
+                })
+                .then((res) => {
+                    console.log(res.data);
+                    setResultRegister(res.data);
+                })
+                .catch((error) => {
+                    console.log(error.data);
+                    setResultRegister(error.data);
+                });
+            setLoading(false);
+            setValues({ ...values, regName: '', regPassword: '', regNickName: '', regPhone: '' });
+        }
     };
 
     return (
         <Fragment>
             <Header />
             <Breadcrumb title={'Login'} />
+            {loading && (
+                <div className="flex justify-center items-center fixed bg-gray-700 inset-0 z-[999] opacity-70">
+                    <BounceLoader color="#DCB14A" />
+                </div>
+            )}
             <div className="border-b border-[#ededed] xl:py-[155px] lg:py-[100px] md:py-[80px] py-[50px]">
                 <div className="container md:max-w-[50rem] mx-auto">
                     <ul className="auth-menu flex justify-center pb-[50px]">
@@ -145,19 +185,20 @@ function Auth() {
                         </li>
                     </ul>
                     <div className={cx('login-content tab-style-common', { hidden: option !== SHOW_LOGIN })}>
-                        <form className="login-form">
+                        <form className="login-form" onSubmit={handleLogin}>
                             <h3 className="title text-[18px] mb-[25px] font-medium">Login your account</h3>
                             {inputLogins.map((input) => (
-                                <div key={input.id} className="single-field mb-[30px]">
-                                    <input
-                                        className="border border-[#cccccc] focus-visible:outline-0 text-[#666666] py-[10px] px-[20px] w-full h-[50px]"
-                                        type={input.type}
-                                        name={input.name}
-                                        placeholder={input.label}
-                                        value={values[input.name]}
-                                        onChange={onChangeValue}
-                                    />
-                                </div>
+                                <FormInput
+                                    key={input.id}
+                                    classOfForm="border border-[#cccccc] focus-visible:outline-0 text-[#666666] py-[10px] px-[20px] w-full h-[50px]"
+                                    className="mb-[30px]"
+                                    label={input.label}
+                                    type={input.type}
+                                    name={input.name}
+                                    placeholder={input.label}
+                                    value={values[input.name]}
+                                    onChange={onChangeValue}
+                                />
                             ))}
                             <div className="single-field flex justify-between items-center mb-[30px]">
                                 <label className="flex cursor-pointer" htmlFor="rememberme" onChange={handleChecked}>
@@ -181,32 +222,23 @@ function Auth() {
                                     Login
                                 </Button>
                             </div>
+                            <div className="mt-8 ">
+                                {loading || (
+                                    <span
+                                        className={cx('block text-center text-[20px]', {
+                                            'text-red-500': resultLogin.statusId === 1,
+                                            'text-green-500': resultLogin.statusId === 0,
+                                        })}
+                                    >
+                                        {resultLogin.message}
+                                    </span>
+                                )}
+                            </div>
                         </form>
                     </div>
                     <div className={cx('Register-content tab-style-common', { hidden: option !== SHOW_REGISTER })}>
-                        <form className="register-form">
+                        <form className="register-form" onSubmit={handleRegister}>
                             <h3 className="title text-[18px] mb-[25px] font-medium">Register An Account</h3>
-                            {/* <div className="single-field mb-[30px]">
-                                <input
-                                    className="border border-[#cccccc] focus-visible:outline-0 text-[#666666] py-[10px] px-[20px] w-full h-[50px]"
-                                    type="text"
-                                    placeholder="Username"
-                                />
-                            </div>
-                            <div className="single-field mb-[30px]">
-                                <input
-                                    className="border border-[#cccccc] focus-visible:outline-0 text-[#666666] py-[10px] px-[20px] w-full h-[50px]"
-                                    type="email"
-                                    placeholder="Email address"
-                                />
-                            </div>
-                            <div className="single-field">
-                                <input
-                                    className="border border-[#cccccc] focus-visible:outline-0 text-[#666666] py-[10px] px-[20px] w-full h-[50px]"
-                                    type="password"
-                                    placeholder="Password"
-                                />
-                            </div> */}
                             {inputRegisters.map((input) => (
                                 <FormInput
                                     key={input.id}
@@ -221,7 +253,7 @@ function Auth() {
                                     {...input}
                                 />
                             ))}
-                            <p className="lg:max-w-[495px] mt-[20px] mb-[25px] leading-[28px]">
+                            <p className="lg:max-w-[495px] mt-[20px] mb-[25px] leading-[28px] text-justify">
                                 Your personal data will be used to support your experience throughout this website, to
                                 manage access to your account, and for other purposes described in our
                                 <a className="ml-[5px] font-medium" href="/privacy">
@@ -237,6 +269,18 @@ function Auth() {
                                 >
                                     Register
                                 </Button>
+                            </div>
+                            <div className="mt-8 ">
+                                {loading || (
+                                    <span
+                                        className={cx('block text-center text-[20px]', {
+                                            'text-red-500': resultRegister.statusId === 1,
+                                            'text-green-500': resultRegister.statusId === 0,
+                                        })}
+                                    >
+                                        {resultRegister.message}
+                                    </span>
+                                )}
                             </div>
                         </form>
                     </div>

@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
-import classNames from 'classnames/bind';
 import { Link, NavLink } from 'react-router-dom';
+import { useCookies } from 'react-cookie';
+import classNames from 'classnames/bind';
 import Tippy from '@tippyjs/react/headless';
 
 import routes from '~/config/routes';
@@ -13,6 +14,7 @@ import Button from '~/components/Button';
 const cx = classNames.bind(styles);
 
 function Header({ type = 'block' }) {
+    const [cookies, setCookie] = useCookies(['token']);
     const [isSticky, setIsSticky] = useState(false);
     const [showCart, setShowCart] = useState(false);
 
@@ -60,10 +62,6 @@ function Header({ type = 'block' }) {
                     </NavLink>
                 </nav>
                 <div className={cx('actions', 'flex justify-end items-center')}>
-                    <Link to={routes.auth} className={cx('action-btn', 'mr-14')}>
-                        <UserIcon />
-                    </Link>
-
                     <button
                         className={cx('action-btn', 'flex justify-end items-center mr-14')}
                         onClick={() => setShowCart(true)}
@@ -72,22 +70,28 @@ function Header({ type = 'block' }) {
                         <span className={cx('badge')}>1</span>
                     </button>
 
-                    <Tippy
-                        interactive
-                        render={(attrs) => (
-                            <div className={cx('user-info')} tabIndex="-1" {...attrs}>
-                                {/* Các chức năng của User */}
-                            </div>
-                        )}
-                    >
-                        <button>
-                            <img
-                                src={images.avatar}
-                                alt="avatar"
-                                className="object-cover w-12 h-12 rounded-full shadow border border-solid border-slate-300"
-                            />
-                        </button>
-                    </Tippy>
+                    {!!!cookies.token ? (
+                        <Link to={routes.auth} className={cx('action-btn', 'mr-14')}>
+                            <UserIcon />
+                        </Link>
+                    ) : (
+                        <Tippy
+                            interactive
+                            render={(attrs) => (
+                                <div className={cx('user-info')} tabIndex="-1" {...attrs}>
+                                    {/* Các chức năng của User */}
+                                </div>
+                            )}
+                        >
+                            <button>
+                                <img
+                                    src={cookies.info.avatar}
+                                    alt="avatar"
+                                    className="object-cover w-12 h-12 rounded-full shadow border border-solid border-slate-300"
+                                />
+                            </button>
+                        </Tippy>
+                    )}
                 </div>
                 <div className={cx('minicart-area', { active: showCart })} onClick={() => setShowCart(false)}>
                     <div className={cx('minicart-inner', 'fixed inset-y-0 right-0')}>
