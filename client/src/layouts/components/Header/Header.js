@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link, NavLink } from 'react-router-dom';
-import { useCookies } from 'react-cookie';
+import Cookies from 'universal-cookie';
 import classNames from 'classnames/bind';
 import Tippy from '@tippyjs/react/headless';
 
@@ -14,7 +14,9 @@ import Button from '~/components/Button';
 const cx = classNames.bind(styles);
 
 function Header({ type = 'block' }) {
-    const [cookies, setCookie] = useCookies(['token']);
+    const cookies = new Cookies();
+    const token = cookies.get('token');
+    const info = cookies.get('info');
     const [isSticky, setIsSticky] = useState(false);
     const [showCart, setShowCart] = useState(false);
 
@@ -70,7 +72,7 @@ function Header({ type = 'block' }) {
                         <span className={cx('badge')}>1</span>
                     </button>
 
-                    {!!!cookies.token ? (
+                    {!!!token ? (
                         <Link to={routes.auth} className={cx('action-btn', 'mr-14')}>
                             <UserIcon />
                         </Link>
@@ -85,7 +87,7 @@ function Header({ type = 'block' }) {
                         >
                             <button>
                                 <img
-                                    src={cookies.info.avatar}
+                                    src={info.avatar || images.avatar}
                                     alt="avatar"
                                     className="object-cover w-12 h-12 rounded-full shadow border border-solid border-slate-300"
                                 />

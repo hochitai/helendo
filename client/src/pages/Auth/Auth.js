@@ -1,6 +1,6 @@
 import { Fragment, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useCookies } from 'react-cookie';
+import Cookies from 'universal-cookie';
 import classNames from 'classnames/bind';
 import BounceLoader from 'react-spinners/BounceLoader';
 
@@ -10,6 +10,7 @@ import Breadcrumb from '~/components/Breadcrumb';
 import styles from './Auth.module.scss';
 import Button from '~/components/Button';
 import FormInput from '~/components/FormInput';
+import apis from '~/config/apis';
 
 const cx = classNames.bind(styles);
 
@@ -17,7 +18,7 @@ const SHOW_LOGIN = 'login';
 const SHOW_REGISTER = 'register';
 
 function Auth() {
-    const [cookies, setCookie] = useCookies(['token']);
+    const cookies = new Cookies();
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
     const [resultRegister, setResultRegister] = useState({});
@@ -113,14 +114,14 @@ function Auth() {
         if (values.userName && values.password) {
             setLoading(true);
             await request
-                .post('/customers/login', {
+                .post(apis.login, {
                     userName: values.userName,
                     password: values.password,
                 })
                 .then((res) => {
                     setResultLogin(res.data);
-                    setCookie('token', res.data.token, { path: '/' });
-                    setCookie('info', res.data.data, { path: '/' });
+                    cookies.set('token', res.data.token, { path: '/' });
+                    cookies.set('info', res.data.data, { path: '/' });
                     navigate('/');
                 })
                 .catch((error) => {
@@ -136,7 +137,7 @@ function Auth() {
         if (values.regName && values.regPassword && values.regNickName && values.regPhone) {
             setLoading(true);
             await request
-                .post('/customers/register', {
+                .post(apis.register, {
                     userName: values.regName,
                     password: values.regPassword,
                     name: values.regNickName,

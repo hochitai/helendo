@@ -4,6 +4,7 @@ import classNames from 'classnames/bind';
 import request from '~/utils/httpRequest';
 import images from '~/assets/images';
 import routes from '~/config/routes';
+import apis from '~/config/apis';
 import { ArrowRightIcon } from '~/components/Icons';
 import Header from '~/layouts/components/Header';
 import CustomSlider from '~/components/CustomSlider';
@@ -28,7 +29,7 @@ function Home() {
     const [productList, setProductList] = useState([]);
 
     useEffect(() => {
-        request.get('/products').then((res) => {
+        request.get(apis.getAllProducts).then((res) => {
             setProductList(res.data);
         });
     }, []);

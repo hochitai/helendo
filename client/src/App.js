@@ -1,11 +1,12 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import { useCookies } from 'react-cookie';
+import Cookies from 'universal-cookie';
 import { publicRoutes } from './routes/routes';
 import DefaultLayout from './layouts/DefaultLayout';
 import './index.css';
 
 function App() {
-    const [cookies, setCookie] = useCookies(['token']);
+    const cookies = new Cookies();
+    const token = cookies.get('token');
     return (
         <Router>
             <div className="App">
@@ -19,7 +20,7 @@ function App() {
                                 key={index}
                                 path={route.path}
                                 element={
-                                    route.isAuth && !!cookies.token ? (
+                                    route.isAuth && !!token ? (
                                         <Navigate to="/" />
                                     ) : (
                                         <Layout>

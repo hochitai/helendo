@@ -1,4 +1,5 @@
-import { Fragment, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import classNames from 'classnames/bind';
 
 import Header from '~/layouts/components/Header';
@@ -10,6 +11,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import images from '~/assets/images';
 import ProductItem from '~/components/ProductItem';
+import Pagination from '~/components/Pagination';
 
 const cx = classNames.bind(styles);
 
@@ -34,12 +36,12 @@ const cateList = [
 const availList = [
     {
         id: 'avail1',
-        value: 'In stock',
+        value: 'in-stock',
         type: 'avail',
     },
     {
         id: 'avail2',
-        value: 'Out of stock',
+        value: 'out-of-stock',
         type: 'avail',
     },
 ];
@@ -47,17 +49,17 @@ const availList = [
 const sizeList = [
     {
         id: 'size1',
-        value: 'Large',
+        value: 'large',
         type: 'size',
     },
     {
         id: 'size2',
-        value: 'Medium',
+        value: 'medium',
         type: 'size',
     },
     {
         id: 'size3',
-        value: 'Small',
+        value: 'small',
         type: 'size',
     },
 ];
@@ -90,100 +92,238 @@ const tagList = [
     },
 ];
 
-// const colorList = [
-//     {
-//         id: 'color1',
-//         value: 'black',
-//         type: 'color',
-//     },
-//     {
-//         id: 'color2',
-//         value: 'green',
-//         type: 'color',
-//     },
-//     {
-//         id: 'color3',
-//         value: 'gray',
-//         type: 'color',
-//     },
-//     {
-//         id: 'color4',
-//         value: 'red',
-//         type: 'color',
-//     },
-//     {
-//         id: 'color5',
-//         value: 'yellow',
-//         type: 'color',
-//     },
-// ];
-
 const GRID_3 = 3;
 const GRID_4 = 4;
 
 function Products() {
-    const [filterProduct, setFilterProduct] = useState([]);
+    const [searchParams, setSearchParams] = useSearchParams();
+    const [listProduct, setListProduct] = useState(24);
+    const [filterProduct, setFilterProduct] = useState({
+        limit: 12,
+        page: 1,
+        search: [],
+    });
     const [grid, setGrid] = useState(GRID_3);
+
+    useEffect(() => {
+        const filter = Object.fromEntries([...searchParams]);
+        let filterArray = [];
+        let tempArray = [];
+
+        if (filter.cate) {
+            tempArray = filter.cate.split(',');
+            filterArray = filterArray.concat(
+                tempArray
+                    .filter((value) => {
+                        if (cateList.find((element) => element.value === value)) {
+                            return true;
+                        }
+                        return false;
+                    })
+                    .map((value) => {
+                        const id = cateList.find((element) => element.value === value).id;
+                        return {
+                            id: id,
+                            type: 'cate',
+                            value: value,
+                        };
+                    }),
+            );
+        }
+        if (filter.tag) {
+            tempArray = filter.tag.split(',');
+            filterArray = filterArray.concat(
+                tempArray
+                    .filter((value) => {
+                        if (tagList.find((element) => element.value === value)) {
+                            return true;
+                        }
+                        return false;
+                    })
+                    .map((value) => {
+                        const id = tagList.find((element) => element.value === value).id;
+                        return {
+                            id: id,
+                            type: 'tag',
+                            value: value,
+                        };
+                    }),
+            );
+        }
+        if (filter.avail) {
+            tempArray = filter.avail.split(',');
+            filterArray = filterArray.concat(
+                tempArray
+                    .filter((value) => {
+                        if (availList.find((element) => element.value === value)) {
+                            return true;
+                        }
+                        return false;
+                    })
+                    .map((value) => {
+                        const id = availList.find((element) => element.value === value).id;
+                        return {
+                            id: id,
+                            type: 'avail',
+                            value: value,
+                        };
+                    }),
+            );
+        }
+        if (filter.size) {
+            tempArray = filter.size.split(',');
+            filterArray = filterArray.concat(
+                tempArray
+                    .filter((value) => {
+                        if (sizeList.find((element) => element.value === value)) {
+                            return true;
+                        }
+                        return false;
+                    })
+                    .map((value) => {
+                        const id = sizeList.find((element) => element.value === value).id;
+                        return {
+                            id: id,
+                            type: 'size',
+                            value: value,
+                        };
+                    }),
+            );
+        }
+        if (filter.priceFrom && filter.priceTo) {
+            filterArray = filterArray.concat([
+                {
+                    id: 'priceId',
+                    type: 'price',
+                    value: {
+                        priceFrom: filter.priceFrom,
+                        priceTo: filter.priceTo,
+                    },
+                },
+            ]);
+        } else {
+            if (filter.priceFrom) {
+                filterArray = filterArray.concat([
+                    {
+                        id: 'priceId',
+                        type: 'price',
+                        value: {
+                            priceFrom: filter.priceFrom,
+                        },
+                    },
+                ]);
+            }
+            if (filter.priceTo) {
+                filterArray = filterArray.concat([
+                    {
+                        id: 'priceId',
+                        type: 'price',
+                        value: {
+                            priceTo: filter.priceTo,
+                        },
+                    },
+                ]);
+            }
+        }
+        setFilterProduct((prev) => ({ ...prev, search: filterArray }));
+    }, [searchParams]);
 
     const handleFilterPrice = (e) => {
         e.preventDefault();
         const priceFrom = e.target.elements.priceFrom.value;
         const priceTo = e.target.elements.priceTo.value;
-
-        handleFilter('price', `$${priceFrom} - $${[priceTo]}`, 'price');
-    };
-
-    const addFilter = (id, value, type) => {
-        setFilterProduct((prev) => [
-            ...prev,
-            {
-                id: id,
-                value: value,
-                type: type,
-            },
-        ]);
-    };
-
-    const deleteFilter = (id) => {
-        setFilterProduct((prev) => prev.filter((item) => item.id !== id));
-    };
-
-    const updateFilter = (id, value) => {
-        setFilterProduct((prev) => prev.map((item) => (item.id === id ? { ...item, value } : item)));
-    };
-
-    const handleFilter = (id, value, type) => {
-        const isExisted = filterProduct.filter((item) => item.id === id).length > 0;
-        switch (type) {
-            case 'tag':
-            case 'cate':
-                if (!isExisted) {
-                    addFilter(id, value, type);
-                }
-                break;
-            case 'avail':
-            case 'size':
-                if (!isExisted) {
-                    addFilter(id, value, type);
-                } else {
-                    deleteFilter(id);
-                }
-                break;
-            case 'price':
-                if (!isExisted) {
-                    addFilter(id, value, type);
-                } else {
-                    updateFilter(id, value);
-                }
-                break;
-            default:
-                throw new Error('Invalid type');
+        if (!isNaN(priceFrom) && !isNaN(priceTo)) {
+            if (!!priceFrom || !!priceTo) {
+                addFilter('price1', priceFrom + ',' + priceTo, 'price');
+            }
         }
     };
 
-    const handleClearAll = () => setFilterProduct([]);
+    const addFilter = (id, value, type) => {
+        if (type === 'price') {
+            const price = value.split(',');
+            if (!searchParams.has('priceFrom') && !searchParams.has('priceTo')) {
+                if (!!price[0] && !!price[1]) {
+                    setSearchParams((prev) => {
+                        return [...prev.entries(), ['priceFrom', price[0]], ['priceTo', price[1]]];
+                    });
+                } else {
+                    if (!!price[0]) {
+                        setSearchParams((prev) => {
+                            return [...prev.entries(), ['priceFrom', price[0]]];
+                        });
+                    }
+                    if (!!price[1]) {
+                        setSearchParams((prev) => {
+                            return [...prev.entries(), ['priceTo', price[1]]];
+                        });
+                    }
+                }
+            } else {
+                if (!!price[0] && !!price[1]) {
+                    setSearchParams({
+                        ...Object.fromEntries([...searchParams]),
+                        priceFrom: price[0],
+                        priceTo: price[1],
+                    });
+                } else {
+                    if (!!price[0]) {
+                        searchParams.delete('priceTo');
+                        setSearchParams({
+                            ...Object.fromEntries([...searchParams]),
+                            priceFrom: price[0],
+                        });
+                    }
+                    if (!!price[1]) {
+                        searchParams.delete('priceFrom');
+                        setSearchParams({
+                            ...Object.fromEntries([...searchParams]),
+                            priceTo: price[1],
+                        });
+                    }
+                }
+            }
+        } else {
+            if (!searchParams.has(type)) {
+                setSearchParams((prev) => {
+                    return [...prev.entries(), [type, value]];
+                });
+            } else if (!searchParams.get(type).includes(value)) {
+                const newValue = searchParams.get(type) + ',' + value;
+                setSearchParams({ ...Object.fromEntries([...searchParams]), [type]: newValue });
+            }
+        }
+    };
 
-    console.log(filterProduct);
+    const deleteFilter = (type, value) => {
+        let typeArr = searchParams.get(type).split(',');
+        typeArr = typeArr.filter((val) => {
+            return val !== value;
+        });
+        if (typeArr.length > 0) {
+            setSearchParams({
+                ...Object.fromEntries([...searchParams]),
+                [type]: typeArr.join(','),
+            });
+        } else {
+            searchParams.delete(type);
+            setSearchParams(searchParams);
+        }
+    };
+
+    const updateFilter = (id, value, type) => {
+        if (filterProduct.search.filter((item) => item.id === id).length > 0) {
+            deleteFilter(type, value);
+        } else {
+            addFilter(id, value, type);
+        }
+    };
+
+    const handleClearAll = () => setSearchParams({});
+
+    const handlePageChanged = (newPage) => {
+        setFilterProduct((prev) => ({ ...prev, page: newPage }));
+    };
 
     return (
         <Fragment>
@@ -198,31 +338,12 @@ function Products() {
                                     <div className="product-sidebar-widget border-b border-[#dddddd] pb-[30px] mb-[25px]">
                                         <h2 className="widget-title text-[18px] font-medium">Categories</h2>
                                         <div className="flex flex-col items-start pt-[20px]">
-                                            {/* <Button
-                                                text
-                                                className="transition-all hover:text-primary capitalize mb-[10px] last:mb-0"
-                                            >
-                                                accessory
-                                            </Button>
-                                            <Button
-                                                text
-                                                className="transition-all hover:text-primary capitalize mb-[10px] last:mb-0"
-                                            >
-                                                decoration
-                                            </Button>
-                                            <Button
-                                                text
-                                                className="transition-all hover:text-primary capitalize mb-[10px] last:mb-0"
-                                            >
-                                                furniture
-                                            </Button> */}
-
                                             {cateList.map((cate) => (
                                                 <Button
                                                     key={cate.id}
                                                     text
                                                     className="transition-all hover:text-primary capitalize mb-[10px] last:mb-0"
-                                                    onClick={() => handleFilter(cate.id, cate.value, 'cate')}
+                                                    onClick={() => addFilter(cate.id, cate.value, cate.type)}
                                                 >
                                                     {cate.value}
                                                 </Button>
@@ -232,33 +353,6 @@ function Products() {
                                     <div className="product-sidebar-widget border-b border-[#dddddd] pb-[30px] mb-[25px]">
                                         <h2 className="widget-title text-[18px] font-medium">Availability</h2>
                                         <ul className="flex flex-col pt-[20px]">
-                                            {/* <li className="mb-[10px]">
-                                                <label
-                                                    htmlFor="filter-availability-1"
-                                                    className="cursor-pointer transition-all hover:text-primary"
-                                                >
-                                                    <input
-                                                        className="mr-[10px] cursor-pointer"
-                                                        type="checkbox"
-                                                        id="filter-availability-1"
-                                                    />
-                                                    In stock (17)
-                                                </label>
-                                            </li>
-                                            <li className="mb-[10px]">
-                                                <label
-                                                    htmlFor="filter-availability-2"
-                                                    className="cursor-pointer transition-all hover:text-primary"
-                                                >
-                                                    <input
-                                                        className="mr-[10px] cursor-pointer"
-                                                        type="checkbox"
-                                                        id="filter-availability-2"
-                                                    />
-                                                    Out of stock (2)
-                                                </label>
-                                            </li> */}
-
                                             {availList.map((avail, index) => (
                                                 <li key={avail.id} className="mb-[10px] select-none">
                                                     <label
@@ -270,11 +364,12 @@ function Products() {
                                                             type="checkbox"
                                                             id={`filter-availability-${index}`}
                                                             checked={
-                                                                filterProduct.filter((item) => item.id === avail.id)
-                                                                    .length > 0
+                                                                filterProduct.search.filter(
+                                                                    (item) => item.id === avail.id,
+                                                                ).length > 0
                                                             }
                                                             onChange={() =>
-                                                                handleFilter(avail.id, avail.value, 'avail')
+                                                                updateFilter(avail.id, avail.value, avail.type)
                                                             }
                                                         />
                                                         {avail.value} (17)
@@ -286,45 +381,6 @@ function Products() {
                                     <div className="product-sidebar-widget border-b border-[#dddddd] pb-[30px] mb-[25px]">
                                         <h2 className="widget-title text-[18px] font-medium">Size</h2>
                                         <ul className="flex flex-col pt-[20px]">
-                                            {/* <li className="mb-[10px]">
-                                                <label
-                                                    htmlFor="lg-size"
-                                                    className="cursor-pointer transition-all hover:text-primary"
-                                                >
-                                                    <input
-                                                        className="mr-[10px] cursor-pointer"
-                                                        type="checkbox"
-                                                        id="lg-size"
-                                                    />
-                                                    Large (9)
-                                                </label>
-                                            </li>
-                                            <li className="mb-[10px]">
-                                                <label
-                                                    htmlFor="md-size"
-                                                    className="cursor-pointer transition-all hover:text-primary"
-                                                >
-                                                    <input
-                                                        className="mr-[10px] cursor-pointer"
-                                                        type="checkbox"
-                                                        id="md-size"
-                                                    />
-                                                    Medium (7)
-                                                </label>
-                                            </li>
-                                            <li className="mb-[10px]">
-                                                <label
-                                                    htmlFor="sm-size"
-                                                    className="cursor-pointer transition-all hover:text-primary"
-                                                >
-                                                    <input
-                                                        className="mr-[10px] cursor-pointer"
-                                                        type="checkbox"
-                                                        id="sm-size"
-                                                    />
-                                                    Small (3)
-                                                </label>
-                                            </li> */}
                                             {sizeList.map((size, index) => (
                                                 <li key={size.id} className="mb-[10px] select-none">
                                                     <label
@@ -336,10 +392,13 @@ function Products() {
                                                             type="checkbox"
                                                             id={`size-${index}`}
                                                             checked={
-                                                                filterProduct.filter((item) => item.id === size.id)
-                                                                    .length > 0
+                                                                filterProduct.search.filter(
+                                                                    (item) => item.id === size.id,
+                                                                ).length > 0
                                                             }
-                                                            onChange={() => handleFilter(size.id, size.value, 'size')}
+                                                            onChange={() =>
+                                                                updateFilter(size.id, size.value, size.type)
+                                                            }
                                                         />
                                                         {size.value} (3)
                                                     </label>
@@ -352,7 +411,7 @@ function Products() {
                                         <form className="price-filter-form pt-[20px]" onSubmit={handleFilterPrice}>
                                             <div className="price-form-field mb-[15px]">
                                                 <label className="flex mb-[5px]" htmlFor="priceFrom">
-                                                    Form
+                                                    From
                                                 </label>
                                                 <div className="flex items-center border border-[#dddddd] px-[10px] h-[45px]">
                                                     <span className="text-[#777777] pr-[5px]">$</span>
@@ -394,65 +453,16 @@ function Products() {
                                             </div>
                                         </form>
                                     </div>
-                                    {/* <div className="product-sidebar-widget border-b border-[#dddddd] pb-[30px] mb-[25px]">
-                                        <h2 className="widget-title text-[18px] font-medium">Color</h2>
-                                        <ul className="flex flex-wrap pt-[20px]">
-                                            <li className="mr-[20px] mb-[6px]">
-                                                <span className="w-[18px] h-[18px] rounded-full inline-block cursor-pointer opacity-80 black"></span>
-                                            </li>
-                                            <li className="mr-[20px] mb-[6px]">
-                                                <span className="w-[18px] h-[18px] rounded-full inline-block cursor-pointer opacity-80 green"></span>
-                                            </li>
-                                            <li className="mr-[20px] mb-[6px]">
-                                                <span className="w-[18px] h-[18px] rounded-full inline-block cursor-pointer opacity-80 gray"></span>
-                                            </li>
-                                            <li className="mr-[20px] mb-[6px]">
-                                                <span className="w-[18px] h-[18px] rounded-full inline-block cursor-pointer opacity-80 red"></span>
-                                            </li>
-                                            <li className="mr-[20px] mb-[6px]">
-                                                <span className="w-[18px] h-[18px] rounded-full inline-block cursor-pointer opacity-80 yellow"></span>
-                                            </li>
-                                        </ul>
-                                    </div> */}
+
                                     <div className="product-sidebar-widget">
                                         <h2 className="widget-title text-[18px] font-medium">Tags</h2>
                                         <div className="flex flex-wrap pt-[20px]">
-                                            {/* <Button
-                                                text
-                                                className='transition-all hover:text-primary mb-[10px] mr-[10px] capitalize after:content-[","] last:after:content-none'
-                                            >
-                                                <span className="accessories">accessories</span>
-                                            </Button>
-                                            <Button
-                                                text
-                                                className='transition-all hover:text-primary mb-[10px] mr-[10px] capitalize after:content-[","] last:after:content-none'
-                                            >
-                                                <span className="chair">chair</span>
-                                            </Button>
-                                            <Button
-                                                text
-                                                className='transition-all hover:text-primary mb-[10px] mr-[10px] capitalize after:content-[","] last:after:content-none'
-                                            >
-                                                <span className="glass">glass</span>
-                                            </Button>
-                                            <Button
-                                                text
-                                                className='transition-all hover:text-primary mb-[10px] mr-[10px] capitalize after:content-[","] last:after:content-none'
-                                            >
-                                                <span className="deco">deco</span>
-                                            </Button>
-                                            <Button
-                                                text
-                                                className='transition-all hover:text-primary mb-[10px] mr-[10px] capitalize after:content-[","] last:after:content-none'
-                                            >
-                                                <span className="table">table</span>
-                                            </Button> */}
                                             {tagList.map((tag) => (
                                                 <Button
                                                     key={tag.id}
                                                     text
                                                     className='transition-all hover:text-primary mb-[10px] mr-[10px] capitalize after:content-[","] last:after:content-none'
-                                                    onClick={() => handleFilter(tag.id, tag.value, 'tag')}
+                                                    onClick={() => addFilter(tag.id, tag.value, tag.type)}
                                                 >
                                                     <span className="table">{tag.value}</span>
                                                 </Button>
@@ -463,43 +473,29 @@ function Products() {
                             </div>
                             <div className="lg:col-span-9 col-span-12">
                                 <ul className="active-filter-list flex flex-wrap items-center pb-[20px] -mb-[10px]">
-                                    {/* <li className="mr-[10px] mb-[10px]">
-                                        <Button
-                                            second
-                                            className="bg-[#e8e8e8] text-[14px] font-normal py-[6px] px-[8px] border-none rounded-[20px]"
-                                            rightIcon={<ExitIcon width="1.4rem" height="1.4rem" />}
-                                        >
-                                            accessory
-                                        </Button>
-                                    </li>
-                                    <li className="mb-[10px]">
-                                        <Button
-                                            text
-                                            className="clear-btn text-[14px] transition-all hover:text-primary"
-                                        >
-                                            Clear All
-                                        </Button>
-                                    </li> */}
-                                    {filterProduct.length > 0 &&
-                                        filterProduct
-                                            .slice(0)
-                                            .reverse()
-                                            .map((item, index) => (
-                                                <li key={index} className="mr-[10px] mb-[10px]">
-                                                    <Button
-                                                        second
-                                                        className="bg-[#e8e8e8] text-[14px] font-normal py-[6px] px-[8px] border-none rounded-[20px]"
-                                                        rightIcon={
-                                                            <span onClick={() => deleteFilter(item.id)}>
-                                                                <ExitIcon width="1.4rem" height="1.4rem" />
-                                                            </span>
-                                                        }
-                                                    >
-                                                        {item.value}
-                                                    </Button>
-                                                </li>
-                                            ))}
-                                    {filterProduct.length > 0 && (
+                                    {filterProduct.search.length > 0 &&
+                                        filterProduct.search.map((item) => (
+                                            <li key={item.id} className="mr-[10px] mb-[10px]">
+                                                <Button
+                                                    second
+                                                    className="bg-[#e8e8e8] text-[14px] font-normal py-[6px] px-[8px] border-none rounded-[20px]"
+                                                    rightIcon={
+                                                        <span onClick={() => deleteFilter(item.type, item.value)}>
+                                                            <ExitIcon width="1.4rem" height="1.4rem" />
+                                                        </span>
+                                                    }
+                                                >
+                                                    {item.type === 'price'
+                                                        ? item.value.priceFrom && item.value.priceTo
+                                                            ? `$${item.value.priceFrom} - $${item.value.priceFrom}`
+                                                            : item.value.priceFrom
+                                                            ? `more $${item.value.priceFrom} `
+                                                            : `less $${item.value.priceTo} `
+                                                        : item.value}
+                                                </Button>
+                                            </li>
+                                        ))}
+                                    {filterProduct.search.length > 0 && (
                                         <li className="mb-[10px]">
                                             <Button
                                                 text
@@ -629,34 +625,13 @@ function Products() {
                                         )}
                                     </div>
                                 </div>
-                                <ul className="pagination flex justify-center pt-[40px]">
-                                    <li className="px-[5px]">
-                                        <button
-                                            className=" bg-[#f5f5f5] cursor-pointer flex items-center text-[14px] px-[13px] h-[34px]"
-                                            type="button"
-                                            disabled=""
-                                        >
-                                            Prev
-                                        </button>
-                                    </li>
-                                    <li className="px-[5px]">
-                                        <span
-                                            className="active bg-[#f5f5f5] cursor-pointer flex items-center px-[13px] h-[34px] text-[12px] font-medium"
-                                            id="1"
-                                        >
-                                            1
-                                        </span>
-                                    </li>
-                                    <li className="px-[5px]">
-                                        <button
-                                            className=" bg-[#f5f5f5] cursor-pointer flex items-center text-[14px] px-[13px] h-[34px]"
-                                            type="button"
-                                            disabled=""
-                                        >
-                                            Next
-                                        </button>
-                                    </li>
-                                </ul>
+
+                                <Pagination
+                                    limit={filterProduct.limit}
+                                    page={filterProduct.page}
+                                    total={listProduct}
+                                    onChangePage={handlePageChanged}
+                                />
                             </div>
                         </div>
                     </div>
