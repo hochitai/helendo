@@ -225,7 +225,21 @@ function Products() {
                 ]);
             }
         }
-        setFilterProduct((prev) => ({ ...prev, search: filterArray }));
+        if (filter.name) {
+            filterArray = filterArray.concat([
+                {
+                    id: 'name',
+                    type: 'name',
+                    value: filter.name,
+                },
+            ]);
+        }
+
+        if (filter.page) {
+            setFilterProduct((prev) => ({ ...prev, search: filterArray, page: parseInt(filter.page) }));
+        } else {
+            setFilterProduct((prev) => ({ ...prev, search: filterArray }));
+        }
     }, [searchParams]);
 
     const handleFilterPrice = (e) => {
@@ -289,8 +303,16 @@ function Products() {
                     return [...prev.entries(), [type, value]];
                 });
             } else if (!searchParams.get(type).includes(value)) {
-                const newValue = searchParams.get(type) + ',' + value;
-                setSearchParams({ ...Object.fromEntries([...searchParams]), [type]: newValue });
+                if (type === 'page' || type === 'name') {
+                    setSearchParams({ ...Object.fromEntries([...searchParams]), [type]: value });
+                } else {
+                    const newValue = searchParams.get(type) + ',' + value;
+                    setSearchParams({ ...Object.fromEntries([...searchParams]), [type]: newValue });
+                }
+            } else {
+                if (type === 'page' || type === 'name') {
+                    setSearchParams({ ...Object.fromEntries([...searchParams]), [type]: value });
+                }
             }
         }
     };
@@ -322,7 +344,15 @@ function Products() {
     const handleClearAll = () => setSearchParams({});
 
     const handlePageChanged = (newPage) => {
-        setFilterProduct((prev) => ({ ...prev, page: newPage }));
+        addFilter('page', newPage, 'page');
+    };
+
+    const handleFilterSearch = (e) => {
+        e.preventDefault();
+        const name = e.target.elements.name.value;
+        if (name) {
+            addFilter('name', name, 'name');
+        }
     };
 
     return (
@@ -332,6 +362,25 @@ function Products() {
                 <Breadcrumb title="Products" />
                 <div className="product border-b border-[#ededed] xl:py-[120px] lg:py-[100px] md:py-[80px] py-[50px]">
                     <div className="container mx-auto">
+                        <div className="product-search border-b border-[#dddddd] mb-[25px]">
+                            <form className="search-filter-form pt-[20px]" onSubmit={handleFilterSearch}>
+                                <div className="search-form-field mb-[15px]">
+                                    <div className="flex items-center border border-[#dddddd] px-[10px] h-[45px]">
+                                        <input
+                                            required=""
+                                            id="name"
+                                            name="name"
+                                            type="text"
+                                            className="w-full focus:outline-none"
+                                            placeholder="Search name"
+                                        />
+                                        <Button type="submit" primary small>
+                                            Search
+                                        </Button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
                         <div className="grid grid-cols-12 lg:gap-x-[25px] max-md:gap-y-[45px]">
                             <div className="lg:col-span-3 col-span-12 max-md:order-2">
                                 <div className="product-sidebar">
