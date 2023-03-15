@@ -1,6 +1,8 @@
 import { Fragment, useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import classNames from 'classnames/bind';
+import ClipLoader from 'react-spinners/ClipLoader';
+import GridLoader from 'react-spinners/GridLoader';
 
 import Header from '~/layouts/components/Header';
 import Breadcrumb from '~/components/Breadcrumb';
@@ -12,91 +14,19 @@ import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import images from '~/assets/images';
 import ProductItem from '~/components/ProductItem';
 import Pagination from '~/components/Pagination';
+import request from '~/utils/httpRequest';
+import config from '~/config';
 
 const cx = classNames.bind(styles);
-
-const cateList = [
-    {
-        id: 'cate1',
-        value: 'accessory',
-        type: 'cate',
-    },
-    {
-        id: 'cate2',
-        value: 'decoration',
-        type: 'cate',
-    },
-    {
-        id: 'cate3',
-        value: 'furniture',
-        type: 'cate',
-    },
-];
-
-const availList = [
-    {
-        id: 'avail1',
-        value: 'in-stock',
-        type: 'avail',
-    },
-    {
-        id: 'avail2',
-        value: 'out-of-stock',
-        type: 'avail',
-    },
-];
-
-const sizeList = [
-    {
-        id: 'size1',
-        value: 'large',
-        type: 'size',
-    },
-    {
-        id: 'size2',
-        value: 'medium',
-        type: 'size',
-    },
-    {
-        id: 'size3',
-        value: 'small',
-        type: 'size',
-    },
-];
-
-const tagList = [
-    {
-        id: 'tag1',
-        value: 'accessory',
-        type: 'tag',
-    },
-    {
-        id: 'tag2',
-        value: 'chair',
-        type: 'tag',
-    },
-    {
-        id: 'tag3',
-        value: 'glass',
-        type: 'tag',
-    },
-    {
-        id: 'tag4',
-        value: 'deco',
-        type: 'tag',
-    },
-    {
-        id: 'tag5',
-        value: 'table',
-        type: 'tag',
-    },
-];
 
 const GRID_3 = 3;
 const GRID_4 = 4;
 
 function Products() {
+    const [leftLoading, setLeftLoading] = useState(true);
+    const [rightLoading, setRightLoading] = useState(true);
     const [searchParams, setSearchParams] = useSearchParams();
+    const [types, setTypes] = useState({});
     const [listProduct, setListProduct] = useState(24);
     const [filterProduct, setFilterProduct] = useState({
         limit: 12,
@@ -106,140 +36,156 @@ function Products() {
     const [grid, setGrid] = useState(GRID_3);
 
     useEffect(() => {
-        const filter = Object.fromEntries([...searchParams]);
-        let filterArray = [];
-        let tempArray = [];
+        async function fetchDataTypes() {
+            await request
+                .get(config.apis.getTypes)
+                .then((res) => {
+                    setTypes(res.data);
+                })
+                .catch((error) => console.log(error));
+        }
+        fetchDataTypes();
+        setLeftLoading(false);
+    }, []);
 
-        if (filter.cate) {
-            tempArray = filter.cate.split(',');
-            filterArray = filterArray.concat(
-                tempArray
-                    .filter((value) => {
-                        if (cateList.find((element) => element.value === value)) {
-                            return true;
-                        }
-                        return false;
-                    })
-                    .map((value) => {
-                        const id = cateList.find((element) => element.value === value).id;
-                        return {
-                            id: id,
-                            type: 'cate',
-                            value: value,
-                        };
-                    }),
-            );
-        }
-        if (filter.tag) {
-            tempArray = filter.tag.split(',');
-            filterArray = filterArray.concat(
-                tempArray
-                    .filter((value) => {
-                        if (tagList.find((element) => element.value === value)) {
-                            return true;
-                        }
-                        return false;
-                    })
-                    .map((value) => {
-                        const id = tagList.find((element) => element.value === value).id;
-                        return {
-                            id: id,
-                            type: 'tag',
-                            value: value,
-                        };
-                    }),
-            );
-        }
-        if (filter.avail) {
-            tempArray = filter.avail.split(',');
-            filterArray = filterArray.concat(
-                tempArray
-                    .filter((value) => {
-                        if (availList.find((element) => element.value === value)) {
-                            return true;
-                        }
-                        return false;
-                    })
-                    .map((value) => {
-                        const id = availList.find((element) => element.value === value).id;
-                        return {
-                            id: id,
-                            type: 'avail',
-                            value: value,
-                        };
-                    }),
-            );
-        }
-        if (filter.size) {
-            tempArray = filter.size.split(',');
-            filterArray = filterArray.concat(
-                tempArray
-                    .filter((value) => {
-                        if (sizeList.find((element) => element.value === value)) {
-                            return true;
-                        }
-                        return false;
-                    })
-                    .map((value) => {
-                        const id = sizeList.find((element) => element.value === value).id;
-                        return {
-                            id: id,
-                            type: 'size',
-                            value: value,
-                        };
-                    }),
-            );
-        }
-        if (filter.priceFrom && filter.priceTo) {
-            filterArray = filterArray.concat([
-                {
-                    id: 'priceId',
-                    type: 'price',
-                    value: {
-                        priceFrom: filter.priceFrom,
-                        priceTo: filter.priceTo,
-                    },
-                },
-            ]);
-        } else {
-            if (filter.priceFrom) {
+    useEffect(() => {
+        if (Object.keys(types).length !== 0) {
+            const filter = Object.fromEntries([...searchParams]);
+            let filterArray = [];
+            let tempArray = [];
+
+            if (filter.cate) {
+                tempArray = filter.cate.split(',');
+                filterArray = filterArray.concat(
+                    tempArray
+                        .filter((value) => {
+                            if (types.cate.find((element) => element.name === value)) {
+                                return true;
+                            }
+                            return false;
+                        })
+                        .map((value) => {
+                            const id = types.cate.find((element) => element.name === value)._id;
+                            return {
+                                id: id,
+                                type: 'cate',
+                                value: value,
+                            };
+                        }),
+                );
+            }
+            if (filter.tag) {
+                tempArray = filter.tag.split(',');
+                filterArray = filterArray.concat(
+                    tempArray
+                        .filter((value) => {
+                            if (types.tag.find((element) => element.name === value)) {
+                                return true;
+                            }
+                            return false;
+                        })
+                        .map((value) => {
+                            const id = types.tag.find((element) => element.name === value)._id;
+                            return {
+                                id: id,
+                                type: 'tag',
+                                value: value,
+                            };
+                        }),
+                );
+            }
+            if (filter.avail) {
+                tempArray = filter.avail.split(',');
+                filterArray = filterArray.concat(
+                    tempArray
+                        .filter((value) => {
+                            if (value === 'in-stock' || value === 'out-of-stock') {
+                                return true;
+                            }
+                            return false;
+                        })
+                        .map((value) => {
+                            const id = value;
+                            return {
+                                id: id,
+                                type: 'avail',
+                                value: value,
+                            };
+                        }),
+                );
+            }
+            if (filter.size) {
+                tempArray = filter.size.split(',');
+                filterArray = filterArray.concat(
+                    tempArray
+                        .filter((value) => {
+                            if (types.size.find((element) => element.name === value)) {
+                                return true;
+                            }
+                            return false;
+                        })
+                        .map((value) => {
+                            const id = types.size.find((element) => element.name === value)._id;
+                            return {
+                                id: id,
+                                type: 'size',
+                                value: value,
+                            };
+                        }),
+                );
+            }
+            if (filter.priceFrom && filter.priceTo) {
                 filterArray = filterArray.concat([
                     {
                         id: 'priceId',
                         type: 'price',
                         value: {
                             priceFrom: filter.priceFrom,
-                        },
-                    },
-                ]);
-            }
-            if (filter.priceTo) {
-                filterArray = filterArray.concat([
-                    {
-                        id: 'priceId',
-                        type: 'price',
-                        value: {
                             priceTo: filter.priceTo,
                         },
                     },
                 ]);
+            } else {
+                if (filter.priceFrom) {
+                    filterArray = filterArray.concat([
+                        {
+                            id: 'priceId',
+                            type: 'price',
+                            value: {
+                                priceFrom: filter.priceFrom,
+                            },
+                        },
+                    ]);
+                }
+                if (filter.priceTo) {
+                    filterArray = filterArray.concat([
+                        {
+                            id: 'priceId',
+                            type: 'price',
+                            value: {
+                                priceTo: filter.priceTo,
+                            },
+                        },
+                    ]);
+                }
+            }
+            if (filter.name) {
+                filterArray = filterArray.concat([
+                    {
+                        id: 'name',
+                        type: 'name',
+                        value: filter.name,
+                    },
+                ]);
+            }
+
+            if (filter.page) {
+                setFilterProduct((prev) => ({ ...prev, search: filterArray, page: parseInt(filter.page) }));
+            } else {
+                setFilterProduct((prev) => ({ ...prev, search: filterArray }));
             }
         }
-        if (filter.name) {
-            filterArray = filterArray.concat([
-                {
-                    id: 'name',
-                    type: 'name',
-                    value: filter.name,
-                },
-            ]);
-        }
-
-        if (filter.page) {
-            setFilterProduct((prev) => ({ ...prev, search: filterArray, page: parseInt(filter.page) }));
-        } else {
-            setFilterProduct((prev) => ({ ...prev, search: filterArray }));
-        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [searchParams]);
 
     const handleFilterPrice = (e) => {
@@ -383,142 +329,170 @@ function Products() {
                         </div>
                         <div className="grid grid-cols-12 lg:gap-x-[25px] max-md:gap-y-[45px]">
                             <div className="lg:col-span-3 col-span-12 max-md:order-2">
-                                <div className="product-sidebar">
-                                    <div className="product-sidebar-widget border-b border-[#dddddd] pb-[30px] mb-[25px]">
-                                        <h2 className="widget-title text-[18px] font-medium">Categories</h2>
-                                        <div className="flex flex-col items-start pt-[20px]">
-                                            {cateList.map((cate) => (
-                                                <Button
-                                                    key={cate.id}
-                                                    text
-                                                    className="transition-all hover:text-primary capitalize mb-[10px] last:mb-0"
-                                                    onClick={() => addFilter(cate.id, cate.value, cate.type)}
-                                                >
-                                                    {cate.value}
-                                                </Button>
-                                            ))}
+                                {leftLoading ? (
+                                    <div className="w-full p-12 text-center">
+                                        <ClipLoader color="#DCB14A" />
+                                    </div>
+                                ) : (
+                                    <div className="product-sidebar">
+                                        <div className="product-sidebar-widget border-b border-[#dddddd] pb-[30px] mb-[25px]">
+                                            <h2 className="widget-title text-[18px] font-medium">Categories</h2>
+                                            <div className="flex flex-col items-start pt-[20px]">
+                                                {Object.keys(types).length !== 0 &&
+                                                    types.cate.map((cateItem, index) => (
+                                                        <Button
+                                                            key={index}
+                                                            text
+                                                            className="transition-all hover:text-primary capitalize mb-[10px] last:mb-0"
+                                                            onClick={() => addFilter(index, cateItem.name, 'cate')}
+                                                        >
+                                                            {cateItem.name}
+                                                        </Button>
+                                                    ))}
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div className="product-sidebar-widget border-b border-[#dddddd] pb-[30px] mb-[25px]">
-                                        <h2 className="widget-title text-[18px] font-medium">Availability</h2>
-                                        <ul className="flex flex-col pt-[20px]">
-                                            {availList.map((avail, index) => (
-                                                <li key={avail.id} className="mb-[10px] select-none">
+                                        <div className="product-sidebar-widget border-b border-[#dddddd] pb-[30px] mb-[25px]">
+                                            <h2 className="widget-title text-[18px] font-medium">Availability</h2>
+                                            <ul className="flex flex-col pt-[20px]">
+                                                <li className="mb-[10px] select-none">
                                                     <label
-                                                        htmlFor={`filter-availability-${index}`}
+                                                        htmlFor={`filter-availability-in-stock`}
                                                         className="cursor-pointer transition-all hover:text-primary"
                                                     >
                                                         <input
                                                             className="mr-[10px] cursor-pointer"
                                                             type="checkbox"
-                                                            id={`filter-availability-${index}`}
+                                                            id={`filter-availability-in-stock`}
                                                             checked={
                                                                 filterProduct.search.filter(
-                                                                    (item) => item.id === avail.id,
+                                                                    (item) => item.id === 'in-stock',
                                                                 ).length > 0
                                                             }
                                                             onChange={() =>
-                                                                updateFilter(avail.id, avail.value, avail.type)
+                                                                updateFilter('in-stock', 'in-stock', 'avail')
                                                             }
                                                         />
-                                                        {avail.value} (17)
+                                                        In-Stock ({types.totalProductInStock})
                                                     </label>
                                                 </li>
-                                            ))}
-                                        </ul>
-                                    </div>
-                                    <div className="product-sidebar-widget border-b border-[#dddddd] pb-[30px] mb-[25px]">
-                                        <h2 className="widget-title text-[18px] font-medium">Size</h2>
-                                        <ul className="flex flex-col pt-[20px]">
-                                            {sizeList.map((size, index) => (
-                                                <li key={size.id} className="mb-[10px] select-none">
+                                                <li className="mb-[10px] select-none">
                                                     <label
-                                                        htmlFor={`size-${index}`}
+                                                        htmlFor={`filter-availability-out-of-stock`}
                                                         className="cursor-pointer transition-all hover:text-primary"
                                                     >
                                                         <input
                                                             className="mr-[10px] cursor-pointer"
                                                             type="checkbox"
-                                                            id={`size-${index}`}
+                                                            id={`filter-availability-out-of-stock`}
                                                             checked={
                                                                 filterProduct.search.filter(
-                                                                    (item) => item.id === size.id,
+                                                                    (item) => item.id === 'out-of-stock',
                                                                 ).length > 0
                                                             }
                                                             onChange={() =>
-                                                                updateFilter(size.id, size.value, size.type)
+                                                                updateFilter('out-of-stock', 'out-of-stock', 'avail')
                                                             }
                                                         />
-                                                        {size.value} (3)
+                                                        Out-of-Stock ({types.totalProductOutOfStock})
                                                     </label>
                                                 </li>
-                                            ))}
-                                        </ul>
-                                    </div>
-                                    <div className="product-sidebar-widge border-b border-[#dddddd] pb-[30px] mb-[25px]">
-                                        <h2 className="widget-title text-[18px] font-medium">Price</h2>
-                                        <form className="price-filter-form pt-[20px]" onSubmit={handleFilterPrice}>
-                                            <div className="price-form-field mb-[15px]">
-                                                <label className="flex mb-[5px]" htmlFor="priceFrom">
-                                                    From
-                                                </label>
-                                                <div className="flex items-center border border-[#dddddd] px-[10px] h-[45px]">
-                                                    <span className="text-[#777777] pr-[5px]">$</span>
-                                                    <input
-                                                        required=""
-                                                        id="priceFrom"
-                                                        name="priceFrom"
-                                                        type="number"
-                                                        className="w-full focus:outline-none"
-                                                        placeholder="0"
-                                                        min="0"
-                                                    />
+                                            </ul>
+                                        </div>
+                                        <div className="product-sidebar-widget border-b border-[#dddddd] pb-[30px] mb-[25px]">
+                                            <h2 className="widget-title text-[18px] font-medium">Size</h2>
+                                            <ul className="flex flex-col pt-[20px]">
+                                                {Object.keys(types).length !== 0 &&
+                                                    types.size.map((size, index) => (
+                                                        <li key={size._id} className="mb-[10px] select-none">
+                                                            <label
+                                                                htmlFor={`size-${index}`}
+                                                                className="cursor-pointer transition-all hover:text-primary"
+                                                            >
+                                                                <input
+                                                                    className="mr-[10px] cursor-pointer"
+                                                                    type="checkbox"
+                                                                    id={`size-${index}`}
+                                                                    checked={
+                                                                        filterProduct.search.filter(
+                                                                            (item) => item.id === size._id,
+                                                                        ).length > 0
+                                                                    }
+                                                                    onChange={() =>
+                                                                        updateFilter(size._id, size.name, 'size')
+                                                                    }
+                                                                />
+                                                                {size.name} (3)
+                                                            </label>
+                                                        </li>
+                                                    ))}
+                                            </ul>
+                                        </div>
+                                        <div className="product-sidebar-widge border-b border-[#dddddd] pb-[30px] mb-[25px]">
+                                            <h2 className="widget-title text-[18px] font-medium">Price</h2>
+                                            <form className="price-filter-form pt-[20px]" onSubmit={handleFilterPrice}>
+                                                <div className="price-form-field mb-[15px]">
+                                                    <label className="flex mb-[5px]" htmlFor="priceFrom">
+                                                        From
+                                                    </label>
+                                                    <div className="flex items-center border border-[#dddddd] px-[10px] h-[45px]">
+                                                        <span className="text-[#777777] pr-[5px]">$</span>
+                                                        <input
+                                                            required=""
+                                                            id="priceFrom"
+                                                            name="priceFrom"
+                                                            type="number"
+                                                            className="w-full focus:outline-none"
+                                                            placeholder="0"
+                                                            min="0"
+                                                        />
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div className="price-form-field">
-                                                <label className="flex mb-[5px]" htmlFor="priceTo">
-                                                    To
-                                                </label>
-                                                <div className="flex items-center border border-[#dddddd] px-[10px] h-[45px]">
-                                                    <span className="text-[#777777] pr-[5px]">$</span>
-                                                    <input
-                                                        required=""
-                                                        id="priceTo"
-                                                        name="priceTo"
-                                                        type="number"
-                                                        className="w-full focus:outline-none"
-                                                        placeholder="100"
-                                                        min="0"
-                                                    />
+                                                <div className="price-form-field">
+                                                    <label className="flex mb-[5px]" htmlFor="priceTo">
+                                                        To
+                                                    </label>
+                                                    <div className="flex items-center border border-[#dddddd] px-[10px] h-[45px]">
+                                                        <span className="text-[#777777] pr-[5px]">$</span>
+                                                        <input
+                                                            required=""
+                                                            id="priceTo"
+                                                            name="priceTo"
+                                                            type="number"
+                                                            className="w-full focus:outline-none"
+                                                            placeholder="100"
+                                                            min="0"
+                                                        />
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div className="price-btn-wrap pt-[20px]">
-                                                <button
-                                                    type="submit"
-                                                    className="flex items-center bg-black text-white px-[25px] py-[8px] h-[40px] transition-all hover:bg-primary"
-                                                >
-                                                    Filter
-                                                </button>
-                                            </div>
-                                        </form>
-                                    </div>
+                                                <div className="price-btn-wrap pt-[20px]">
+                                                    <button
+                                                        type="submit"
+                                                        className="flex items-center bg-black text-white px-[25px] py-[8px] h-[40px] transition-all hover:bg-primary"
+                                                    >
+                                                        Filter
+                                                    </button>
+                                                </div>
+                                            </form>
+                                        </div>
 
-                                    <div className="product-sidebar-widget">
-                                        <h2 className="widget-title text-[18px] font-medium">Tags</h2>
-                                        <div className="flex flex-wrap pt-[20px]">
-                                            {tagList.map((tag) => (
-                                                <Button
-                                                    key={tag.id}
-                                                    text
-                                                    className='transition-all hover:text-primary mb-[10px] mr-[10px] capitalize after:content-[","] last:after:content-none'
-                                                    onClick={() => addFilter(tag.id, tag.value, tag.type)}
-                                                >
-                                                    <span className="table">{tag.value}</span>
-                                                </Button>
-                                            ))}
+                                        <div className="product-sidebar-widget">
+                                            <h2 className="widget-title text-[18px] font-medium">Tags</h2>
+                                            <div className="flex flex-wrap pt-[20px]">
+                                                {Object.keys(types).length !== 0 &&
+                                                    types.tag.map((tag) => (
+                                                        <Button
+                                                            key={tag._id}
+                                                            text
+                                                            className='transition-all hover:text-primary mb-[10px] mr-[10px] capitalize after:content-[","] last:after:content-none'
+                                                            onClick={() => addFilter(tag._id, tag.name, 'tag')}
+                                                        >
+                                                            <span className="table">{tag.name}</span>
+                                                        </Button>
+                                                    ))}
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
+                                )}
                             </div>
                             <div className="lg:col-span-9 col-span-12">
                                 <ul className="active-filter-list flex flex-wrap items-center pb-[20px] -mb-[10px]">
@@ -648,39 +622,46 @@ function Products() {
                                         </div>
                                     </div>
                                 </div>
-                                <div className="grid-content-03 tab-style-common">
-                                    <div className="grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-x-[25px] gap-y-[40px]">
-                                        {grid === 3 && (
-                                            <Fragment>
-                                                <ProductItem />
-                                                <ProductItem />
-                                                <ProductItem />
-                                                <ProductItem />
-                                                <ProductItem />
-                                            </Fragment>
-                                        )}
+                                {rightLoading ? (
+                                    <div className="w-full p-60 text-center">
+                                        <GridLoader color="#DCB14A" />
                                     </div>
-                                </div>
-                                <div className="grid-content-04 tab-style-common">
-                                    <div className="grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-x-[25px] gap-y-[40px]">
-                                        {grid === 4 && (
-                                            <Fragment>
-                                                <ProductItem />
-                                                <ProductItem />
-                                                <ProductItem />
-                                                <ProductItem />
-                                                <ProductItem />
-                                            </Fragment>
-                                        )}
-                                    </div>
-                                </div>
-
-                                <Pagination
-                                    limit={filterProduct.limit}
-                                    page={filterProduct.page}
-                                    total={listProduct}
-                                    onChangePage={handlePageChanged}
-                                />
+                                ) : (
+                                    <Fragment>
+                                        <div className="grid-content-03 tab-style-common">
+                                            <div className="grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-x-[25px] gap-y-[40px]">
+                                                {grid === 3 && (
+                                                    <Fragment>
+                                                        <ProductItem />
+                                                        <ProductItem />
+                                                        <ProductItem />
+                                                        <ProductItem />
+                                                        <ProductItem />
+                                                    </Fragment>
+                                                )}
+                                            </div>
+                                        </div>
+                                        <div className="grid-content-04 tab-style-common">
+                                            <div className="grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-x-[25px] gap-y-[40px]">
+                                                {grid === 4 && (
+                                                    <Fragment>
+                                                        <ProductItem />
+                                                        <ProductItem />
+                                                        <ProductItem />
+                                                        <ProductItem />
+                                                        <ProductItem />
+                                                    </Fragment>
+                                                )}
+                                            </div>
+                                        </div>
+                                        <Pagination
+                                            limit={filterProduct.limit}
+                                            page={filterProduct.page}
+                                            total={listProduct}
+                                            onChangePage={handlePageChanged}
+                                        />{' '}
+                                    </Fragment>
+                                )}
                             </div>
                         </div>
                     </div>

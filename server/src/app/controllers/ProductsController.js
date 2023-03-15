@@ -1,6 +1,6 @@
 const Product = require("../models/Product");
 
-class ProductsControll {
+class ProductsController {
     // [GET] products
     async getAll(req, res, next) {
         res.header("Access-Control-Allow-Origin", "*");
@@ -18,4 +18,4 @@ class ProductsControll {
     }
 }
 
-module.exports = new ProductsControll();
+module.exports = new ProductsController();
