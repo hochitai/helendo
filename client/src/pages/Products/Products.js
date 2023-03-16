@@ -29,11 +29,172 @@ function Products() {
     const [types, setTypes] = useState({});
     const [listProduct, setListProduct] = useState(24);
     const [filterProduct, setFilterProduct] = useState({
-        limit: 12,
+        limit: 1,
         page: 1,
         search: [],
     });
     const [grid, setGrid] = useState(GRID_3);
+
+    const getListProduct = async () => {
+        await request
+            .get(config.apis.searchProducts, {
+                params: filterProduct,
+            })
+            .then((res) => {
+                console.log(res.data);
+                setListProduct(res.data);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    };
+
+    const getFilter = async (types) => {
+        const filter = Object.fromEntries([...searchParams]);
+        let filterArray = [];
+        let tempArray = [];
+
+        if (filter.cate) {
+            tempArray = filter.cate.split(',');
+            filterArray = filterArray.concat(
+                tempArray
+                    .filter((value) => {
+                        if (types.cate.find((element) => element.name === value)) {
+                            return true;
+                        }
+                        return false;
+                    })
+                    .map((value) => {
+                        const id = types.cate.find((element) => element.name === value)._id;
+                        return {
+                            id: id,
+                            type: 'cate',
+                            value: value,
+                        };
+                    }),
+            );
+        }
+        if (filter.tag) {
+            tempArray = filter.tag.split(',');
+            filterArray = filterArray.concat(
+                tempArray
+                    .filter((value) => {
+                        if (types.tag.find((element) => element.name === value)) {
+                            return true;
+                        }
+                        return false;
+                    })
+                    .map((value) => {
+                        const id = types.tag.find((element) => element.name === value)._id;
+                        return {
+                            id: id,
+                            type: 'tag',
+                            value: value,
+                        };
+                    }),
+            );
+        }
+        if (filter.avail) {
+            tempArray = filter.avail.split(',');
+            filterArray = filterArray.concat(
+                tempArray
+                    .filter((value) => {
+                        if (value === 'in-stock' || value === 'out-of-stock') {
+                            return true;
+                        }
+                        return false;
+                    })
+                    .map((value) => {
+                        const id = value;
+                        return {
+                            id: id,
+                            type: 'avail',
+                            value: value,
+                        };
+                    }),
+            );
+        }
+        if (filter.size) {
+            tempArray = filter.size.split(',');
+            filterArray = filterArray.concat(
+                tempArray
+                    .filter((value) => {
+                        if (types.size.find((element) => element.name === value)) {
+                            return true;
+                        }
+                        return false;
+                    })
+                    .map((value) => {
+                        const id = types.size.find((element) => element.name === value)._id;
+                        return {
+                            id: id,
+                            type: 'size',
+                            value: value,
+                        };
+                    }),
+            );
+        }
+        if (filter.priceFrom && filter.priceTo) {
+            filterArray = filterArray.concat([
+                {
+                    id: 'priceId',
+                    type: 'price',
+                    value: {
+                        priceFrom: filter.priceFrom,
+                        priceTo: filter.priceTo,
+                    },
+                },
+            ]);
+        } else {
+            if (filter.priceFrom) {
+                filterArray = filterArray.concat([
+                    {
+                        id: 'priceId',
+                        type: 'price',
+                        value: {
+                            priceFrom: filter.priceFrom,
+                        },
+                    },
+                ]);
+            }
+            if (filter.priceTo) {
+                filterArray = filterArray.concat([
+                    {
+                        id: 'priceId',
+                        type: 'price',
+                        value: {
+                            priceTo: filter.priceTo,
+                        },
+                    },
+                ]);
+            }
+        }
+        if (filter.name) {
+            filterArray = filterArray.concat([
+                {
+                    id: 'name',
+                    type: 'name',
+                    value: filter.name,
+                },
+            ]);
+        }
+
+        if (filter.sort) {
+            filterArray = filterArray.concat([
+                {
+                    id: 'sort',
+                    type: 'sort',
+                    value: filter.sort,
+                },
+            ]);
+        }
+
+        if (filter.page) {
+            setFilterProduct((prev) => ({ ...prev, search: filterArray, page: parseInt(filter.page) }));
+        } else {
+            setFilterProduct((prev) => ({ ...prev, search: filterArray }));
+        }
+    };
 
     useEffect(() => {
         async function fetchDataTypes() {
@@ -41,152 +202,26 @@ function Products() {
                 .get(config.apis.getTypes)
                 .then((res) => {
                     setTypes(res.data);
+                    getFilter(res.data);
                 })
                 .catch((error) => console.log(error));
         }
         fetchDataTypes();
         setLeftLoading(false);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     useEffect(() => {
         if (Object.keys(types).length !== 0) {
-            const filter = Object.fromEntries([...searchParams]);
-            let filterArray = [];
-            let tempArray = [];
-
-            if (filter.cate) {
-                tempArray = filter.cate.split(',');
-                filterArray = filterArray.concat(
-                    tempArray
-                        .filter((value) => {
-                            if (types.cate.find((element) => element.name === value)) {
-                                return true;
-                            }
-                            return false;
-                        })
-                        .map((value) => {
-                            const id = types.cate.find((element) => element.name === value)._id;
-                            return {
-                                id: id,
-                                type: 'cate',
-                                value: value,
-                            };
-                        }),
-                );
-            }
-            if (filter.tag) {
-                tempArray = filter.tag.split(',');
-                filterArray = filterArray.concat(
-                    tempArray
-                        .filter((value) => {
-                            if (types.tag.find((element) => element.name === value)) {
-                                return true;
-                            }
-                            return false;
-                        })
-                        .map((value) => {
-                            const id = types.tag.find((element) => element.name === value)._id;
-                            return {
-                                id: id,
-                                type: 'tag',
-                                value: value,
-                            };
-                        }),
-                );
-            }
-            if (filter.avail) {
-                tempArray = filter.avail.split(',');
-                filterArray = filterArray.concat(
-                    tempArray
-                        .filter((value) => {
-                            if (value === 'in-stock' || value === 'out-of-stock') {
-                                return true;
-                            }
-                            return false;
-                        })
-                        .map((value) => {
-                            const id = value;
-                            return {
-                                id: id,
-                                type: 'avail',
-                                value: value,
-                            };
-                        }),
-                );
-            }
-            if (filter.size) {
-                tempArray = filter.size.split(',');
-                filterArray = filterArray.concat(
-                    tempArray
-                        .filter((value) => {
-                            if (types.size.find((element) => element.name === value)) {
-                                return true;
-                            }
-                            return false;
-                        })
-                        .map((value) => {
-                            const id = types.size.find((element) => element.name === value)._id;
-                            return {
-                                id: id,
-                                type: 'size',
-                                value: value,
-                            };
-                        }),
-                );
-            }
-            if (filter.priceFrom && filter.priceTo) {
-                filterArray = filterArray.concat([
-                    {
-                        id: 'priceId',
-                        type: 'price',
-                        value: {
-                            priceFrom: filter.priceFrom,
-                            priceTo: filter.priceTo,
-                        },
-                    },
-                ]);
-            } else {
-                if (filter.priceFrom) {
-                    filterArray = filterArray.concat([
-                        {
-                            id: 'priceId',
-                            type: 'price',
-                            value: {
-                                priceFrom: filter.priceFrom,
-                            },
-                        },
-                    ]);
-                }
-                if (filter.priceTo) {
-                    filterArray = filterArray.concat([
-                        {
-                            id: 'priceId',
-                            type: 'price',
-                            value: {
-                                priceTo: filter.priceTo,
-                            },
-                        },
-                    ]);
-                }
-            }
-            if (filter.name) {
-                filterArray = filterArray.concat([
-                    {
-                        id: 'name',
-                        type: 'name',
-                        value: filter.name,
-                    },
-                ]);
-            }
-
-            if (filter.page) {
-                setFilterProduct((prev) => ({ ...prev, search: filterArray, page: parseInt(filter.page) }));
-            } else {
-                setFilterProduct((prev) => ({ ...prev, search: filterArray }));
-            }
+            getFilter(types);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [searchParams]);
+
+    useEffect(() => {
+        getListProduct();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [filterProduct]);
 
     const handleFilterPrice = (e) => {
         e.preventDefault();
@@ -249,14 +284,14 @@ function Products() {
                     return [...prev.entries(), [type, value]];
                 });
             } else if (!searchParams.get(type).includes(value)) {
-                if (type === 'page' || type === 'name') {
+                if (type === 'page' || type === 'name' || type === 'sort') {
                     setSearchParams({ ...Object.fromEntries([...searchParams]), [type]: value });
                 } else {
                     const newValue = searchParams.get(type) + ',' + value;
                     setSearchParams({ ...Object.fromEntries([...searchParams]), [type]: newValue });
                 }
             } else {
-                if (type === 'page' || type === 'name') {
+                if (type === 'page' || type === 'name' || type === 'sort') {
                     setSearchParams({ ...Object.fromEntries([...searchParams]), [type]: value });
                 }
             }
@@ -539,7 +574,16 @@ function Products() {
                                             <div className="sort-item sm:pl-[17px]">
                                                 <div className="relative group">
                                                     <span className="flex items-center cursor-pointer ">
-                                                        Sort by:<span className="mx-[5px]">Default</span>
+                                                        Sort by:
+                                                        <span className="mx-[5px]">
+                                                            {filterProduct.search.find(
+                                                                (element) => element.type === 'sort',
+                                                            )
+                                                                ? filterProduct.search
+                                                                      .find((element) => element.type === 'sort')
+                                                                      .value.replace('sort ', '')
+                                                                : 'default'}
+                                                        </span>
                                                         <FontAwesomeIcon
                                                             icon={faChevronDown}
                                                             className="ml-2 w-[14px] h-[12px]"
@@ -550,6 +594,9 @@ function Products() {
                                                             <button
                                                                 type="button"
                                                                 className="text-[#777777] text-[15px] leading-[24px] transition-all hover:text-[#222222] py-[5px] px-[10px] rounded-[4px]"
+                                                                onClick={() =>
+                                                                    addFilter('sort', 'sort default', 'sort')
+                                                                }
                                                             >
                                                                 Default sorting
                                                             </button>
@@ -558,6 +605,9 @@ function Products() {
                                                             <button
                                                                 type="button"
                                                                 className="text-[#777777] text-[15px] leading-[24px] transition-all hover:text-[#222222] py-[5px] px-[10px] rounded-[4px]"
+                                                                onClick={() =>
+                                                                    addFilter('sort', 'sort popularity', 'sort')
+                                                                }
                                                             >
                                                                 Sort by popularity
                                                             </button>
@@ -566,6 +616,7 @@ function Products() {
                                                             <button
                                                                 type="button"
                                                                 className="text-[#777777] text-[15px] leading-[24px] transition-all hover:text-[#222222] py-[5px] px-[10px] rounded-[4px]"
+                                                                onClick={() => addFilter('sort', 'sort latest', 'sort')}
                                                             >
                                                                 Sort by latest
                                                             </button>
@@ -574,6 +625,13 @@ function Products() {
                                                             <button
                                                                 type="button"
                                                                 className="text-[#777777] text-[15px] leading-[24px] transition-all hover:text-[#222222] py-[5px] px-[10px] rounded-[4px]"
+                                                                onClick={() =>
+                                                                    addFilter(
+                                                                        'sort',
+                                                                        'sort price (low to high)',
+                                                                        'sort',
+                                                                    )
+                                                                }
                                                             >
                                                                 Sort by price: low to high
                                                             </button>
@@ -582,6 +640,13 @@ function Products() {
                                                             <button
                                                                 type="button"
                                                                 className="text-[#777777] text-[15px] leading-[24px] transition-all hover:text-[#222222] py-[5px] px-[10px] rounded-[4px]"
+                                                                onClick={() =>
+                                                                    addFilter(
+                                                                        'sort',
+                                                                        'sort price (high to low)',
+                                                                        'sort',
+                                                                    )
+                                                                }
                                                             >
                                                                 Sort by price: high to low
                                                             </button>
