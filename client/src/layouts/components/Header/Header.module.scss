@@ -40,22 +40,6 @@
     z-index: 99;
 }
 
-.minicart-area:before {
-    content: '';
-    position: fixed;
-    top: 0;
-    left: 0;
-    background-color: transparent;
-    transition: all 0.4s linear;
-}
-
-.minicart-area.active:before {
-    background-color: rgb(17 17 17 / 0.7);
-    z-index: 60;
-    height: 100%;
-    width: 100%;
-}
-
 .minicart-inner {
     width: 410px;
     padding: 20px 40px 0;

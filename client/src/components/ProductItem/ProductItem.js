@@ -2,13 +2,13 @@ import classNames from 'classnames/bind';
 import { Fragment, useContext } from 'react';
 import { QuickViewContext } from '~/pages/Home/Home';
 import { Link } from 'react-router-dom';
-import routes from '~/config/routes';
+import config from '~/config';
 import { HeartIcon, MiniCartIcon, PlusIcon } from '../Icons';
 import styles from './ProductItem.module.scss';
 
 const cx = classNames.bind(styles);
 
-function ProductItem({ data = {} }) {
+function ProductItem({ data = {}, handleAddToCart }) {
     const handleShowQuickView = useContext(QuickViewContext);
 
     return (
@@ -19,7 +19,7 @@ function ProductItem({ data = {} }) {
                     'relative group after:bg-[rgba(0,0,0,.1)] after:absolute after:top-0 after:left-0 after:h-full after:w-full after:opacity-0 after:transition-all after:pointer-events-none hover:after:opacity-100',
                 )}
             >
-                <Link to={routes.products + '/' + data.slug} className="z-[5]">
+                <Link to={config.routes.products + '/' + data.slug} className="z-[5]">
                     {data.saleID && (
                         <Fragment>
                             <span className="bg-[#f14705] text-[14px] text-white block rounded-full absolute top-[15px] left-[15px] w-[45px] h-[45px] leading-[45px] text-center z-[1]">
@@ -40,7 +40,18 @@ function ProductItem({ data = {} }) {
                 <div className="flex justify-center absolute w-full top-1/2 left-auto transform -translate-y-1/2 z-[1]">
                     <button
                         className="bg-white rounded-full flex justify-center items-center text-[21px] w-[45px] h-[45px] leading-[48px] hover:text-primary transition-all opacity-0 invisible ease-in-out transform translate-y-20 duration-[.5s] group-hover:translate-y-0 group-hover:opacity-100 group-hover:visible mr-[15px] group-hover:delay-[0s] "
-                        onClick={() => handleShowQuickView(data)}
+                        onClick={() => {
+                            if (handleShowQuickView) return handleShowQuickView(data);
+                            return handleAddToCart(
+                                data._id,
+                                data.name,
+                                1,
+                                data.price,
+                                data.image,
+                                data.saleID,
+                                data.slug,
+                            );
+                        }}
                     >
                         <PlusIcon width="2.1rem" height="2.1rem" />
                     </button>

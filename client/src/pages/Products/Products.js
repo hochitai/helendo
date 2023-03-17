@@ -16,6 +16,7 @@ import ProductItem from '~/components/ProductItem';
 import Pagination from '~/components/Pagination';
 import request from '~/utils/httpRequest';
 import config from '~/config';
+import { handleAddToCart } from '~/utils/handleLocalStorage';
 
 const cx = classNames.bind(styles);
 
@@ -41,7 +42,6 @@ function Products() {
                 params: filterProduct,
             })
             .then((res) => {
-                console.log(res.data);
                 setListProduct(res.data);
             })
             .catch((error) => {
@@ -714,7 +714,11 @@ function Products() {
                                                 {grid === 3 && (
                                                     <Fragment>
                                                         {listProduct.data.map((product) => (
-                                                            <ProductItem key={product._id} data={product} />
+                                                            <ProductItem
+                                                                key={product._id}
+                                                                data={product}
+                                                                handleAddToCart={handleAddToCart}
+                                                            />
                                                         ))}
                                                     </Fragment>
                                                 )}
@@ -726,7 +730,11 @@ function Products() {
                                                     <Fragment>
                                                         <Fragment>
                                                             {listProduct.data.map((product) => (
-                                                                <ProductItem key={product._id} data={product} />
+                                                                <ProductItem
+                                                                    key={product._id}
+                                                                    data={product}
+                                                                    handleAddToCart={handleAddToCart}
+                                                                />
                                                             ))}
                                                         </Fragment>
                                                     </Fragment>
