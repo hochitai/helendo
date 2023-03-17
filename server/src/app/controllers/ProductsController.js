@@ -19,17 +19,30 @@ class ProductsController {
 
     // [GET] /products/search
     async search(req, res, next) {
-        console.log(req.query);
         const request = req.query;
         const limit = parseInt(request.limit);
         const page = request.page;
         const skip = (page - 1) * limit;
-        console.log(skip);
         const search = request.search;
+        let totalProduct = 0;
         if (search) {
             const cate = search.filter((ele) => ele.type === "cate").map((ele) => ele.id);
             const size = search.filter((ele) => ele.type === "size").map((ele) => ele.id);
             const tag = search.filter((ele) => ele.type === "tag").map((ele) => ele.id);
+
+            const groupCate = [];
+
+            if (cate.length > 0) {
+                groupCate.push({ categoryID: { $in: cate } });
+            }
+
+            if (size.length > 0) {
+                groupCate.push({ sizeID: { $in: size } });
+            }
+
+            if (tag.length > 0) {
+                groupCate.push({ tagID: { $in: tag } });
+            }
 
             const inStock = search.find((ele) => ele.type === "avail" && ele.id === "in-stock")
                 ? { quantity: { $gt: 0 } }
@@ -39,7 +52,7 @@ class ProductsController {
                 : {};
 
             const priceItem = search.find((ele) => ele.type === "price");
-            let price = {};
+            let price = { $gte: 0 };
             if (priceItem) {
                 if (priceItem.value.priceFrom && priceItem.value.priceTo) {
                     price = { $gte: parseInt(priceItem.value.priceFrom), $lte: parseInt(priceItem.value.priceTo) };
@@ -55,8 +68,6 @@ class ProductsController {
 
             const sortItem = search.find((ele) => ele.type === "sort");
             let sort = {};
-
-            console.log(sortItem.value.replace("sort ", ""));
             if (sortItem) {
                 switch (sortItem.value.replace("sort ", "")) {
                     case "popularity":
@@ -65,17 +76,14 @@ class ProductsController {
                         break;
 
                     case "latest":
-                        // Set when set up bill
                         sort = { updatedDate: -1 };
                         break;
 
                     case "price (low to high)":
-                        // Set when set up bill
                         sort = { price: 1 };
                         break;
 
                     case "price (high to low)":
-                        // Set when set up bill
                         sort = { price: -1 };
                         break;
 
@@ -84,42 +92,50 @@ class ProductsController {
                         sort = {};
                 }
             }
+            const nameItem = search.find((ele) => ele.type === "name");
+            let name = "";
+            if (nameItem) {
+                name = nameItem.value;
+            }
 
-            console.log(request);
+            await Product.find({
+                $and: [
+                    { $or: groupCate },
+                    { $or: [inStock, outOfStock] },
+                    { price: price },
+                    { name: { $regex: name, $options: "i" } },
+                ],
+            })
+                .then((product) => {
+                    totalProduct = product.length;
+                })
+                .catch(next);
 
-            // Product.find({
-            //     $or: [{ categoryID: { $in: cate } }, { sizeID: { $in: size } }, { tagID: { $in: tag } }],
-            //     $or: [inStock, outOfStock],
-            //     price: price,
-            // })
-            //     .aggregate([{ $count: "totalProduct" }])
-            //     .skip(skip)
-            //     .limit(limit)
-            //     .sort(sort)
-            //     .then((product) => res.status(200).json(product))
-            //     .catch(next);
-
-            Product.aggregate([
-                {
-                    $match: {
-                        $or: [{ categoryID: { $in: cate } }, { sizeID: { $in: size } }, { tagID: { $in: tag } }],
-                        $or: [inStock, outOfStock],
-                        price: price,
-                    },
-                },
-                { $sort: sort },
-                {
-                    $group: {
-                        _id: 0,
-                        totalProduct: { $sum: 1 },
-                        data: { $push: "$$ROOT" },
-                    },
-                },
-                // { $skip: skip },
-                // { $limit: limit },
-                // { $group: { _id: 1, data: { $push: "$$ROOT" } } },
-            ])
-                .then((product) => res.status(200).json(product))
+            await Product.find({
+                $and: [
+                    { $or: groupCate },
+                    { $or: [inStock, outOfStock] },
+                    { price: price },
+                    { name: { $regex: name, $options: "i" } },
+                ],
+            })
+                .sort(sort)
+                .skip(skip)
+                .limit(limit)
+                .then((product) => res.status(200).json({ totalProduct, data: product }))
+                .catch(next);
+        } else {
+            await Product.find({})
+                .then((product) => {
+                    totalProduct = product.length;
+                })
+                .catch(next);
+            await Product.find({})
+                .skip(skip)
+                .limit(limit)
+                .then((product) => {
+                    res.status(200).json({ totalProduct, data: product });
+                })
                 .catch(next);
         }
     }

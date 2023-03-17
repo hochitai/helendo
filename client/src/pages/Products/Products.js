@@ -29,7 +29,7 @@ function Products() {
     const [types, setTypes] = useState({});
     const [listProduct, setListProduct] = useState(24);
     const [filterProduct, setFilterProduct] = useState({
-        limit: 1,
+        limit: 2,
         page: 1,
         search: [],
     });
@@ -47,6 +47,7 @@ function Products() {
             .catch((error) => {
                 console.log(error);
             });
+        setRightLoading(false);
     };
 
     const getFilter = async (types) => {
@@ -134,6 +135,7 @@ function Products() {
                     }),
             );
         }
+
         if (filter.priceFrom && filter.priceTo) {
             filterArray = filterArray.concat([
                 {
@@ -150,7 +152,7 @@ function Products() {
                 filterArray = filterArray.concat([
                     {
                         id: 'priceId',
-                        type: 'price',
+                        type: 'priceFrom',
                         value: {
                             priceFrom: filter.priceFrom,
                         },
@@ -161,7 +163,7 @@ function Products() {
                 filterArray = filterArray.concat([
                     {
                         id: 'priceId',
-                        type: 'price',
+                        type: 'priceTo',
                         value: {
                             priceTo: filter.priceTo,
                         },
@@ -229,13 +231,13 @@ function Products() {
         const priceTo = e.target.elements.priceTo.value;
         if (!isNaN(priceFrom) && !isNaN(priceTo)) {
             if (!!priceFrom || !!priceTo) {
-                addFilter('price1', priceFrom + ',' + priceTo, 'price');
+                addFilter('price', priceFrom + ',' + priceTo, 'price');
             }
         }
     };
 
     const addFilter = (id, value, type) => {
-        if (type === 'price') {
+        if (type === 'price' || type === 'priceFrom' || type === 'priceTo') {
             const price = value.split(',');
             if (!searchParams.has('priceFrom') && !searchParams.has('priceTo')) {
                 if (!!price[0] && !!price[1]) {
@@ -301,6 +303,12 @@ function Products() {
     const deleteFilter = (type, value) => {
         let typeArr = searchParams.get(type).split(',');
         typeArr = typeArr.filter((val) => {
+            if (type === 'priceFrom') {
+                return val !== value.priceFrom;
+            }
+            if (type === 'priceTo') {
+                return val !== value.priceTo;
+            }
             return val !== value;
         });
         if (typeArr.length > 0) {
@@ -543,7 +551,9 @@ function Products() {
                                                         </span>
                                                     }
                                                 >
-                                                    {item.type === 'price'
+                                                    {item.type === 'price' ||
+                                                    item.type === 'priceFrom' ||
+                                                    item.type === 'priceTo'
                                                         ? item.value.priceFrom && item.value.priceTo
                                                             ? `$${item.value.priceFrom} - $${item.value.priceFrom}`
                                                             : item.value.priceFrom
@@ -569,7 +579,13 @@ function Products() {
                                     <div className="md:col-span-6 sm:col-span-8 col-span-12">
                                         <div className="left-side flex max-xs:flex-col items-center">
                                             <div className="result-count lg:border-black lg:border-r inline-block leading-[12px] lg:pr-[17px]">
-                                                <p className="max-xs:mb-[10px]">Showing 1-6 of 6</p>
+                                                <p className="max-xs:mb-[10px]">
+                                                    Showing {filterProduct.limit * (filterProduct.page - 1) + 1}-
+                                                    {listProduct.totalProduct < filterProduct.limit * filterProduct.page
+                                                        ? listProduct.totalProduct
+                                                        : filterProduct.limit * filterProduct.page}{' '}
+                                                    of {listProduct.totalProduct}
+                                                </p>
                                             </div>
                                             <div className="sort-item sm:pl-[17px]">
                                                 <div className="relative group">
@@ -697,11 +713,9 @@ function Products() {
                                             <div className="grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-x-[25px] gap-y-[40px]">
                                                 {grid === 3 && (
                                                     <Fragment>
-                                                        <ProductItem />
-                                                        <ProductItem />
-                                                        <ProductItem />
-                                                        <ProductItem />
-                                                        <ProductItem />
+                                                        {listProduct.data.map((product) => (
+                                                            <ProductItem key={product._id} data={product} />
+                                                        ))}
                                                     </Fragment>
                                                 )}
                                             </div>
@@ -710,11 +724,11 @@ function Products() {
                                             <div className="grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-x-[25px] gap-y-[40px]">
                                                 {grid === 4 && (
                                                     <Fragment>
-                                                        <ProductItem />
-                                                        <ProductItem />
-                                                        <ProductItem />
-                                                        <ProductItem />
-                                                        <ProductItem />
+                                                        <Fragment>
+                                                            {listProduct.data.map((product) => (
+                                                                <ProductItem key={product._id} data={product} />
+                                                            ))}
+                                                        </Fragment>
                                                     </Fragment>
                                                 )}
                                             </div>
@@ -722,7 +736,7 @@ function Products() {
                                         <Pagination
                                             limit={filterProduct.limit}
                                             page={filterProduct.page}
-                                            total={listProduct}
+                                            total={listProduct.totalProduct}
                                             onChangePage={handlePageChanged}
                                         />{' '}
                                     </Fragment>
