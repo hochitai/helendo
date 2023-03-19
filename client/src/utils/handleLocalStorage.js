@@ -6,7 +6,7 @@ export const handleAddToCart = (id, name, quantity, price, image, saleID, slug) 
     const isExisted = cart.find((ele) => ele.id === id);
     if (isExisted) {
         cart = cart.map((ele) => {
-            if (ele.id === id) return { ...ele, quantity: ele.quantity + quantity };
+            if (ele.id === id) return { ...ele, quantity: parseInt(ele.quantity) + parseInt(quantity) };
             return ele;
         });
     } else {

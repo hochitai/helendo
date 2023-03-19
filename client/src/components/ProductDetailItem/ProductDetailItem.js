@@ -1,4 +1,5 @@
 import { Fragment, useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import classNames from 'classnames/bind';
 
 import Button from '~/components/Button';
@@ -7,25 +8,32 @@ import styles from './ProductDetailItem.module.scss';
 import MoreInfomation from './MoreInfomation';
 import request from '~/utils/httpRequest';
 import config from '~/config';
+import { handleAddToCart } from '~/utils/handleLocalStorage';
 
 const cx = classNames.bind(styles);
 
 function ProductDetailItem({ data }) {
     const [count, setCount] = useState(1);
     const [types, setTypes] = useState({});
+    const navigate = useNavigate();
 
-    const handleDecrease = () => {
+    const handleDecrease = (e) => {
+        e.preventDefault();
+
         if (count > 1) setCount(count - 1);
     };
-    const handleIncrease = () => {
-        setCount(count + 1);
+    const handleIncrease = (e) => {
+        e.preventDefault();
+        if (count < data.price) setCount(count + 1);
     };
 
     const handleChanged = (e) => {
+        e.preventDefault();
         const newCount = e.target.value;
         var regex = /^[0-9]+$/;
         if (newCount.match(regex)) {
-            setCount(parseInt(newCount));
+            if (newCount < data.price) setCount(parseInt(newCount));
+            else setCount(parseInt(data.price));
         }
     };
 
@@ -57,7 +65,12 @@ function ProductDetailItem({ data }) {
         }
     }, [data]);
 
-    console.log(types);
+    const handleAdd = (e) => {
+        e.preventDefault();
+        const quantity = e.target.form.number.value;
+        handleAddToCart(data._id, data.name, quantity, data.price, data.image, data.saleID, data.slug);
+        navigate('/products');
+    };
 
     return (
         <Fragment>
@@ -77,7 +90,7 @@ function ProductDetailItem({ data }) {
                                 </span>
                                 <p className="text-[14px] leading-[24px] lg:max-w-[450px]">{data.feeling}</p>
                             </div>
-                            <div className="flex py-[30px]">
+                            <form className="flex py-[30px]">
                                 <div className="relative inline-flex border border-[#dddddd] mr-[15px] ">
                                     <div className="flex justify-center w-[120px]">
                                         <button className="cursor-pointer translate-x-3/4" onClick={handleDecrease}>
@@ -86,8 +99,8 @@ function ProductDetailItem({ data }) {
                                         <input
                                             className="qty-input outline-none text-center w-[100px] px-[15px] h-[46px] leading-[40px]"
                                             value={count}
+                                            name="number"
                                             onChange={handleChanged}
-                                            onBlur={() => console.log('hello')}
                                         />
                                         <button className="cursor-pointer -translate-x-3/4" onClick={handleIncrease}>
                                             <PlusIcon width="1.6rem" height="1.6rem" />
@@ -95,16 +108,18 @@ function ProductDetailItem({ data }) {
                                     </div>
                                 </div>
                                 <Button
+                                    type="submit"
                                     primary
                                     className="mr-[15px] w-[162px] h-[46px] justify-center"
                                     disabled={data.quantity <= 0}
+                                    onClick={handleAdd}
                                 >
                                     Add to cart
                                 </Button>
                                 <button className="border border-[#dddddd] border-solid text-[20px] w-[46px] h-[46px] leading-[46px] inline-flex justify-center items-center transition-all hover:text-primary ">
                                     <HeartIcon width="2rem" height="2rem" />
                                 </button>
-                            </div>
+                            </form>
                             <div className="other-info">
                                 <div className="sku-wrap font-medium">
                                     <span>SKU:</span>
