@@ -1,15 +1,18 @@
-import { Fragment, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import classNames from 'classnames/bind';
 
 import Button from '~/components/Button';
 import { HeartIcon, MinusIcon, PlusIcon } from '~/components/Icons';
 import styles from './ProductDetailItem.module.scss';
 import MoreInfomation from './MoreInfomation';
+import request from '~/utils/httpRequest';
+import config from '~/config';
 
 const cx = classNames.bind(styles);
 
 function ProductDetailItem({ data }) {
     const [count, setCount] = useState(1);
+    const [types, setTypes] = useState({});
 
     const handleDecrease = () => {
         if (count > 1) setCount(count - 1);
@@ -25,6 +28,36 @@ function ProductDetailItem({ data }) {
             setCount(parseInt(newCount));
         }
     };
+
+    useEffect(() => {
+        let typeData = {};
+        const getTypes = async () => {
+            await request
+                .get(config.apis.searchCate, {
+                    params: {
+                        id: data.categoryID,
+                    },
+                })
+                .then((res) => {
+                    typeData = { ...typeData, cateName: res.data.name };
+                });
+            await request
+                .get(config.apis.searchTag, {
+                    params: {
+                        id: data.tagID,
+                    },
+                })
+                .then((res) => {
+                    typeData = { ...typeData, tagName: res.data.name };
+                });
+            setTypes(typeData);
+        };
+        if (Object.keys(data).length !== 0) {
+            getTypes();
+        }
+    }, [data]);
+
+    console.log(types);
 
     return (
         <Fragment>
@@ -79,11 +112,11 @@ function ProductDetailItem({ data }) {
                                 </div>
                                 <div className="category-wrap font-medium">
                                     <span>Categories:</span>
-                                    <span className="text-[#666666] ml-[5px]">{data.categoryID}</span>
+                                    <span className="text-[#666666] ml-[5px]">{types.cateName}</span>
                                 </div>
                                 <div className="category-wrap font-medium">
                                     <span>Tags:</span>
-                                    <span className="text-[#666666] ml-[5px]">{data.tagID}</span>
+                                    <span className="text-[#666666] ml-[5px]">{types.tagName}</span>
                                 </div>
                             </div>
                         </div>
@@ -94,6 +127,7 @@ function ProductDetailItem({ data }) {
                         weight={data.weight}
                         dimensions={data.dimensions}
                         name={data.name}
+                        image={data.image}
                     />
                 </div>
             </div>

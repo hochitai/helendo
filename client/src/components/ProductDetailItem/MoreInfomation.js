@@ -13,7 +13,7 @@ const OPTION_1 = 'description';
 const OPTION_2 = 'additional';
 const OPTION_3 = 'reviews';
 
-function MoreInfomation({ description, features, weight, dimensions, name }) {
+function MoreInfomation({ description, features, weight, dimensions, name, image }) {
     const [infoProduct, setInfoProduct] = useState(OPTION_1);
     const [values, setValues] = useState({
         star: 5,
@@ -105,7 +105,7 @@ function MoreInfomation({ description, features, weight, dimensions, name }) {
                                     </div>
                                 </div>
                                 <div className="lm:col-span-5 col-span-12">
-                                    <img className="w-full" src={images.product1_585x585} alt="Product" />
+                                    <img className="w-full" src={image} alt="Product" />
                                 </div>
                             </div>
                         </div>
@@ -123,41 +123,11 @@ function MoreInfomation({ description, features, weight, dimensions, name }) {
                                                     </span>
                                                 </li>
                                             ))}
-                                            {/* <li className="mb-[5px] last:mb-0">
-                                                <span className="flex items-center cursor-pointer transition-all hover:text-primary">
-                                                    <RightTriangleIcon className="mr-[10px]" />
-                                                    Fully padded back panel, web hauded handle
-                                                </span>
-                                            </li>
-                                            <li className="mb-[5px] last:mb-0">
-                                                <span className="flex items-center cursor-pointer transition-all hover:text-primary">
-                                                    <RightTriangleIcon className="mr-[10px]" />
-                                                    Internal padded sleeve fits 15″ laptop
-                                                </span>
-                                            </li>
-                                            <li className="mb-[5px] last:mb-0">
-                                                <span className="flex items-center cursor-pointer transition-all hover:text-primary">
-                                                    <RightTriangleIcon className="mr-[10px]" />
-                                                    Internal tricot lined tablet sleeve
-                                                </span>
-                                            </li>
-                                            <li className="mb-[5px] last:mb-0">
-                                                <span className="flex items-center cursor-pointer transition-all hover:text-primary">
-                                                    <RightTriangleIcon className="mr-[10px]" />
-                                                    One large main compartment and zippered
-                                                </span>
-                                            </li>
-                                            <li className="mb-[5px] last:mb-0">
-                                                <span className="flex items-center cursor-pointer transition-all hover:text-primary">
-                                                    <RightTriangleIcon className="mr-[10px]" />
-                                                    Premium cotton canvas fabric
-                                                </span>
-                                            </li> */}
                                         </ul>
                                     </div>
                                 </div>
                                 <div className="lm:col-span-5 col-span-12">
-                                    <img className="w-full" src={images.product1_585x585} alt="Product" />
+                                    <img className="w-full" src={image} alt="Product" />
                                 </div>
                             </div>
                         </div>

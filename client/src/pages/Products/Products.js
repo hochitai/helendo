@@ -194,7 +194,7 @@ function Products() {
         if (filter.page) {
             setFilterProduct((prev) => ({ ...prev, search: filterArray, page: parseInt(filter.page) }));
         } else {
-            setFilterProduct((prev) => ({ ...prev, search: filterArray }));
+            setFilterProduct((prev) => ({ ...prev, page: 1, search: filterArray }));
         }
     };
 
@@ -464,7 +464,7 @@ function Products() {
                                                                         updateFilter(size._id, size.name, 'size')
                                                                     }
                                                                 />
-                                                                {size.name} (3)
+                                                                {size.name}
                                                             </label>
                                                         </li>
                                                     ))}
