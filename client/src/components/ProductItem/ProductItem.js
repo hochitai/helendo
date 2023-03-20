@@ -50,6 +50,7 @@ function ProductItem({ data = {}, handleAddToCart }) {
                                 data.image,
                                 data.saleID,
                                 data.slug,
+                                data.quantity,
                             );
                         }}
                     >

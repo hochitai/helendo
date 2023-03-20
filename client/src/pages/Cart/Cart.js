@@ -3,22 +3,49 @@ import classNames from 'classnames/bind';
 
 import Header from '~/layouts/components/Header';
 import Breadcrumb from '~/components/Breadcrumb';
+import { useState, useEffect } from 'react';
 import CartItem from '~/components/CartItem';
 import Button from '~/components/Button';
 import styles from './Cart.module.scss';
 import { ArrowLeftIcon } from '~/components/Icons';
 import routes from '~/config/routes';
+import { handleRemoveItemCart } from '~/utils/handleLocalStorage';
+import DeleteDialog from '~/components/DeleteDialog';
 
 const cx = classNames.bind(styles);
 
 function Cart() {
+    const [cart, setCart] = useState(JSON.parse(localStorage.getItem('cart')) || []);
+    const [isShowDialog, setIsShowDialog] = useState(false);
+    const [cartItemId, setCartItemId] = useState('');
+
+    useEffect(() => {
+        window.addEventListener('storage', () => {
+            setCart(JSON.parse(localStorage.getItem('cart')));
+        });
+    }, []);
+
+    const onCloseDialog = () => {
+        setIsShowDialog(false);
+    };
+
+    const onOpenDialog = (id) => {
+        setIsShowDialog(true);
+        setCartItemId(id);
+    };
+
+    const onAccept = (id) => {
+        setIsShowDialog(false);
+        handleRemoveItemCart(id);
+    };
+
     return (
         <Fragment>
             <Header />
             <Breadcrumb title={'Cart'} />
             <div className={cx('cart border-b border-[#ededed] lg:py-[90px] md:py-[80px] py-[50px]')}>
                 <div className="container mx-auto">
-                    <div className="relative overflow-x-auto">
+                    <div className="relative ">
                         <table className='className="cart-table w-full text-sm text-left'>
                             <thead className="text-[18px] bg-[#f4f5f7]">
                                 <tr>
@@ -48,11 +75,8 @@ function Cart() {
                                     </th>
                                 </tr>
                             </thead>
-                            <CartItem />
-                            <CartItem />
-                            <CartItem />
-                            <CartItem />
-                            <CartItem />
+                            {cart.length > 0 &&
+                                cart.map((ele) => <CartItem key={ele.id} data={ele} onOpenDialog={onOpenDialog} />)}
                         </table>
                     </div>
                     <div className="group-btn flex justify-between pt-[50px]">
@@ -64,11 +88,11 @@ function Cart() {
                         >
                             Continue Shopping
                         </Button>
-                        <div className="btn-wrap">
+                        {/* <div className="btn-wrap">
                             <Button second className="h-[46px] sm:px-[42px] px-[12px] border">
                                 Clear cart
                             </Button>
-                        </div>
+                        </div> */}
                     </div>
                     <div className="cart-info pt-[50px]">
                         <div className="grid grid-cols-12 md:gap-x-[30px] max-lm:gap-y-[30px]">
@@ -95,11 +119,31 @@ function Cart() {
                                         <ul className="content py-[30px]">
                                             <li className="item flex justify-between border-b border-[#cdcdcd] pb-[16px] mb-[17px]">
                                                 <span className="font-bold">Subtotal:</span>
-                                                <span>$602.00</span>
+                                                <span>
+                                                    $
+                                                    {cart
+                                                        .reduce(
+                                                            (accumulator, currentValue) =>
+                                                                accumulator +
+                                                                currentValue.quantity * currentValue.price,
+                                                            0,
+                                                        )
+                                                        .toFixed(2)}
+                                                </span>
                                             </li>
                                             <li className="item flex justify-between">
                                                 <span className="font-bold">Total:</span>
-                                                <span>$602.00</span>
+                                                <span>
+                                                    $
+                                                    {cart
+                                                        .reduce(
+                                                            (accumulator, currentValue) =>
+                                                                accumulator +
+                                                                currentValue.quantity * currentValue.price,
+                                                            0,
+                                                        )
+                                                        .toFixed(2)}
+                                                </span>
                                             </li>
                                         </ul>
                                     </div>
@@ -118,6 +162,7 @@ function Cart() {
                     </div>
                 </div>
             </div>
+            {isShowDialog && <DeleteDialog onClose={onCloseDialog} onAccept={() => onAccept(cartItemId)} />}
         </Fragment>
     );
 }

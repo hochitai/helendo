@@ -68,7 +68,7 @@ function ProductDetailItem({ data }) {
     const handleAdd = (e) => {
         e.preventDefault();
         const quantity = e.target.form.number.value;
-        handleAddToCart(data._id, data.name, quantity, data.price, data.image, data.saleID, data.slug);
+        handleAddToCart(data._id, data.name, quantity, data.price, data.image, data.saleID, data.slug, data.quantity);
         navigate('/products');
     };
 

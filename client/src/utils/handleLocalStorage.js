@@ -1,4 +1,4 @@
-export const handleAddToCart = (id, name, quantity, price, image, saleID, slug) => {
+export const handleAddToCart = (id, name, quantityToAdd, price, image, saleID, slug, totalQuantity) => {
     let cart = [];
     if (localStorage.getItem('cart')) {
         cart = JSON.parse(localStorage.getItem('cart'));
@@ -6,18 +6,19 @@ export const handleAddToCart = (id, name, quantity, price, image, saleID, slug) 
     const isExisted = cart.find((ele) => ele.id === id);
     if (isExisted) {
         cart = cart.map((ele) => {
-            if (ele.id === id) return { ...ele, quantity: parseInt(ele.quantity) + parseInt(quantity) };
+            if (ele.id === id) return { ...ele, quantity: parseInt(ele.quantity) + parseInt(quantityToAdd) };
             return ele;
         });
     } else {
         cart.push({
             id,
             name,
-            quantity,
+            quantity: quantityToAdd,
             price,
             image,
             saleID,
             slug,
+            totalQuantity,
         });
     }
     localStorage.setItem('cart', JSON.stringify(cart));
