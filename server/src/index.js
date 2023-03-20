@@ -1,6 +1,7 @@
 const express = require("express");
 const morgan = require("morgan");
 const cors = require("cors");
+const cookieParser = require("cookie-parser");
 const app = express();
 const port = 3000;
 
@@ -13,6 +14,7 @@ app.use(
 );
 app.use(express.json());
 app.use(cors());
+app.use(cookieParser());
 
 const db = require("./config/db");
 

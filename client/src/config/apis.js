@@ -7,6 +7,7 @@ const apis = {
     login: '/customers/login',
     register: '/customers/register',
     getTypes: '/types',
+    createBill: '/bills/create',
 };
 
 export default apis;

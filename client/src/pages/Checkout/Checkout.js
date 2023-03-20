@@ -1,4 +1,6 @@
-import { Fragment, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import Cookies from 'universal-cookie';
 import classNames from 'classnames/bind';
 
 import Header from '~/layouts/components/Header';
@@ -9,11 +11,17 @@ import { faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 import FormInput from '~/components/FormInput';
 import Button from '~/components/Button';
 import { Link } from 'react-router-dom';
-import routes from '~/config/routes';
+import config from '~/config';
+import request from '~/utils/httpRequest';
 
 const cx = classNames.bind(styles);
 
 function Checkout() {
+    const cookies = new Cookies();
+    const navigate = useNavigate();
+    const [cart, setCart] = useState(JSON.parse(localStorage.getItem('cart')) || []);
+    const [notification, setNotification] = useState('');
+    const [loginResult, setLoginResult] = useState({});
     const [showLogin, setShowLogin] = useState(false);
     const [showCoupon, setShowCoupon] = useState(false);
     const [loginValues, setLoginValues] = useState({
@@ -25,12 +33,22 @@ function Checkout() {
 
     const [billValues, setBillValues] = useState({
         billName: '',
-        streetAddress: '',
-        district: '',
-        city: '',
+        address: '',
         phone: '',
         note: '',
     });
+
+    useEffect(() => {
+        if (cookies.get('info')) {
+            setBillValues((prev) => ({
+                ...prev,
+                billName: cookies.get('info').name,
+                address: cookies.get('info').address,
+                phone: cookies.get('info').phone,
+            }));
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     const inputLogins = [
         {
@@ -38,20 +56,12 @@ function Checkout() {
             name: 'name',
             type: 'text',
             label: 'Username',
-            errorMessage: "Name should be 1-16 characters and shouldn't include any special character!",
-            pattern:
-                '^[a-zA-Z_ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\\s]{1,16}$',
-            required: true,
         },
         {
             id: 2,
             name: 'password',
             type: 'password',
             label: 'Password',
-            errorMessage:
-                'Password should be 8-20 characters and include at least 1 letter, 1 number and 1 special character!',
-            pattern: `^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,20}$`,
-            required: true,
         },
     ];
 
@@ -68,36 +78,16 @@ function Checkout() {
         },
         {
             id: 4,
-            name: 'streetAddress',
+            name: 'address',
             type: 'text',
-            label: 'Street Address',
-            errorMessage: "Street Address should be 4-16 characters and shouldn't include any special character!",
+            label: 'Address',
+            errorMessage: "Address should be 4-16 characters and shouldn't include any special character!",
             pattern:
                 '^[a-zA-Z_ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\\s0-9/]{4,16}$',
             required: true,
         },
         {
             id: 5,
-            name: 'district',
-            type: 'text',
-            label: 'District',
-            errorMessage: "District should be 3-16 characters and shouldn't include any special character!",
-            pattern:
-                '^[a-zA-Z_ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\\s0-9/]{3,16}$',
-            required: true,
-        },
-        {
-            id: 6,
-            name: 'city',
-            type: 'text',
-            label: 'Town / City',
-            errorMessage: "City should be 1-16 characters and shouldn't include any special character!",
-            pattern:
-                '^[a-zA-Z_ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\\s]{1,16}$',
-            required: true,
-        },
-        {
-            id: 7,
             name: 'phone',
             type: 'text',
             label: 'Phone',
@@ -107,24 +97,60 @@ function Checkout() {
         },
     ];
 
-    const onChangeLoginValue = (e) => {
-        setLoginValues({ ...loginValues, [e.target.name]: e.target.value });
-        console.log(e.target.value);
-    };
-
     const onChangeBillValue = (e) => {
         setBillValues({ ...billValues, [e.target.name]: e.target.value });
         console.log(e.target.value);
     };
 
-    const handleLogin = (e) => {
+    const onChangeLoginValue = (e) => {
+        setLoginValues({ ...loginValues, [e.target.name]: e.target.value });
+        console.log(e.target.value);
+    };
+
+    const handleLogin = async (e) => {
         e.preventDefault();
-        console.log('Login');
+        if (loginValues.name && loginValues.password) {
+            await request
+                .post(config.apis.login, {
+                    userName: loginValues.name,
+                    password: loginValues.password,
+                })
+                .then((res) => {
+                    if (res.data.statusId === 0) {
+                        cookies.set('token', res.data.token, { path: '/' });
+                        cookies.set('info', res.data.data, { path: '/' });
+                        setBillValues((prev) => ({
+                            ...prev,
+                            billName: cookies.get('info').name,
+                            address: cookies.get('info').address,
+                            phone: cookies.get('info').phone,
+                        }));
+                    } else {
+                        setLoginResult(res.data);
+                    }
+                })
+                .catch((error) => {
+                    setLoginResult(error.response.data);
+                });
+        }
     };
 
     const handleApplyCoupon = (e) => {
         e.preventDefault();
         console.log('Apply coupon');
+    };
+
+    const handleOrder = async (e) => {
+        e.preventDefault();
+        if (cookies.get('token') && cookies.get('info')) {
+            await request.post(config.apis.createBill, {
+                billValues,
+            });
+
+            // navigate('/');
+        } else {
+            setNotification('Please Login before!!!');
+        }
     };
 
     return (
@@ -136,48 +162,55 @@ function Checkout() {
                     <div className="container mx-auto">
                         <div className="grid grid-cols-12 lg:gap-x-[25px] max-md:gap-y-[30px]">
                             <div className="xl:col-span-7 lg:col-span-6 col-span-12">
-                                <div className="customer-zone flex items-center bg-[#f4f5f7] p-[14px_30px_14px]">
-                                    <div className="icon text-green-500 mr-[10px]">
-                                        <FontAwesomeIcon icon={faCheckCircle} />
-                                    </div>
-                                    <h2 className="title text-[16px] leading-[28px] max-sm:whitespace-nowrap max-sm:text-ellipsis overflow-hidden font-medium">
-                                        Returning customer?
-                                    </h2>
-                                    <Button
-                                        type="button"
-                                        className="ml-[5px] pl-0 transition-all hover:text-primary"
-                                        onClick={() => setShowLogin(!showLogin)}
-                                    >
-                                        Click here to login
-                                    </Button>
-                                </div>
-                                {showLogin && (
-                                    <div className="returning-form-wrap border border-[#dddddd] p-[30px] mt-[30px]">
-                                        <p className="text-[#777777] text-[16px] font-normal mb-[20px]">
-                                            If you have shopped with us before, please enter your details in the boxes
-                                            below. If you are a new customer, please proceed to the Billing &amp;
-                                            Shipping section.
-                                        </p>
-                                        <form className="returning-form">
-                                            {inputLogins.map((input) => (
-                                                <FormInput
-                                                    key={input.id}
-                                                    {...input}
-                                                    className="mb-[20px]"
-                                                    value={loginValues[input.name]}
-                                                    onChange={onChangeLoginValue}
-                                                />
-                                            ))}
+                                {!cookies.get('token') && (
+                                    <Fragment>
+                                        <div className="customer-zone flex items-center bg-[#f4f5f7] p-[14px_30px_14px]">
+                                            <div className="icon text-green-500 mr-[10px]">
+                                                <FontAwesomeIcon icon={faCheckCircle} />
+                                            </div>
+                                            <h2 className="title text-[16px] leading-[28px] max-sm:whitespace-nowrap max-sm:text-ellipsis overflow-hidden font-medium">
+                                                Returning customer?
+                                            </h2>
                                             <Button
-                                                primary
-                                                type="submit"
-                                                onClick={handleLogin}
-                                                className="leading-[38px] text-[15px] h-[40px] px-[32px]"
+                                                type="button"
+                                                className="ml-[5px] pl-0 transition-all hover:text-primary"
+                                                onClick={() => setShowLogin(!showLogin)}
                                             >
-                                                Login
+                                                Click here to login
                                             </Button>
-                                        </form>
-                                    </div>
+                                        </div>
+                                        {showLogin && (
+                                            <div className="returning-form-wrap border border-[#dddddd] p-[30px] mt-[30px]">
+                                                <p className="text-[#777777] text-[16px] font-normal mb-[20px]">
+                                                    If you have shopped with us before, please enter your details in the
+                                                    boxes below. If you are a new customer, please proceed to the
+                                                    Billing &amp; Shipping section.
+                                                </p>
+                                                <form className="returning-form">
+                                                    {inputLogins.map((input) => (
+                                                        <FormInput
+                                                            key={input.id}
+                                                            {...input}
+                                                            className="mb-[20px]"
+                                                            value={loginValues[input.name]}
+                                                            onChange={onChangeLoginValue}
+                                                        />
+                                                    ))}
+                                                    <Button
+                                                        primary
+                                                        type="submit"
+                                                        onClick={handleLogin}
+                                                        className="leading-[38px] text-[15px] h-[40px] px-[32px]"
+                                                    >
+                                                        Login
+                                                    </Button>
+                                                    {loginResult && (
+                                                        <div className="text-red-500 mt-2">{loginResult.message}</div>
+                                                    )}
+                                                </form>
+                                            </div>
+                                        )}
+                                    </Fragment>
                                 )}
                             </div>
                             <div className="xl:col-span-5 lg:col-span-6 col-span-12">
@@ -282,7 +315,7 @@ function Checkout() {
                                                 </tr>
                                             </thead>
                                             <tbody className="border-t border-[#cdcdcd] text-[14px] leading-[20px]">
-                                                <tr className="border-t border-[#cdcdcd]">
+                                                {/* <tr className="border-t border-[#cdcdcd]">
                                                     <th scope="row" className="py-[15px] font-normal whitespace-nowrap">
                                                         Art Deco Home X14
                                                     </th>
@@ -311,18 +344,51 @@ function Checkout() {
                                                         Helen Chair X1
                                                     </th>
                                                     <td className="py-[15px] text-right">$92.00</td>
-                                                </tr>
+                                                </tr> */}
+                                                {cart.map((cartItem) => (
+                                                    <tr key={cartItem.id} className="border-t border-[#cdcdcd]">
+                                                        <th
+                                                            scope="row"
+                                                            className="py-[15px] font-normal whitespace-nowrap"
+                                                        >
+                                                            {cartItem.name} X{cartItem.quantity}
+                                                        </th>
+                                                        <td className="py-[15px] text-right">
+                                                            ${(cartItem.price * cartItem.quantity).toFixed(2)}
+                                                        </td>
+                                                    </tr>
+                                                ))}
                                                 <tr className="border-t border-[#cdcdcd]">
                                                     <th scope="row" className="py-[15px] font-bold whitespace-nowrap">
                                                         Subtotal
                                                     </th>
-                                                    <td className="py-[15px] text-right">$602.00</td>
+                                                    <td className="py-[15px] text-right">
+                                                        $
+                                                        {cart
+                                                            .reduce(
+                                                                (accumulator, currentValue) =>
+                                                                    accumulator +
+                                                                    currentValue.quantity * currentValue.price,
+                                                                0,
+                                                            )
+                                                            .toFixed(2)}
+                                                    </td>
                                                 </tr>
                                                 <tr className="border-t border-[#cdcdcd]">
                                                     <th scope="row" className="py-[15px] font-bold whitespace-nowrap">
                                                         Total
                                                     </th>
-                                                    <td className="py-[15px] text-right">$602.00</td>
+                                                    <td className="py-[15px] text-right">
+                                                        $
+                                                        {cart
+                                                            .reduce(
+                                                                (accumulator, currentValue) =>
+                                                                    accumulator +
+                                                                    currentValue.quantity * currentValue.price,
+                                                                0,
+                                                            )
+                                                            .toFixed(2)}
+                                                    </td>
                                                 </tr>
                                             </tbody>
                                         </table>
@@ -346,7 +412,7 @@ function Checkout() {
                                     <p className="pt-[35px]">
                                         Your personal data will be used to process your order, support your experience
                                         throughout this website, and for other purposes described in our
-                                        <Link className="ml-[5px] font-medium" to={routes.home}>
+                                        <Link className="ml-[5px] font-medium" to={config.routes.home}>
                                             privacy policy.
                                         </Link>
                                     </p>
@@ -355,10 +421,14 @@ function Checkout() {
                                             primary
                                             className="w-full justify-center px-[42px] h-[46px] leading-[44px]"
                                             type="submit"
+                                            onClick={handleOrder}
                                         >
                                             Place Order
                                         </Button>
                                     </div>
+                                    {notification && (
+                                        <div className="text-red-500 text-center p-8 ">{notification}</div>
+                                    )}
                                 </div>
                             </div>
                         </div>

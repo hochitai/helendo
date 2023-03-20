@@ -53,12 +53,18 @@ class CustomersController {
                                         statusId: 0,
                                         message: "Correct!!!",
                                         token,
-                                        data: { name: user.name, avatar: user.avatar, phone: user.phone },
+                                        data: {
+                                            id: user._id,
+                                            name: user.name,
+                                            avatar: user.avatar,
+                                            phone: user.phone,
+                                            address: user.address,
+                                        },
                                     });
                                 } else {
                                     return res
                                         .status(200)
-                                        .json({ statusId: 2, message: "Username or password not true!!!" });
+                                        .json({ statusId: 1, message: "Username or password not true!!!" });
                                 }
                             })
                             .catch((error) => {
@@ -66,11 +72,11 @@ class CustomersController {
                                 return res.status(400).json({ statusId: 2, message: "Error!!!" });
                             });
                     } else {
-                        return res.status(200).json({ statusId: 2, message: "Username or password not true!!!" });
+                        return res.status(200).json({ statusId: 1, message: "Username or password not true!!!" });
                     }
                 })
                 .catch(() => res.status(400).json({ statusId: 2, message: "Login failure!!!" }));
-        } else res.status(200).json({ statusId: 2, message: "Username or password not true!!!" });
+        } else res.status(200).json({ statusId: 1, message: "Username or password not true!!!" });
     }
 }
 

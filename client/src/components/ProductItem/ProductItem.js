@@ -1,10 +1,12 @@
-import classNames from 'classnames/bind';
 import { Fragment, useContext } from 'react';
-import { QuickViewContext } from '~/pages/Home/Home';
 import { Link } from 'react-router-dom';
+import classNames from 'classnames/bind';
+
+import { QuickViewContext } from '~/pages/Home/Home';
 import config from '~/config';
 import { HeartIcon, MiniCartIcon, PlusIcon } from '../Icons';
 import styles from './ProductItem.module.scss';
+import Button from '../Button';
 
 const cx = classNames.bind(styles);
 
@@ -38,8 +40,12 @@ function ProductItem({ data = {}, handleAddToCart }) {
                     <img src={data.image} alt="Product" className="w-full " />
                 </Link>
                 <div className="flex justify-center absolute w-full top-1/2 left-auto transform -translate-y-1/2 z-[1]">
-                    <button
-                        className="bg-white rounded-full flex justify-center items-center text-[21px] w-[45px] h-[45px] leading-[48px] hover:text-primary transition-all opacity-0 invisible ease-in-out transform translate-y-20 duration-[.5s] group-hover:translate-y-0 group-hover:opacity-100 group-hover:visible mr-[15px] group-hover:delay-[0s] "
+                    <Button
+                        text
+                        className={cx(
+                            'bg-white rounded-full flex justify-center items-center text-[21px] w-[45px] h-[45px] leading-[48px] hover:text-primary transition-all opacity-0 invisible ease-in-out transform translate-y-20 duration-[.5s] group-hover:translate-y-0 group-hover:opacity-100 group-hover:visible mr-[15px] group-hover:delay-[0s] ',
+                            { 'bg-slate-100': data.quantity === 0 },
+                        )}
                         onClick={() => {
                             if (handleShowQuickView) return handleShowQuickView(data);
                             return handleAddToCart(
@@ -53,15 +59,22 @@ function ProductItem({ data = {}, handleAddToCart }) {
                                 data.quantity,
                             );
                         }}
+                        disabled={data.quantity === 0}
                     >
                         <PlusIcon width="2.1rem" height="2.1rem" />
-                    </button>
-                    <button className="bg-white rounded-full flex justify-center items-center text-[21px] w-[45px] h-[45px] leading-[48px] hover:text-primary transition-all opacity-0 invisible ease-in-out transform translate-y-20 duration-[.5s] group-hover:translate-y-0 group-hover:opacity-100 group-hover:visible mr-[15px] group-hover:delay-[0.15s] ">
+                    </Button>
+                    <Button
+                        text
+                        className="bg-white rounded-full flex justify-center items-center text-[21px] w-[45px] h-[45px] leading-[48px] hover:text-primary transition-all opacity-0 invisible ease-in-out transform translate-y-20 duration-[.5s] group-hover:translate-y-0 group-hover:opacity-100 group-hover:visible mr-[15px] group-hover:delay-[0.15s] "
+                    >
                         <MiniCartIcon width="2.1rem" height="2.1rem" />
-                    </button>
-                    <button className="bg-white rounded-full flex justify-center items-center text-[21px] w-[45px] h-[45px] leading-[48px] hover:text-primary transition-all opacity-0 invisible ease-in-out transform translate-y-20 duration-[.5s] group-hover:translate-y-0 group-hover:opacity-100 group-hover:visible mr-[15px] group-hover:delay-[0.3s] ">
+                    </Button>
+                    <Button
+                        text
+                        className="bg-white rounded-full flex justify-center items-center text-[21px] w-[45px] h-[45px] leading-[48px] hover:text-primary transition-all opacity-0 invisible ease-in-out transform translate-y-20 duration-[.5s] group-hover:translate-y-0 group-hover:opacity-100 group-hover:visible mr-[15px] group-hover:delay-[0.3s] "
+                    >
                         <HeartIcon width="2.1rem" height="2.1rem" />
-                    </button>
+                    </Button>
                 </div>
             </div>
             <div className="product-content text-center">
