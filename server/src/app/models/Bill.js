@@ -4,9 +4,9 @@ const Schema = mongoose.Schema;
 
 const Bill = new Schema(
     {
-        customerID: { type: Schema.Types.ObjectId, ref: "Customer" },
+        customerID: { type: Schema.Types.ObjectId, ref: "Customer", require: true },
         userID: { type: Schema.Types.ObjectId, ref: "User" },
-        stateID: { type: Schema.Types.ObjectId, ref: "State" },
+        state: { type: String, require: true },
         name: { type: String, require: true },
         address: { type: String, require: true },
         phone: { type: String, require: true },

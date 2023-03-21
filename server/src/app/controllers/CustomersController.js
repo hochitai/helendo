@@ -7,7 +7,6 @@ const Customer = require("../models/Customer");
 
 class CustomersController {
     async register(req, res, next) {
-        res.header("Access-Control-Allow-Origin", "*");
         const data = req.body;
         if (
             validator.isAlphanumeric(data.userName) &&
@@ -37,7 +36,6 @@ class CustomersController {
     }
 
     async login(req, res, next) {
-        // res.header("Access-Control-Allow-Origin", "*");
         const data = req.body;
         console.log(data.password);
         if (validator.isAlphanumeric(data.userName) && validator.isLength(data.userName, { min: 3, max: 16 })) {

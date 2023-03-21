@@ -24,7 +24,7 @@ function ProductDetailItem({ data }) {
     };
     const handleIncrease = (e) => {
         e.preventDefault();
-        if (count < data.price) setCount(count + 1);
+        if (count < data.quantity) setCount(count + 1);
     };
 
     const handleChanged = (e) => {
@@ -32,8 +32,8 @@ function ProductDetailItem({ data }) {
         const newCount = e.target.value;
         var regex = /^[0-9]+$/;
         if (newCount.match(regex)) {
-            if (newCount < data.price) setCount(parseInt(newCount));
-            else setCount(parseInt(data.price));
+            if (newCount < data.quantity) setCount(parseInt(newCount));
+            else setCount(parseInt(data.quantity));
         }
     };
 
