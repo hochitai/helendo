@@ -11,7 +11,8 @@ class BillsController {
     // [POST] create Bill
     async createBill(req, res, next) {
         const token = req.cookies.token;
-        const customerID = req.cookies.info.id;
+        const customer = JSON.parse(req.cookies.info);
+        const customerID = customer.id;
         //Defaul Bill State
         const state = "Waiting to accept";
 
@@ -29,12 +30,11 @@ class BillsController {
                 validator.isLength(billValues.address, { min: 4, max: 200 }) &&
                 validator.isMobilePhone(billValues.phone, "vi-VN")
             ) {
-                console.log("cccc");
-                Customer.updateOne(
-                    { _id: new ObjectId(customerID) },
+                Customer.findByIdAndUpdate(
+                    { _id: customerID },
                     { $set: { name: billValues.name, address: billValues.address, phone: billValues.phone } }
                 )
-                    .then((a) => console.log("customer thanh cong " + a.name))
+                    .then((result) => console.log("Updated customer successful " + result._id))
                     .catch((error) => console.log(error));
                 await Bill.create({ customerID, state, ...billValues, total })
                     .then((result) => {
@@ -50,14 +50,24 @@ class BillsController {
                         BillDetail.create(cart)
                             .then((result) => {
                                 cart.map((cartItem) => {
-                                    Product.updateOne(
-                                        { _id: new ObjectId(cartItem.productID) },
-                                        { $set: { $inc: { quantity: -cartItem.quantity } } }
-                                    );
+                                    Product.findByIdAndUpdate(
+                                        { _id: cartItem.productID },
+                                        { $inc: { quantity: -cartItem.quantity } }
+                                    )
+                                        .then((result) =>
+                                            console.log("Updated quantity of product successful " + result._id)
+                                        )
+                                        .catch((error) => console.log(error));
                                 });
                                 res.status(200).json({
                                     statusId: 0,
                                     message: "Correct!!!",
+                                    data: {
+                                        ...customer,
+                                        name: billValues.name,
+                                        address: billValues.address,
+                                        phone: billValues.phone,
+                                    },
                                 });
                             })
                             .catch((error) => res.status(400).json({ statusId: 2, message: "Error!!!" }));

@@ -170,8 +170,9 @@ function Checkout() {
                         cart,
                         total,
                     })
-                    .then((result) => {
+                    .then((res) => {
                         localStorage.removeItem('cart');
+                        cookies.set('info', res.data.data, { path: '/' });
                         navigate('/products');
                     })
                     .catch((error) => setNotification("Can't order, please order again!!"));

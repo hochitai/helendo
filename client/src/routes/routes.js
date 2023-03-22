@@ -7,6 +7,7 @@ import Cart from '~/pages/Cart';
 import Checkout from '~/pages/Checkout';
 import Blogs from '~/pages/Blogs';
 import BlogDetail from '~/pages/BlogDetail';
+import User from '~/pages/User';
 
 // Public Routes
 const publicRoutes = [
@@ -42,6 +43,10 @@ const publicRoutes = [
     {
         path: config.routes.blogDetail,
         component: BlogDetail,
+    },
+    {
+        path: config.routes.user,
+        component: User,
     },
 ];
 

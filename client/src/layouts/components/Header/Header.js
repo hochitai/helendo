@@ -11,7 +11,7 @@ import MiniCartItem from './MiniCartItem';
 import styles from './Header.module.scss';
 import Button from '~/components/Button';
 import { handleRemoveItemCart } from '~/utils/handleLocalStorage';
-import DeleteDialog from '~/components/DeleteDialog';
+import { DeleteDialog } from '~/components/Dialog';
 
 const cx = classNames.bind(styles);
 

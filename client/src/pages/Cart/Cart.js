@@ -10,7 +10,7 @@ import styles from './Cart.module.scss';
 import { ArrowLeftIcon } from '~/components/Icons';
 import routes from '~/config/routes';
 import { handleRemoveItemCart } from '~/utils/handleLocalStorage';
-import DeleteDialog from '~/components/DeleteDialog';
+import { DeleteDialog } from '~/components/Dialog';
 
 const cx = classNames.bind(styles);
 
