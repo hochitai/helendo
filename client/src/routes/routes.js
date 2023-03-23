@@ -8,6 +8,7 @@ import Checkout from '~/pages/Checkout';
 import Blogs from '~/pages/Blogs';
 import BlogDetail from '~/pages/BlogDetail';
 import User from '~/pages/User';
+import UserLayout from '~/layouts/UserLayout';
 
 // Public Routes
 const publicRoutes = [
@@ -44,13 +45,20 @@ const publicRoutes = [
         path: config.routes.blogDetail,
         component: BlogDetail,
     },
-    {
-        path: config.routes.user,
-        component: User,
-    },
 ];
 
 // Private Routes
-const privateRoutes = [];
+const privateRoutes = [
+    {
+        path: config.routes.user,
+        component: User,
+        layout: UserLayout,
+    },
+    {
+        path: config.routes.userInfo,
+        component: User,
+        layout: UserLayout,
+    },
+];
 
 export { publicRoutes, privateRoutes };

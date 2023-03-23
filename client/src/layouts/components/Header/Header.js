@@ -60,6 +60,12 @@ function Header({ type = 'block' }) {
         handleRemoveItemCart(id);
     };
 
+    const handleLogout = () => {
+        cookies.remove('token');
+        cookies.remove('info');
+        window.location.reload(false);
+    };
+
     return (
         <header
             className={cx('w-full bg-white z-[100]', {
@@ -104,9 +110,26 @@ function Header({ type = 'block' }) {
                     ) : (
                         <Tippy
                             interactive
+                            placement="bottom-end"
                             render={(attrs) => (
-                                <div className={cx('user-info')} tabIndex="-1" {...attrs}>
-                                    {/* Các chức năng của User */}
+                                <div
+                                    className={cx('user-info', 'bg-white w-[160px] rounded-lg shadow-xl ')}
+                                    tabIndex="-1"
+                                    {...attrs}
+                                >
+                                    <ul className="border-[1px] border-slate-200 border-solid rounded-lg transition-all">
+                                        <li className="hover:bg-primary rounded-t-lg">
+                                            <Link to="/user" className="hover:text-white p-4 h-full block">
+                                                Purchase history
+                                            </Link>
+                                        </li>
+                                        <li
+                                            className="p-4 hover:bg-primary hover:text-white transition-all rounded-b-lg"
+                                            onClick={handleLogout}
+                                        >
+                                            Log out
+                                        </li>
+                                    </ul>
                                 </div>
                             )}
                         >

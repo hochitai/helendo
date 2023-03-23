@@ -46,7 +46,7 @@ function Cart() {
             <div className={cx('cart border-b border-[#ededed] lg:py-[90px] md:py-[80px] py-[50px]')}>
                 <div className="container mx-auto">
                     <div className="relative ">
-                        <table className='className="cart-table w-full text-sm text-left'>
+                        <table className="cart-table w-full text-sm text-left">
                             <thead className="text-[18px] bg-[#f4f5f7]">
                                 <tr>
                                     <th
@@ -75,8 +75,10 @@ function Cart() {
                                     </th>
                                 </tr>
                             </thead>
-                            {cart.length > 0 &&
-                                cart.map((ele) => <CartItem key={ele.id} data={ele} onOpenDialog={onOpenDialog} />)}
+                            <tbody>
+                                {cart.length > 0 &&
+                                    cart.map((ele) => <CartItem key={ele.id} data={ele} onOpenDialog={onOpenDialog} />)}
+                            </tbody>
                         </table>
                     </div>
                     <div className="group-btn flex justify-between pt-[50px]">
