@@ -27,27 +27,35 @@ function UserPurchaseDetail() {
             {Object.keys(billDetail).length > 0 && (
                 <Fragment>
                     <div className="mt-8">
-                        <h1 className="text-center">
-                            <b>Infomation</b>
-                        </h1>
-                        <h3 className="mt-4">
-                            <b>BillID:</b> {billDetail.billInfo._id}
-                        </h3>
-                        <h3 className="mt-4">
-                            <b>Date:</b> {format(new Date(billDetail.billInfo.createdAt), 'dd/MM/yyyy')}
-                        </h3>
-                        <h3 className="mt-4">
-                            <b>Name:</b> {billDetail.billInfo.name}
-                        </h3>
-                        <h3 className="mt-4">
-                            <b>Address:</b> {billDetail.billInfo.address}
-                        </h3>
-                        <h3 className="mt-4">
-                            <b>Phone:</b> {billDetail.billInfo.phone}
-                        </h3>
-                        <h3 className="mt-4">
-                            <b>Total:</b> ${billDetail.billInfo.total}
-                        </h3>
+                        <div className="flex items-center mb-10">
+                            <div className="title text-5xl font-medium ">Order Detai</div>
+                            <div className="text-primary ml-8">{billDetail.billInfo._id}</div>
+                        </div>
+                        <div className="flex">
+                            <div className="mr-40">
+                                <div className="flex mt-4 text-[18px]">
+                                    <strong className="mr-4">Name:</strong>
+                                    {billDetail.billInfo.name}
+                                </div>
+                                <div className="flex mt-4 text-[18px]">
+                                    <strong className="mr-4">Address:</strong>
+                                    {billDetail.billInfo.address}
+                                </div>
+                                <div className="flex mt-4 text-[18px]">
+                                    <strong className="mr-4">Phone:</strong>
+                                    {billDetail.billInfo.phone}
+                                </div>
+                            </div>
+                            <div>
+                                <div className="flex mt-4 text-[18px]">
+                                    <strong className="mr-4">Date:</strong>
+                                    {format(new Date(billDetail.billInfo.createdAt), 'dd/MM/yyyy')}
+                                </div>
+                                <div className="flex mt-4 text-[18px]">
+                                    <strong className="mr-4">Total:</strong>${billDetail.billInfo.total}
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <table className="cart-table w-full text-sm text-left my-8">
                         <thead className="text-[18px] bg-[#f4f5f7]">
@@ -86,7 +94,10 @@ function UserPurchaseDetail() {
                                         className={cx('bg-white border-b dark:bg-gray-800 dark:border-gray-700')}
                                     >
                                         <td className="py-[16px] product-name pr-[25px] flex items-center font-medium text-gray-900 dark:text-white whitespace-nowrap">
-                                            <Link className="product-img w-[100px]" to="/products/art-deco-home">
+                                            <Link
+                                                className="product-img w-[100px]"
+                                                to={'/products/' + item.product[0].slug}
+                                            >
                                                 <img
                                                     src={item.product[0].image}
                                                     alt="Art Deco Home"
@@ -96,7 +107,7 @@ function UserPurchaseDetail() {
                                             <h2 className="product-name">
                                                 <Link
                                                     className="text-[18px] transition-all hover:text-primary"
-                                                    to="/products/art-deco-home"
+                                                    to={'/products/' + item.product[0].slug}
                                                 >
                                                     {item.product[0].name}
                                                 </Link>

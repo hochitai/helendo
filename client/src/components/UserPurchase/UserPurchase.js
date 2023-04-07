@@ -29,25 +29,12 @@ function UserPurchase() {
         <table className="cart-table w-full text-sm text-left mt-20">
             <thead className="text-[18px] bg-[#f4f5f7]">
                 <tr>
-                    <th scope="col" className="font-medium product-name py-5">
-                        ID
-                    </th>
-                    <th scope="col" className="font-medium product-price py-5 ">
-                        Date
-                    </th>
-                    <th scope="col" className="font-medium py-5 ">
-                        Info
-                    </th>
-                    <th scope="col" className="font-medium py-5 ">
-                        State
-                    </th>
-                    <th scope="col" className="font-medium py-5 ">
-                        Total
-                    </th>
-                    <th
-                        scope="col"
-                        className="font-medium py-5  absolute overflow-hidden whitespace-nowrap w-[1px] h-[1px]"
-                    ></th>
+                    <th className="font-medium py-5 pl-4 w-1/5">ID</th>
+                    <th className="font-medium py-5 ">Date</th>
+                    <th className="font-medium py-5 w-2/5">Address</th>
+                    <th className="font-medium py-5 ">State</th>
+                    <th className="font-medium py-5 ">Total</th>
+                    <th className="font-medium py-5  absolute overflow-hidden whitespace-nowrap w-[1px] h-[1px]"></th>
                 </tr>
             </thead>
             <tbody>
@@ -57,16 +44,14 @@ function UserPurchase() {
                         className="cursor-pointer hover:bg-slate-50"
                         onClick={() => showDetail(bill._id)}
                     >
-                        <td className="py-4 text-[16px]">{bill._id}</td>
-                        <td className="py-4 text-[16px]">{format(new Date(bill.createdAt), 'dd/MM/yyyy')}</td>
-                        <td className="py-4 text-[16px]">
-                            <h3 className="py-2">Name: {bill.name}</h3>
-                            <h3 className="py-2">Address: {bill.address}</h3>
-                            <h3 className="py-2">Phone: {bill.phone}</h3>
+                        <td className="py-10 text-[16px]">{bill._id}</td>
+                        <td className="py-10 text-[16px] text-blue-500">
+                            {format(new Date(bill.createdAt), 'dd/MM/yyyy')}
                         </td>
-                        <td className="py-4 text-[16px]">{bill.state}</td>
-                        <td className="py-4 text-[16px]">${bill.total.toFixed(2)}</td>
-                        <td className="py-4 text-[24px]">{'>'}</td>
+                        <td className="py-10 text-[16px]">{bill.address}</td>
+                        <td className="py-10 text-[16px]">{bill.state}</td>
+                        <td className="py-10 text-[16px] text-yellow-500">${bill.total.toFixed(2)}</td>
+                        <td className="py-10 text-[24px] font-medium">{'>'}</td>
                     </tr>
                 ))}
             </tbody>

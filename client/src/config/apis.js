@@ -9,6 +9,8 @@ const apis = {
     getTypes: '/types',
     createBill: '/bills/create',
     getBill: '/bills',
+    updateInfo: '/customers/updateInfo',
+    changePassword: '/customers/changePassword',
 };
 
 export default apis;

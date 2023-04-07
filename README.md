@@ -15,10 +15,12 @@
 -   Một số hình ảnh:
 
 1. Home
-   ![exmaple](img/web1.png)
+   ![Home](img/web1.png)
 2. Product
-   ![exmaple](img/web2.png)
+   ![Product](img/web2.png)
 3. Cart
-   ![exmaple](img/web3.png)
+   ![Cart](img/web3.png)
 4. Checkout
-   ![exmaple](img/web4.png)
+   ![Checkout](img/web4.png)
+5. User
+   ![User](img/web5.png)

@@ -3,26 +3,34 @@ import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import UserPurchase from '~/components/UserPurchase';
 import UserPurchaseDetail from '~/components/UserPurchaseDetail';
+import UserInfomation from '~/components/UserInfomation';
+import UserChangePassword from '~/components/UserChangePassword';
 import styles from './User.module.scss';
 
 const cx = classNames.bind(styles);
 
 function User() {
-    const { info } = useParams();
+    const { menu } = useParams();
     let Comp = UserPurchase;
 
-    switch (info) {
+    switch (menu) {
         case 'purchase-history':
             Comp = UserPurchase;
             break;
         case 'purchase-detail':
             Comp = UserPurchaseDetail;
             break;
+        case 'infomation':
+            Comp = UserInfomation;
+            break;
+        case 'change-password':
+            Comp = UserChangePassword;
+            break;
         default: {
-            Comp = UserPurchase;
+            Comp = UserInfomation;
         }
     }
 
-    return <Comp></Comp>;
+    return <Comp />;
 }
 export default User;

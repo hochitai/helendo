@@ -8,7 +8,7 @@ const routes = {
     cart: '/cart',
     checkout: '/checkout',
     user: '/user',
-    userInfo: '/user/:info',
+    userInfo: '/user/:menu',
 };
 
 export default routes;

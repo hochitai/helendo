@@ -15,7 +15,7 @@ import { DeleteDialog } from '~/components/Dialog';
 
 const cx = classNames.bind(styles);
 
-function Header({ type = 'block' }) {
+function Header({ type = 'block', fixed = false }) {
     const cookies = new Cookies();
     const token = cookies.get('token');
     const info = cookies.get('info');
@@ -35,7 +35,7 @@ function Header({ type = 'block' }) {
             }
         };
 
-        window.addEventListener('scroll', toggleVisibility);
+        !fixed && window.addEventListener('scroll', toggleVisibility);
 
         return () => window.removeEventListener('scroll', toggleVisibility);
     }, []);

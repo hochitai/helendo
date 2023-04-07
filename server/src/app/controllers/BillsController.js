@@ -16,29 +16,26 @@ class BillsController {
             jwt.verify(token, process.env.ACCESS_TOKEN_SECREC);
 
             let billInfo;
-            let data = "a";
-            let x = "m";
 
             await Bill.findOne({ _id: id })
-                .then((result) => {
+                .then(async (result) => {
                     console.log(result);
                     billInfo = result;
-                })
-                .catch(() => res.status(400).json({ statusId: 2, message: "Error!!!" }));
-            // res.status(200).json({ billInfo, data: result });
-            await BillDetail.aggregate([
-                {
-                    $lookup: {
-                        from: "products",
-                        localField: "productID",
-                        foreignField: "_id",
-                        as: "product",
-                    },
-                },
-            ])
-                .then((result) => {
-                    console.log(result);
-                    res.status(200).json({ billInfo, data: result });
+                    await BillDetail.aggregate([
+                        {
+                            $lookup: {
+                                from: "products",
+                                localField: "productID",
+                                foreignField: "_id",
+                                as: "product",
+                            },
+                        },
+                    ])
+                        .then((result) => {
+                            console.log(result);
+                            res.status(200).json({ billInfo, data: result });
+                        })
+                        .catch(() => res.status(400).json({ statusId: 2, message: "Error!!!" }));
                 })
                 .catch(() => res.status(400).json({ statusId: 2, message: "Error!!!" }));
         } catch (error) {
