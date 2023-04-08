@@ -8,7 +8,9 @@ import Checkout from '~/pages/Checkout';
 import Blogs from '~/pages/Blogs';
 import BlogDetail from '~/pages/BlogDetail';
 import User from '~/pages/User';
+import Admin from '~/pages/Admin';
 import UserLayout from '~/layouts/UserLayout';
+import AdminLayout from '~/layouts/AdminLayout/AdminLayout';
 
 // Public Routes
 const publicRoutes = [
@@ -44,6 +46,12 @@ const publicRoutes = [
     {
         path: config.routes.blogDetail,
         component: BlogDetail,
+    },
+
+    {
+        path: config.routes.admin,
+        component: Admin,
+        layout: AdminLayout,
     },
 ];
 

@@ -1,12 +1,9 @@
 import { Fragment } from 'react';
-import { useState } from 'react';
-import { Cookies } from 'react-cookie';
 import { NavLink } from 'react-router-dom';
 import classNames from 'classnames/bind';
 import Header from '../components/Header/Header';
 import styles from './UserLayout.module.scss';
 import config from '~/config';
-import { log } from 'util';
 
 const cx = classNames.bind(styles);
 

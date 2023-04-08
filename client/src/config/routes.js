@@ -9,6 +9,7 @@ const routes = {
     checkout: '/checkout',
     user: '/user',
     userInfo: '/user/:menu',
+    admin: '/admin',
 };
 
 export default routes;

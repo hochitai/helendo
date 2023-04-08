@@ -9,19 +9,26 @@ const Customer = require("../models/Customer");
 
 class BillsController {
     // [GET] Get Bill by id
-    async getByID(req, res, next) {
+    async getDetailByID(req, res, next) {
         const token = req.cookies.token;
+        const customer = JSON.parse(req.cookies.info);
+        const customerID = customer.id;
         const id = req.params.id;
         try {
             jwt.verify(token, process.env.ACCESS_TOKEN_SECREC);
 
             let billInfo;
 
-            await Bill.findOne({ _id: id })
+            await Bill.findOne({ _id: id, userID: customerID })
                 .then(async (result) => {
                     console.log(result);
                     billInfo = result;
                     await BillDetail.aggregate([
+                        {
+                            $match: {
+                                billID: billInfo._id,
+                            },
+                        },
                         {
                             $lookup: {
                                 from: "products",
@@ -44,11 +51,13 @@ class BillsController {
     }
 
     // [GET] Get all Bill
-    async getAll(req, res, next) {
+    async getByID(req, res, next) {
         const token = req.cookies.token;
+        const customer = JSON.parse(req.cookies.info);
+        const customerID = customer.id;
         try {
             jwt.verify(token, process.env.ACCESS_TOKEN_SECREC);
-            await Bill.find({})
+            await Bill.find({ _id: customerID })
                 .then((result) => res.status(200).json(result))
                 .catch(() => res.status(400).json({ statusId: 2, message: "Error!!!" }));
         } catch (error) {

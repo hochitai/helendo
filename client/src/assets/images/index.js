@@ -16,6 +16,7 @@ const images = {
     blog1Big: require('~/assets/images/blog1-big.jpg'),
     columns03: require('~/assets/images/columns-03.png'),
     columns04: require('~/assets/images/columns-04.png'),
+    img1: require('~/assets/images/img1.png'),
 };
 
 export default images;

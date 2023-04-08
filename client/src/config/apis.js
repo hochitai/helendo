@@ -11,6 +11,7 @@ const apis = {
     getBill: '/bills',
     updateInfo: '/customers/updateInfo',
     changePassword: '/customers/changePassword',
+    loginAdmin: '/users/login',
 };
 
 export default apis;

@@ -62,7 +62,7 @@ class CustomersController {
                                 } else {
                                     return res
                                         .status(200)
-                                        .json({ statusId: 1, message: "Username or password not true!!!" });
+                                        .json({ statusId: 1, message: "Username or password is not true!!!" });
                                 }
                             })
                             .catch((error) => {
@@ -70,11 +70,11 @@ class CustomersController {
                                 return res.status(400).json({ statusId: 2, message: "Error!!!" });
                             });
                     } else {
-                        return res.status(200).json({ statusId: 1, message: "Username or password not true!!!" });
+                        return res.status(200).json({ statusId: 1, message: "Username or password is not true!!!" });
                     }
                 })
                 .catch(() => res.status(400).json({ statusId: 2, message: "Login failure!!!" }));
-        } else res.status(200).json({ statusId: 1, message: "Username or password not true!!!" });
+        } else res.status(200).json({ statusId: 1, message: "Username or password is not true!!!" });
     }
 
     async updateInfomation(req, res, next) {
@@ -141,7 +141,7 @@ class CustomersController {
                                     return res.status(400).json({ statusId: 2, message: "Error!!!" });
                                 }
                             } else {
-                                return res.status(200).json({ statusId: 1, message: "Password not true!!!" });
+                                return res.status(200).json({ statusId: 1, message: "Password is not true!!!" });
                             }
                         })
                         .catch((error) => {
