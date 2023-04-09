@@ -1,11 +1,12 @@
-import { Fragment } from 'react';
-import { useState } from 'react';
 import { Cookies } from 'react-cookie';
 import { NavLink } from 'react-router-dom';
 import classNames from 'classnames/bind';
 import styles from './AdminLayout.module.scss';
 import config from '~/config';
 import { LoginAdmin } from '~/pages/Admin/Login';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowRightFromBracket, faBox, faList, faUser } from '@fortawesome/free-solid-svg-icons';
+import images from '~/assets/images';
 
 const cx = classNames.bind(styles);
 
@@ -16,49 +17,54 @@ function AdminLayout({ children }) {
         <LoginAdmin />
     ) : (
         cookies.get('resource') && (
-            <Fragment>
-                <div className={cx('wrapper relative flex')}>
-                    <div className="wrapper w-1/5 ">
-                        <div className="mt-40"></div>
-                        <nav className={cx('flex flex-col ')}>
-                            <NavLink
-                                className={(nav) =>
-                                    cx('nav-item', 'w-full  text-[18px] pl-6 py-4 mb-4 ', {
-                                        'relative after:absolute after:bottom-0 after:left-6 after:w-1/4 after:h-1 after:bg-primary':
-                                            nav.isActive,
-                                    })
-                                }
-                                to={config.routes.Admin + '/infomation'}
-                            >
-                                Infomation
-                            </NavLink>
-                            <NavLink
-                                className={(nav) =>
-                                    cx('nav-item', 'w-full  text-[18px] pl-6 py-4 mb-4 ', {
-                                        'relative after:absolute after:bottom-0 after:left-6 after:w-1/4 after:h-1 after:bg-primary':
-                                            nav.isActive,
-                                    })
-                                }
-                                to={config.routes.Admin + '/purchase-history'}
-                            >
-                                Purchase History
-                            </NavLink>
-                            <NavLink
-                                className={(nav) =>
-                                    cx('nav-item', 'w-full  text-[18px] pl-6 py-4 mb-4 ', {
-                                        'relative after:absolute after:bottom-0 after:left-6 after:w-1/4 after:h-1 after:bg-primary':
-                                            nav.isActive,
-                                    })
-                                }
-                                to={config.routes.Admin + '/change-password'}
-                            >
-                                Change Password
-                            </NavLink>
-                        </nav>
-                    </div>
-                    <div className={cx('content w-4/5 mx-20')}>{children}</div>
+            <div className={cx('wrapper relative flex ')}>
+                <div className="wrapper w-[60px] bg-primary h-screen rounded-r-full flex flex-col justify-between">
+                    <nav className={cx('flex flex-col mt-40')}>
+                        <NavLink
+                            className={(nav) =>
+                                cx('nav-item', 'w-full  text-[18px] py-4 mb-4 text-center', {
+                                    'bg-amber-200': nav.isActive,
+                                })
+                            }
+                            to={config.routes.admin + '/order'}
+                        >
+                            <FontAwesomeIcon icon={faList} />
+                        </NavLink>
+                        <NavLink
+                            className={(nav) =>
+                                cx('nav-item', 'w-full  text-[18px] py-4 mb-4 text-center', {
+                                    'bg-amber-200': nav.isActive,
+                                })
+                            }
+                            to={config.routes.admin + '/product'}
+                        >
+                            <FontAwesomeIcon icon={faBox} />
+                        </NavLink>
+                        <NavLink
+                            className={(nav) =>
+                                cx('nav-item', 'w-full  text-[18px] py-4 mb-4 text-center', {
+                                    'bg-amber-200': nav.isActive,
+                                })
+                            }
+                            to={config.routes.admin + '/customer'}
+                        >
+                            <FontAwesomeIcon icon={faUser} />
+                        </NavLink>
+                    </nav>
+                    <button className="w-full text-[18px] py-4 mb-20 text-center ">
+                        <FontAwesomeIcon icon={faArrowRightFromBracket} />
+                    </button>
                 </div>
-            </Fragment>
+                <div className={cx('content flex-1 mx-20 ')}>
+                    <div className="flex justify-end py-5 border-b border-gray-300 mb-4">
+                        <div className="flex items-center">
+                            <p>Teo</p>
+                            <img src={images.avatar} alt="user" className="w-[40px] h-[40px] ml-4 rounded-full" />
+                        </div>
+                    </div>
+                    {children}
+                </div>
+            </div>
         )
     );
 }

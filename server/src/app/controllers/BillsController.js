@@ -8,6 +8,84 @@ const Product = require("../models/Product");
 const Customer = require("../models/Customer");
 
 class BillsController {
+    async getBillByState(req, res, next) {
+        const token = req.cookies.token;
+        const user = req.cookies.resource;
+        const state = req.query.state;
+        console.log(state);
+        try {
+            if (user) {
+                jwt.verify(token, process.env.ACCESS_TOKEN_SECREC);
+                await Bill.find({ state: state })
+                    .sort({ createdAt: -1 })
+                    .then((result) => res.status(200).json(result))
+                    .catch(() => res.status(400).json({ statusId: 2, message: "Error!!!" }));
+            } else {
+                return res.status(400).json({ statusId: 2, message: "Error!!!" });
+            }
+        } catch (error) {
+            return res.status(400).json({ statusId: 2, message: "Error!!!" });
+        }
+    }
+
+    async getAll(req, res, next) {
+        const token = req.cookies.token;
+        const user = req.cookies.resource;
+        try {
+            if (user) {
+                jwt.verify(token, process.env.ACCESS_TOKEN_SECREC);
+                await Bill.find({})
+                    .sort({ createdAt: -1 })
+                    .then((result) => res.status(200).json(result))
+                    .catch(() => res.status(400).json({ statusId: 2, message: "Error!!!" }));
+            } else {
+                return res.status(400).json({ statusId: 2, message: "Error!!!" });
+            }
+        } catch (error) {
+            return res.status(400).json({ statusId: 2, message: "Error!!!" });
+        }
+    }
+
+    async getDetailByIDofCustomer(req, res, next) {
+        const token = req.cookies.token;
+        const id = req.params.id;
+        const customerID = req.params.customerID;
+        try {
+            jwt.verify(token, process.env.ACCESS_TOKEN_SECREC);
+
+            let billInfo;
+
+            await Bill.findOne({ _id: id, customerID: customerID })
+                .then(async (result) => {
+                    console.log(result);
+                    billInfo = result;
+                    await BillDetail.aggregate([
+                        {
+                            $match: {
+                                billID: billInfo._id,
+                            },
+                        },
+                        {
+                            $lookup: {
+                                from: "products",
+                                localField: "productID",
+                                foreignField: "_id",
+                                as: "product",
+                            },
+                        },
+                    ])
+                        .then((result) => {
+                            console.log(result);
+                            res.status(200).json({ billInfo, data: result });
+                        })
+                        .catch(() => res.status(400).json({ statusId: 2, message: "Error!!!" }));
+                })
+                .catch(() => res.status(400).json({ statusId: 2, message: "Error!!!" }));
+        } catch (error) {
+            return res.status(400).json({ statusId: 2, message: "Error!!!" });
+        }
+    }
+
     // [GET] Get Bill by id
     async getDetailByID(req, res, next) {
         const token = req.cookies.token;
@@ -19,7 +97,7 @@ class BillsController {
 
             let billInfo;
 
-            await Bill.findOne({ _id: id, userID: customerID })
+            await Bill.findOne({ _id: id, customerID: customerID })
                 .then(async (result) => {
                     console.log(result);
                     billInfo = result;
@@ -55,11 +133,32 @@ class BillsController {
         const token = req.cookies.token;
         const customer = JSON.parse(req.cookies.info);
         const customerID = customer.id;
+
         try {
             jwt.verify(token, process.env.ACCESS_TOKEN_SECREC);
-            await Bill.find({ _id: customerID })
+            await Bill.find({
+                customerID: customerID,
+            })
                 .then((result) => res.status(200).json(result))
                 .catch(() => res.status(400).json({ statusId: 2, message: "Error!!!" }));
+        } catch (error) {
+            return res.status(400).json({ statusId: 2, message: "Error!!!" });
+        }
+    }
+
+    async changeBillState(req, res, next) {
+        const token = req.cookies.token;
+        const request = req.body;
+        const billID = request.billID;
+        const state = request.state;
+        try {
+            jwt.verify(token, process.env.ACCESS_TOKEN_SECREC);
+            Bill.findByIdAndUpdate({ _id: billID }, { $set: { state: state } }).then((result) => {
+                res.status(200).json({
+                    statusId: 0,
+                    message: "Correct!!!",
+                });
+            });
         } catch (error) {
             return res.status(400).json({ statusId: 2, message: "Error!!!" });
         }

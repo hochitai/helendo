@@ -1,10 +1,11 @@
 import classNames from 'classnames/bind';
 
 import styles from './Admin.module.scss';
+import { OrderAdmin } from './Order';
 
 const cx = classNames.bind(styles);
 
 function Admin() {
-    return <h1> Admin</h1>;
+    return <OrderAdmin />;
 }
 export default Admin;

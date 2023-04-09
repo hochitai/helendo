@@ -1,21 +1,26 @@
-import { Link, useSearchParams } from 'react-router-dom';
+import { useSearchParams, useNavigate } from 'react-router-dom';
 import classNames from 'classnames/bind';
 import { format } from 'date-fns';
 import request from '~/utils/httpRequest';
-import styles from './UserPurchaseDetail.module.scss';
+import styles from './OrderDetail.module.scss';
 import { Fragment, useEffect, useState } from 'react';
 import config from '~/config';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faChevronLeft } from '@fortawesome/free-solid-svg-icons';
 
 const cx = classNames.bind(styles);
 
-function UserPurchaseDetail() {
+function OrderDetail() {
+    const navigate = useNavigate();
+
     const [searchParams, setSearchParams] = useSearchParams();
     const [billDetail, setBillDetail] = useState({});
 
     useEffect(() => {
         const id = searchParams.get('id');
+        const customerID = searchParams.get('customerID');
         request
-            .get(config.apis.getBill + '/' + id)
+            .get(config.apis.getBill + '/' + customerID + '/' + id)
             .then((result) => setBillDetail(result.data))
             .catch((error) => console.log(error));
     }, [searchParams]);
@@ -28,6 +33,9 @@ function UserPurchaseDetail() {
                 <Fragment>
                     <div className="mt-8">
                         <div className="flex items-center mb-10">
+                            <button className="text-[20px] mr-10" onClick={() => navigate(-1)}>
+                                <FontAwesomeIcon icon={faChevronLeft} />
+                            </button>
                             <div className="title text-5xl font-medium ">Order Detai</div>
                             <div className="text-primary ml-8">{billDetail.billInfo._id}</div>
                         </div>
@@ -107,23 +115,17 @@ function UserPurchaseDetail() {
                                         className={cx('bg-white border-b dark:bg-gray-800 dark:border-gray-700')}
                                     >
                                         <td className="py-[16px] product-name pr-[25px] flex items-center font-medium text-gray-900 dark:text-white whitespace-nowrap">
-                                            <Link
-                                                className="product-img w-[100px]"
-                                                to={'/products/' + item.product[0].slug}
-                                            >
+                                            <div className="product-img w-[100px]">
                                                 <img
                                                     src={item.product[0].image}
                                                     alt="Art Deco Home"
                                                     className="w-[74px] h-[74px]"
                                                 />
-                                            </Link>
-                                            <h2 className="product-name">
-                                                <Link
-                                                    className="text-[18px] transition-all hover:text-primary"
-                                                    to={'/products/' + item.product[0].slug}
-                                                >
+                                            </div>
+                                            <h2 className="product-name select-none">
+                                                <div className="text-[18px] transition-all hover:text-primary ">
                                                     {item.product[0].name}
-                                                </Link>
+                                                </div>
                                             </h2>
                                         </td>
                                         <td className="py-[16px] text-[16px]">${item.price.toFixed(2)}</td>
@@ -140,4 +142,4 @@ function UserPurchaseDetail() {
     );
 }
 
-export default UserPurchaseDetail;
+export default OrderDetail;

@@ -63,6 +63,7 @@ function Header({ type = 'block', fixed = false }) {
     const handleLogout = () => {
         cookies.remove('token');
         cookies.remove('info');
+        cookies.remove('resource');
         window.location.reload(false);
     };
 

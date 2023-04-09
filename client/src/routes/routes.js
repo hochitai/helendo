@@ -11,6 +11,10 @@ import User from '~/pages/User';
 import Admin from '~/pages/Admin';
 import UserLayout from '~/layouts/UserLayout';
 import AdminLayout from '~/layouts/AdminLayout/AdminLayout';
+import { ProductAdmin } from '~/pages/Admin/Product';
+import { OrderAdmin } from '~/pages/Admin/Order';
+import { CustomerAdmin } from '~/pages/Admin/Customer';
+import { OrderDetailAdmin } from '~/pages/Admin/OrderDetail';
 
 // Public Routes
 const publicRoutes = [
@@ -66,6 +70,26 @@ const privateRoutes = [
         path: config.routes.userInfo,
         component: User,
         layout: UserLayout,
+    },
+    {
+        path: config.routes.orderAdmin,
+        component: OrderAdmin,
+        layout: AdminLayout,
+    },
+    {
+        path: config.routes.orderDetailAdmin,
+        component: OrderDetailAdmin,
+        layout: AdminLayout,
+    },
+    {
+        path: config.routes.productAdmin,
+        component: ProductAdmin,
+        layout: AdminLayout,
+    },
+    {
+        path: config.routes.customerAdmin,
+        component: CustomerAdmin,
+        layout: AdminLayout,
     },
 ];
 

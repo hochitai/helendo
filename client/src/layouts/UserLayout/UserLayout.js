@@ -12,7 +12,7 @@ function UserLayout({ children }) {
         <Fragment>
             <Header fixed />
             <div className={cx('wrapper relative flex')}>
-                <div className="wrapper w-1/5 ">
+                <div className="wrapper w-1/5 ml-40">
                     <div className="mt-40"></div>
                     <nav className={cx('flex flex-col ')}>
                         <NavLink
