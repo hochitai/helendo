@@ -18,7 +18,7 @@ function AdminLayout({ children }) {
     ) : (
         cookies.get('resource') && (
             <div className={cx('wrapper relative flex ')}>
-                <div className="wrapper w-[60px] bg-primary h-screen rounded-r-full flex flex-col justify-between">
+                <div className="wrapper w-[60px] fixed top-0 left-0 bottom-0 bg-primary h-screen rounded-r-full flex flex-col justify-between">
                     <nav className={cx('flex flex-col mt-40')}>
                         <NavLink
                             className={(nav) =>
@@ -26,7 +26,7 @@ function AdminLayout({ children }) {
                                     'bg-amber-200': nav.isActive,
                                 })
                             }
-                            to={config.routes.admin + '/order'}
+                            to={config.routes.orderAdmin}
                         >
                             <FontAwesomeIcon icon={faList} />
                         </NavLink>
@@ -36,7 +36,7 @@ function AdminLayout({ children }) {
                                     'bg-amber-200': nav.isActive,
                                 })
                             }
-                            to={config.routes.admin + '/product'}
+                            to={config.routes.productAdmin}
                         >
                             <FontAwesomeIcon icon={faBox} />
                         </NavLink>
@@ -46,7 +46,7 @@ function AdminLayout({ children }) {
                                     'bg-amber-200': nav.isActive,
                                 })
                             }
-                            to={config.routes.admin + '/customer'}
+                            to={config.routes.customerAdmin}
                         >
                             <FontAwesomeIcon icon={faUser} />
                         </NavLink>
@@ -55,6 +55,7 @@ function AdminLayout({ children }) {
                         <FontAwesomeIcon icon={faArrowRightFromBracket} />
                     </button>
                 </div>
+                <div className="w-[60px]"></div>
                 <div className={cx('content flex-1 mx-20 ')}>
                     <div className="flex justify-end py-5 border-b border-gray-300 mb-4">
                         <div className="flex items-center">

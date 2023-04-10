@@ -10,9 +10,10 @@ const routes = {
     user: '/user',
     userInfo: '/user/:menu',
     admin: '/admin',
-    orderAdmin: '/admin/order',
-    orderDetailAdmin: '/admin/order/order-detail',
-    productAdmin: '/admin/product',
+    orderAdmin: '/admin/orders',
+    orderDetailAdmin: '/admin/orders/order-detail',
+    productAdmin: '/admin/products',
+    productEditAdmin: '/admin/products/edit',
     customerAdmin: '/admin/customer',
 };
 

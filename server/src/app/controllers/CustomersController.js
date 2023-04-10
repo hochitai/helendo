@@ -6,6 +6,7 @@ const saltRounds = 10;
 const Customer = require("../models/Customer");
 
 class CustomersController {
+    // [POST]  /customers/register
     async register(req, res, next) {
         const data = req.body;
         if (
@@ -35,6 +36,7 @@ class CustomersController {
         } else return res.status(200).json({ statusId: 1, message: "Create failure!!!" });
     }
 
+    // [POST]  /customers/login
     async login(req, res, next) {
         const data = req.body;
         console.log(data.password);
@@ -77,6 +79,7 @@ class CustomersController {
         } else res.status(200).json({ statusId: 1, message: "Username or password is not true!!!" });
     }
 
+    // [POST]  /customers/updateInfo
     async updateInfomation(req, res, next) {
         const token = req.cookies.token;
         const customer = JSON.parse(req.cookies.info);
@@ -111,6 +114,7 @@ class CustomersController {
         }
     }
 
+    // [POST]  /customers/changePassword
     async changePassword(req, res, next) {
         const token = req.cookies.token;
         const customer = JSON.parse(req.cookies.info);

@@ -1,3 +1,6 @@
+require("dotenv").config();
+const jwt = require("jsonwebtoken");
+const validator = require("validator");
 const Product = require("../models/Product");
 
 class ProductsController {
@@ -135,6 +138,26 @@ class ProductsController {
                     res.status(200).json({ totalProduct, data: product });
                 })
                 .catch(next);
+        }
+    }
+
+    // [POST] /products/create
+    async create(req, res, next) {
+        const token = req.cookies.token;
+        const user = req.cookies.resource;
+        const product = req.body;
+        console.log(product);
+        try {
+            if (user) {
+                jwt.verify(token, process.env.ACCESS_TOKEN_SECREC);
+                await Product.create(product)
+                    .then((result) => res.status(200).json({ statusId: 0, message: "Created product successful!!!" }))
+                    .catch(() => res.status(400).json({ statusId: 2, message: "Error!!!" }));
+            } else {
+                return res.status(400).json({ statusId: 2, message: "Error!!!" });
+            }
+        } catch (error) {
+            return res.status(400).json({ statusId: 2, message: "Error!!!" });
         }
     }
 }

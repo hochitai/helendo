@@ -25,8 +25,6 @@ function OrderDetail() {
             .catch((error) => console.log(error));
     }, [searchParams]);
 
-    console.log(billDetail);
-
     return (
         <div>
             {Object.keys(billDetail).length > 0 && (

@@ -4,7 +4,7 @@ const Tag = require("../models/Tag");
 const Size = require("../models/Size");
 
 class TypesController {
-    // [GET] cate, tag, size, count product
+    // [GET] /types  - cate, tag, size, count product
     async getAll(req, res, next) {
         const types = {};
         await Category.find({})
@@ -28,6 +28,7 @@ class TypesController {
         res.status(200).json(types);
     }
 
+    // [GET] /types/cate/search
     async searchCate(req, res, next) {
         const id = req.query.id;
         console.log(req.query);
@@ -36,6 +37,7 @@ class TypesController {
             .catch(next);
     }
 
+    // [GET] /types/size/search
     async searchSize(req, res, next) {
         const id = req.query.id;
         await Size.findOne({ _id: id })
@@ -43,6 +45,7 @@ class TypesController {
             .catch(next);
     }
 
+    // [GET] /types/tag/search
     async searchTag(req, res, next) {
         const id = req.query.id;
         console.log(id);

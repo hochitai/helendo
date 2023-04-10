@@ -1,5 +1,4 @@
 require("dotenv").config();
-var ObjectId = require("mongodb").ObjectId;
 const jwt = require("jsonwebtoken");
 const validator = require("validator");
 const Bill = require("../models/Bill");
@@ -8,6 +7,7 @@ const Product = require("../models/Product");
 const Customer = require("../models/Customer");
 
 class BillsController {
+    // [GET] /bills/state
     async getBillByState(req, res, next) {
         const token = req.cookies.token;
         const user = req.cookies.resource;
@@ -28,6 +28,7 @@ class BillsController {
         }
     }
 
+    // [GET] /bills/all
     async getAll(req, res, next) {
         const token = req.cookies.token;
         const user = req.cookies.resource;
@@ -46,6 +47,7 @@ class BillsController {
         }
     }
 
+    // [GET] /bills/:customerID/:id
     async getDetailByIDofCustomer(req, res, next) {
         const token = req.cookies.token;
         const id = req.params.id;
@@ -86,7 +88,7 @@ class BillsController {
         }
     }
 
-    // [GET] Get Bill by id
+    // [GET] /bills/:id
     async getDetailByID(req, res, next) {
         const token = req.cookies.token;
         const customer = JSON.parse(req.cookies.info);
@@ -128,7 +130,7 @@ class BillsController {
         }
     }
 
-    // [GET] Get all Bill
+    // [GET] /bills
     async getByID(req, res, next) {
         const token = req.cookies.token;
         const customer = JSON.parse(req.cookies.info);
@@ -146,6 +148,7 @@ class BillsController {
         }
     }
 
+    // [POST] /bills/changeState
     async changeBillState(req, res, next) {
         const token = req.cookies.token;
         const request = req.body;
@@ -164,7 +167,7 @@ class BillsController {
         }
     }
 
-    // [POST] create Bill
+    // [POST]  /bills/create
     async createBill(req, res, next) {
         const token = req.cookies.token;
         const customer = JSON.parse(req.cookies.info);

@@ -1,6 +1,8 @@
 const apis = {
     getAllProducts: '/products',
     searchProducts: '/products/search',
+    createProduct: '/products/create',
+    updateProduct: '/products/update',
     searchCate: '/types/cate/search',
     searchTag: '/types/tag/search',
     searchSize: '/types/size/search',

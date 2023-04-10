@@ -7,8 +7,10 @@ const User = require("../models/User");
 const UserPermissionResource = require("../models/UserPermissionResource");
 
 class UsersController {
+    // [POST] /users/register
     async register(req, res, next) {}
 
+    // [POST] /users/login
     async login(req, res, next) {
         const data = req.body;
         console.log(data.password);
