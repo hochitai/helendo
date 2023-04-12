@@ -22,5 +22,17 @@
    ![Cart](img/web3.png)
 4. Checkout
    ![Checkout](img/web4.png)
-5. User
-   ![User](img/web5.png)
+5. Login user
+   ![Login user](img/web5.png)
+6. Register user
+   ![Register user](img/web6.png)
+7. User
+   ![User](img/web7.png)
+8. Login manage
+   ![Login manage](img/web8.png)
+9. Manage bill
+   ![Manage bill](img/web9.png)
+10. Manage product
+    ![Manage product](img/web10.png)
+11. Manage customer
+    ![Manage customer](img/web11.png)

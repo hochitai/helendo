@@ -22,7 +22,7 @@ function Login() {
     return (
         <Fragment>
             <div className="flex justify-between items-center">
-                <h1>Product</h1>
+                <h1>Customer</h1>
             </div>
             <table className="cart-table w-full text-sm text-left my-8">
                 <thead className="text-[18px] bg-[#f4f5f7]">
