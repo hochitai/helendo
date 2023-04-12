@@ -8,6 +8,7 @@ const apis = {
     searchSize: '/types/size/search',
     login: '/customers/login',
     register: '/customers/register',
+    getAllCustomer: '/customers',
     getTypes: '/types',
     createBill: '/bills/create',
     getBill: '/bills',

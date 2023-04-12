@@ -160,6 +160,37 @@ class ProductsController {
             return res.status(400).json({ statusId: 2, message: "Error!!!" });
         }
     }
+
+    // [POST] /products/update
+    async update(req, res, next) {
+        const token = req.cookies.token;
+        const user = req.cookies.resource;
+        const product = req.body;
+        console.log(product);
+        try {
+            if (user) {
+                jwt.verify(token, process.env.ACCESS_TOKEN_SECREC);
+                await Product.findByIdAndUpdate(
+                    { _id: product._id },
+                    {
+                        $set: {
+                            name: product.name,
+                            price: product.price,
+                            categoryID: product.categoryID,
+                            sizeID: product.sizeID,
+                            tagID: product.tagID,
+                        },
+                    }
+                )
+                    .then((result) => res.status(200).json({ statusId: 0, message: "Updated product successful!!!" }))
+                    .catch(() => res.status(400).json({ statusId: 2, message: "Error!!!" }));
+            } else {
+                return res.status(400).json({ statusId: 2, message: "Error!!!" });
+            }
+        } catch (error) {
+            return res.status(400).json({ statusId: 2, message: "Error!!!" });
+        }
+    }
 }
 
 module.exports = new ProductsController();

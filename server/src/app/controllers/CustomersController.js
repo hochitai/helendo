@@ -160,6 +160,26 @@ class CustomersController {
             return res.status(400).json({ statusId: 2, message: "Error!!!" });
         }
     }
+
+    // [GET] /customer/
+    async getAll(req, res, next) {
+        const token = req.cookies.token;
+        const user = req.cookies.resource;
+        try {
+            if (user) {
+                jwt.verify(token, process.env.ACCESS_TOKEN_SECREC);
+                await Customer.find({})
+                    .then((result) =>
+                        res.status(200).json({ statusId: 0, message: "Created product successful!!!", data: result })
+                    )
+                    .catch(() => res.status(400).json({ statusId: 2, message: "Error!!!" }));
+            } else {
+                return res.status(400).json({ statusId: 2, message: "Error!!!" });
+            }
+        } catch (error) {
+            return res.status(400).json({ statusId: 2, message: "Error!!!" });
+        }
+    }
 }
 
 module.exports = new CustomersController();
