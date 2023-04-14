@@ -15,6 +15,7 @@ const apis = {
     getAllBill: '/bills/all',
     getBillByState: '/bills/state',
     changeBillState: '/bills/changeState',
+    getStatisticOfYear: '/bills/statistic',
     updateInfo: '/customers/updateInfo',
     changePassword: '/customers/changePassword',
     loginAdmin: '/users/login',

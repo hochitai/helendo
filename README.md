@@ -36,3 +36,5 @@
     ![Manage product](img/web10.png)
 11. Manage customer
     ![Manage customer](img/web11.png)
+12. Statistic
+    ![Statistic](img/web12.png)

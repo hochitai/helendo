@@ -7,6 +7,32 @@ const Product = require("../models/Product");
 const Customer = require("../models/Customer");
 
 class BillsController {
+    //  [GET] /bills/statistic
+    getStatisticOfYear(req, res, next) {
+        const token = req.cookies.token;
+        const user = req.cookies.resource;
+        // const year = req.query.year;
+        try {
+            if (user) {
+                jwt.verify(token, process.env.ACCESS_TOKEN_SECREC);
+                Bill.aggregate([
+                    {
+                        $group: {
+                            _id: { ...{ month: { $month: "$updatedAt" } }, ...{ year: { $year: "$updatedAt" } } },
+                            total: { $sum: "$total" },
+                        },
+                    },
+                ])
+                    .then((result) => res.status(200).json(result))
+                    .catch((error) => res.status(400).json({ statusId: 2, message: "Error!!!" }));
+            } else {
+                return res.status(400).json({ statusId: 2, message: "Error!!!" });
+            }
+        } catch (error) {
+            return res.status(400).json({ statusId: 2, message: "Error!!!" });
+        }
+    }
+
     // [GET] /bills/state
     async getBillByState(req, res, next) {
         const token = req.cookies.token;

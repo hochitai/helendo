@@ -5,7 +5,7 @@ import styles from './AdminLayout.module.scss';
 import config from '~/config';
 import { LoginAdmin } from '~/pages/Admin/Login';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowRightFromBracket, faBox, faList, faUser } from '@fortawesome/free-solid-svg-icons';
+import { faArrowRightFromBracket, faBox, faHome, faList, faUser } from '@fortawesome/free-solid-svg-icons';
 import images from '~/assets/images';
 
 const cx = classNames.bind(styles);
@@ -20,6 +20,16 @@ function AdminLayout({ children }) {
             <div className={cx('wrapper relative flex ')}>
                 <div className="wrapper w-[60px] fixed top-0 left-0 bottom-0 bg-primary h-screen rounded-r-full flex flex-col justify-between">
                     <nav className={cx('flex flex-col mt-40')}>
+                        <NavLink
+                            className={(nav) =>
+                                cx('nav-item', 'w-full  text-[18px] py-4 mb-4 text-center', {
+                                    'bg-amber-200': nav.isActive,
+                                })
+                            }
+                            to={config.routes.admin + '/'}
+                        >
+                            <FontAwesomeIcon icon={faHome} />
+                        </NavLink>
                         <NavLink
                             className={(nav) =>
                                 cx('nav-item', 'w-full  text-[18px] py-4 mb-4 text-center', {
