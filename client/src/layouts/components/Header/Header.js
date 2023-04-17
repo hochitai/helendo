@@ -2,7 +2,6 @@ import { useState, useEffect, Fragment } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import Cookies from 'universal-cookie';
 import classNames from 'classnames/bind';
-import Tippy from '@tippyjs/react/headless';
 
 import routes from '~/config/routes';
 import images from '~/assets/images';
@@ -12,6 +11,7 @@ import styles from './Header.module.scss';
 import Button from '~/components/Button';
 import { handleRemoveItemCart } from '~/utils/handleLocalStorage';
 import { DeleteDialog } from '~/components/Dialog';
+import config from '~/config';
 
 const cx = classNames.bind(styles);
 
@@ -109,39 +109,46 @@ function Header({ type = 'block', fixed = false }) {
                             <UserIcon />
                         </Link>
                     ) : (
-                        <Tippy
-                            interactive
-                            placement="bottom-end"
-                            render={(attrs) => (
-                                <div
-                                    className={cx('user-info', 'bg-white w-[160px] rounded-lg shadow-xl ')}
-                                    tabIndex="-1"
-                                    {...attrs}
+                        <button className="relative group">
+                            <img
+                                src={info.avatar || images.avatar}
+                                alt="avatar"
+                                className="object-cover w-12 h-12 rounded-full shadow border border-solid border-slate-300"
+                            />
+
+                            <ul className="border-[1px] border-slate-200 border-solid bg-white w-[160px] rounded-lg shadow-xl absolute -bottom-[160px] right-[10px] scale-0 origin-top-right transition-all  group-hover:scale-100 z-50">
+                                <li className="hover:bg-primary rounded-t-lg">
+                                    <Link
+                                        to={config.routes.user + '/infomation'}
+                                        className="hover:text-white p-4 h-full block"
+                                    >
+                                        Infomation
+                                    </Link>
+                                </li>
+                                <li className="hover:bg-primary rounded-t-lg">
+                                    <Link
+                                        to={config.routes.user + '/purchase-history'}
+                                        className="hover:text-white p-4 h-full block"
+                                    >
+                                        Purchase history
+                                    </Link>
+                                </li>
+                                <li className="hover:bg-primary rounded-t-lg">
+                                    <Link
+                                        to={config.routes.user + '/change-password'}
+                                        className="hover:text-white p-4 h-full block"
+                                    >
+                                        Change password
+                                    </Link>
+                                </li>
+                                <li
+                                    className="p-4 hover:bg-primary hover:text-white transition-all rounded-b-lg"
+                                    onClick={handleLogout}
                                 >
-                                    <ul className="border-[1px] border-slate-200 border-solid rounded-lg transition-all">
-                                        <li className="hover:bg-primary rounded-t-lg">
-                                            <Link to="/user" className="hover:text-white p-4 h-full block">
-                                                Purchase history
-                                            </Link>
-                                        </li>
-                                        <li
-                                            className="p-4 hover:bg-primary hover:text-white transition-all rounded-b-lg"
-                                            onClick={handleLogout}
-                                        >
-                                            Log out
-                                        </li>
-                                    </ul>
-                                </div>
-                            )}
-                        >
-                            <button>
-                                <img
-                                    src={info.avatar || images.avatar}
-                                    alt="avatar"
-                                    className="object-cover w-12 h-12 rounded-full shadow border border-solid border-slate-300"
-                                />
-                            </button>
-                        </Tippy>
+                                    Log out
+                                </li>
+                            </ul>
+                        </button>
                     )}
                 </div>
                 <div className={cx('minicart-area', { active: showCart })}>

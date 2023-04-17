@@ -13,6 +13,8 @@ import Button from '~/components/Button';
 import { Link } from 'react-router-dom';
 import config from '~/config';
 import request from '~/utils/httpRequest';
+import { is } from 'date-fns/locale';
+import { SuccessDialog } from '~/components/Dialog';
 
 const cx = classNames.bind(styles);
 
@@ -20,6 +22,7 @@ function Checkout() {
     const cookies = new Cookies();
     const navigate = useNavigate();
     const cart = JSON.parse(localStorage.getItem('cart')) || [];
+    const [isShowDialog, setIsShowDialog] = useState(false);
     const [notification, setNotification] = useState('');
     const [loginResult, setLoginResult] = useState({});
     const [showLogin, setShowLogin] = useState(false);
@@ -156,6 +159,11 @@ function Checkout() {
         console.log('Apply coupon');
     };
 
+    const onAccept = () => {
+        setIsShowDialog(false);
+        navigate('/products');
+    };
+
     const handleOrder = async (e) => {
         e.preventDefault();
         if (cookies.get('token') && cookies.get('info')) {
@@ -173,7 +181,7 @@ function Checkout() {
                     .then((res) => {
                         localStorage.removeItem('cart');
                         cookies.set('info', res.data.data, { path: '/' });
-                        navigate('/products');
+                        setIsShowDialog(true);
                     })
                     .catch((error) => setNotification("Can't order, please order again!!"));
             } else {
@@ -486,6 +494,7 @@ function Checkout() {
                     </div>
                 )}
             </div>
+            {isShowDialog && <SuccessDialog title="Order successfully" onAccept={onAccept} />}
         </Fragment>
     );
 }
