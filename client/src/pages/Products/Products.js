@@ -28,7 +28,7 @@ function Products() {
     const [rightLoading, setRightLoading] = useState(true);
     const [searchParams, setSearchParams] = useSearchParams();
     const [types, setTypes] = useState({});
-    const [listProduct, setListProduct] = useState(24);
+    const [listProduct, setListProduct] = useState({});
     const [filterProduct, setFilterProduct] = useState({
         limit: 2,
         page: 1,
@@ -707,7 +707,7 @@ function Products() {
                                     <div className="w-full p-60 text-center">
                                         <GridLoader color="#DCB14A" />
                                     </div>
-                                ) : (
+                                ) : listProduct.data?.length > 0 ? (
                                     <Fragment>
                                         <div className="grid-content-03 tab-style-common">
                                             <div className="grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-x-[25px] gap-y-[40px]">
@@ -748,6 +748,10 @@ function Products() {
                                             onChangePage={handlePageChanged}
                                         />{' '}
                                     </Fragment>
+                                ) : (
+                                    <div className="text-center w-full">
+                                        <div className="text-5xl ">No product</div>
+                                    </div>
                                 )}
                             </div>
                         </div>
