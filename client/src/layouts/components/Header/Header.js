@@ -109,40 +109,33 @@ function Header({ type = 'block', fixed = false }) {
                             <UserIcon />
                         </Link>
                     ) : (
-                        <button className="relative group">
+                        <button className="relative pl-4 group after:absolute after:right-0 after:-bottom-[6px] after:transparent after:w-[100px] after:h-[8px]">
                             <img
                                 src={info.avatar || images.avatar}
                                 alt="avatar"
                                 className="object-cover w-12 h-12 rounded-full shadow border border-solid border-slate-300"
                             />
 
-                            <ul className="border-[1px] border-slate-200 border-solid bg-white w-[160px] rounded-lg shadow-xl absolute -bottom-[160px] right-[10px] scale-0 origin-top-right transition-all  group-hover:scale-100 z-50">
-                                <li className="hover:bg-primary rounded-t-lg">
+                            <ul className="pt-[10px] border-[1px] border-slate-200 border-solid bg-white w-[160px] rounded-lg shadow-xl absolute top-[36px] right-[10px] scale-0 origin-top-right transition-all  group-hover:scale-100 z-50">
+                                <li className="">
                                     <Link
-                                        to={config.routes.user + '/infomation'}
-                                        className="hover:text-white p-4 h-full block"
+                                        to={config.routes.user}
+                                        className="py-2 mb-2 font-medium h-full block border-b cursor-none"
                                     >
-                                        Infomation
+                                        User
                                     </Link>
                                 </li>
-                                <li className="hover:bg-primary rounded-t-lg">
+                                <li className="hover:bg-primary">
                                     <Link
-                                        to={config.routes.user + '/purchase-history'}
-                                        className="hover:text-white p-4 h-full block"
+                                        to={config.routes.user}
+                                        className="hover:text-white p-4 text-[14px] h-full block"
                                     >
-                                        Purchase history
+                                        Account settings
                                     </Link>
                                 </li>
-                                <li className="hover:bg-primary rounded-t-lg">
-                                    <Link
-                                        to={config.routes.user + '/change-password'}
-                                        className="hover:text-white p-4 h-full block"
-                                    >
-                                        Change password
-                                    </Link>
-                                </li>
+
                                 <li
-                                    className="p-4 hover:bg-primary hover:text-white transition-all rounded-b-lg"
+                                    className="p-4  text-[14px] hover:bg-primary hover:text-white transition-all rounded-b-lg"
                                     onClick={handleLogout}
                                 >
                                     Log out

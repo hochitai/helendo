@@ -65,12 +65,6 @@ const privateRoutes = [
     {
         path: config.routes.user,
         component: User,
-        layout: UserLayout,
-    },
-    {
-        path: config.routes.userInfo,
-        component: User,
-        layout: UserLayout,
     },
     {
         path: config.routes.orderAdmin,

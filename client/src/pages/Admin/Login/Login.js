@@ -58,7 +58,7 @@ function Login() {
         <div className="bg-slate-200 fixed inset-0 flex justify-center items-center">
             <div className="relative flex w-[800px] h-[500px] bg-white rounded-3xl overflow-hidden">
                 <div className="login-image absolute flex-1 -left-1/3 rotate-12 -top-1/4 shadow-2xl">
-                    <img src={images.img1} alt="login" className="" />
+                    <img src={images.bgLoginAdmin} alt="login" className="" />
                 </div>
                 <div className="flex-1"></div>
                 <div className="flex-1">

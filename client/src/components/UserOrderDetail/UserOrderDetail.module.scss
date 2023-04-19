@@ -1,0 +1,17 @@
+@keyframes scaleIn {
+    from {
+        transform: scale(0);
+        display: none;
+    }
+    to {
+        transform: scale(1);
+        display: block;
+    }
+}
+
+.action-scale-in {
+    animation: scaleIn 0.4s ease-in forwards;
+}
+.action-scale-in-items {
+    animation: scaleIn 0.4s ease-in 0.2s forwards;
+}

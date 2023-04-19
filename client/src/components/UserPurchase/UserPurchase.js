@@ -1,16 +1,15 @@
 import classNames from 'classnames/bind';
 import { useEffect, useState } from 'react';
-import { format } from 'date-fns';
+
 import config from '~/config';
 import request from '~/utils/httpRequest';
 import styles from './UserPurchase.module.scss';
-import { useNavigate } from 'react-router-dom';
+import UserOrderDetail from '../UserOrderDetail/UserOrderDetail';
 
 const cx = classNames.bind(styles);
 
 function UserPurchase() {
     const [listBill, setListBill] = useState([]);
-    const navigate = useNavigate();
 
     useEffect(() => {
         request
@@ -21,41 +20,31 @@ function UserPurchase() {
             .catch((error) => console.log(error));
     }, []);
 
-    const showDetail = (id) => {
-        navigate(config.routes.user + '/purchase-detail?id=' + id);
-    };
-
     return (
-        <table className="cart-table w-full text-sm text-left mt-20">
-            <thead className="text-[18px] bg-[#f4f5f7]">
-                <tr>
-                    <th className="font-medium py-5 pl-4 w-1/5">ID</th>
-                    <th className="font-medium py-5 ">Date</th>
-                    <th className="font-medium py-5 w-2/5">Address</th>
-                    <th className="font-medium py-5 ">State</th>
-                    <th className="font-medium py-5 ">Total</th>
-                    <th className="font-medium py-5  absolute overflow-hidden whitespace-nowrap w-[1px] h-[1px]"></th>
-                </tr>
-            </thead>
-            <tbody>
-                {listBill.map((bill) => (
-                    <tr
-                        key={bill._id}
-                        className="cursor-pointer hover:bg-slate-50"
-                        onClick={() => showDetail(bill._id)}
-                    >
-                        <td className="py-10 text-[16px]">{bill._id}</td>
-                        <td className="py-10 text-[16px] text-blue-500">
-                            {format(new Date(bill.createdAt), 'dd/MM/yyyy')}
-                        </td>
-                        <td className="py-10 text-[16px]">{bill.address}</td>
-                        <td className="py-10 text-[16px]">{bill.state}</td>
-                        <td className="py-10 text-[16px] text-yellow-500">${bill.total.toFixed(2)}</td>
-                        <td className="py-10 text-[24px] font-medium">{'>'}</td>
+        <div className="border p-[30px] rounded-2xl">
+            <div className="mb-[40px]">
+                <h2 className="text-[24px] font-medium">Order history</h2>
+                <h3 className="text-[18px] text-gray-400">Here you can manage your order</h3>
+            </div>
+            <table className="border border-gray-200 w-full rounded-t-2xl">
+                <thead className="text-gray-400 text-left bg-gray-100 rounded-2xl overflow-hidden">
+                    <tr>
+                        <th className="py-6 w-[80px]"></th>
+                        <th className="py-6 w-[140px]">OrderID</th>
+                        <th className="py-6 w-[140px]">Date</th>
+                        <th className="py-6 w-[100px]">Items</th>
+                        <th className="py-6 w-[200px]">Total amound</th>
+                        <th className="py-6 w-[200px]">Status</th>
+                        <th className="py-6 text-center">Action</th>
                     </tr>
-                ))}
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    <UserOrderDetail />
+                    <UserOrderDetail />
+                    <UserOrderDetail />
+                </tbody>
+            </table>
+        </div>
     );
 }
 

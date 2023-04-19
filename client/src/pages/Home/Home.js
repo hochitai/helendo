@@ -133,7 +133,13 @@ function Home() {
                         </div>
                     </div>
                 </div>
-                <CustomCarousel title="Our Blog" quantityInSlide={3} comp={BlogItem} className="py-[90px]" />
+                <CustomCarousel
+                    title="Our Blog"
+                    quantityInSlide={3}
+                    comp={BlogItem}
+                    className="py-[90px]"
+                    data={[1, 2, 3]}
+                />
                 <div className="newsletter-area flex justify-between width-content mx-auto">
                     <div className="section-title pb-[10px] md:mb-0 mb-[30px] relative after:bg-primary after:absolute after:left-0 after:transform after:bottom-0 after:h-[4px] after:w-[70px]">
                         <h2 className="text-[36px] font-medium">Our Newsletter</h2>

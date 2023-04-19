@@ -8,7 +8,6 @@ const routes = {
     cart: '/cart',
     checkout: '/checkout',
     user: '/user',
-    userInfo: '/user/:menu',
     admin: '/admin',
     orderAdmin: '/admin/orders',
     orderDetailAdmin: '/admin/orders/order-detail',

@@ -69,11 +69,14 @@ function UserChangePassword() {
     };
 
     return (
-        <Fragment>
-            <h1 className={cx('mt-32 text-primary')}>Change Password</h1>
+        <div className="border p-[30px] rounded-2xl">
+            <div className="mb-[40px]">
+                <h2 className="text-[24px] font-medium">Change password</h2>
+                <h3 className="text-[18px] text-gray-400">Here you can change your password</h3>
+            </div>
             <form className="ing-form">
                 <div className="flex">
-                    <div className="flex-1 mx-40">
+                    <div className="flex-1">
                         {input.map((input) => (
                             <FormInput
                                 key={input.id}
@@ -86,12 +89,12 @@ function UserChangePassword() {
                         ))}
                     </div>
                 </div>
-                <button className="bg-primary py-4 px-6" onClick={handleChange}>
+                <button className="bg-primary text-white py-4 px-6 rounded-lg hover:opacity-70" onClick={handleChange}>
                     Change
                 </button>
             </form>
-            <div className="mt-20 mr-20 font-medium">{message}</div>
-        </Fragment>
+            <div className="my-6 mr-20 font-medium text-red-400">{message}</div>
+        </div>
     );
 }
 
