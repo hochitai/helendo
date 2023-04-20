@@ -18,6 +18,7 @@ const images = {
     columns04: require('~/assets/images/columns-04.png'),
     bgLoginAdmin: require('~/assets/images/bgLoginAdmin.png'),
     bgUser: require('~/assets/images/bgUser.jpg'),
+    error404: require('~/assets/images/error-404.png'),
 };
 
 export default images;

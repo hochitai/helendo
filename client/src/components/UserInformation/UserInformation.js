@@ -4,12 +4,14 @@ import classNames from 'classnames/bind';
 import FormInput from '../FormInput/FormInput';
 import request from '~/utils/httpRequest';
 import config from '~/config';
+import { SuccessDialog } from '~/components/Dialog';
 import styles from './UserInformation.module.scss';
 
 const cx = classNames.bind(styles);
 
 function UserInformation() {
     const cookies = new Cookies();
+    const [isShowDialog, setIsShowDialog] = useState(false);
     const [message, setMessage] = useState('');
     const [values, setValues] = useState({
         name: cookies.get('info').name || '',
@@ -35,7 +37,7 @@ function UserInformation() {
             label: 'Address',
             errorMessage: "Address should be 4-200 characters and shouldn't include any special character!",
             pattern:
-                '^[a-zA-Z_ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\\s0-9]{4,200}$',
+                '^[a-zA-Z_ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\\s0-9/]{4,200}$',
             required: true,
         },
         {
@@ -56,14 +58,21 @@ function UserInformation() {
 
     const handleSave = (e) => {
         e.preventDefault();
+        const regName =
+            '^[a-zA-Z0-9_ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\\s]{3,16}$';
+        const regAddress =
+            '^[a-zA-Z0-9_ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\\s/]{3,16}$';
+        const regPhone = '(0[3|5|7|8|9])+([0-9]{8})';
         if (
             !(
                 values['name'] === cookies.get('info').name &&
                 values['address'] === cookies.get('info').address &&
                 values['phone'] === cookies.get('info').phone
-            )
+            ) &&
+            values['name'].match(regName) &&
+            values['address'].match(regAddress) &&
+            values['phone'].match(regPhone)
         ) {
-            console.log('Khong giong nhau');
             request
                 .post(config.apis.updateInfo, values)
                 .then((result) => {
@@ -75,7 +84,7 @@ function UserInformation() {
                             address: values['address'],
                             phone: values['phone'],
                         });
-                        setMessage('Changed successfully');
+                        setIsShowDialog(true);
                     } else {
                         setMessage('Changed failure');
                     }
@@ -85,6 +94,10 @@ function UserInformation() {
                     setMessage('Changed failure');
                 });
         }
+    };
+
+    const onAccept = () => {
+        setIsShowDialog(false);
     };
 
     return (
@@ -117,6 +130,7 @@ function UserInformation() {
                 </button>
             </form>
             <div className="my-6 mr-20 font-medium text-red-400">{message}</div>
+            {isShowDialog && <SuccessDialog title="Changed information successfully" onAccept={onAccept} />}
         </div>
     );
 }

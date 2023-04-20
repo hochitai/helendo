@@ -8,6 +8,7 @@ const routes = {
     cart: '/cart',
     checkout: '/checkout',
     user: '/user',
+    error: '/error',
     admin: '/admin',
     orderAdmin: '/admin/orders',
     orderDetailAdmin: '/admin/orders/order-detail',

@@ -117,14 +117,7 @@ function Header({ type = 'block', fixed = false }) {
                             />
 
                             <ul className="pt-[10px] border-[1px] border-slate-200 border-solid bg-white w-[160px] rounded-lg shadow-xl absolute top-[36px] right-[10px] scale-0 origin-top-right transition-all  group-hover:scale-100 z-50">
-                                <li className="">
-                                    <Link
-                                        to={config.routes.user}
-                                        className="py-2 mb-2 font-medium h-full block border-b cursor-none"
-                                    >
-                                        User
-                                    </Link>
-                                </li>
+                                <li className="py-2 mb-2 font-medium h-full block border-b cursor-default">User</li>
                                 <li className="hover:bg-primary">
                                     <Link
                                         to={config.routes.user}

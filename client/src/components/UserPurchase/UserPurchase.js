@@ -3,8 +3,8 @@ import { useEffect, useState } from 'react';
 
 import config from '~/config';
 import request from '~/utils/httpRequest';
-import styles from './UserPurchase.module.scss';
 import UserOrderDetail from '../UserOrderDetail/UserOrderDetail';
+import styles from './UserPurchase.module.scss';
 
 const cx = classNames.bind(styles);
 
@@ -14,8 +14,8 @@ function UserPurchase() {
     useEffect(() => {
         request
             .get(config.apis.getBill)
-            .then((result) => {
-                setListBill(result.data);
+            .then((res) => {
+                setListBill(res.data);
             })
             .catch((error) => console.log(error));
     }, []);
@@ -26,22 +26,35 @@ function UserPurchase() {
                 <h2 className="text-[24px] font-medium">Order history</h2>
                 <h3 className="text-[18px] text-gray-400">Here you can manage your order</h3>
             </div>
+            {/* <div className="flex items-center justify-between mb-8">
+                <div className="flex border flex-1 py-5 px-8 rounded-lg bg-gray-100 outline-none">
+                    <FontAwesomeIcon icon={faSearch} className="text-gray-400" />
+                    <input
+                        type="text"
+                        className="flex-1 mx-4 bg-gray-100 "
+                        placeholder="Search for Order ID"
+                    
+                    />
+                </div>
+                <div className="border py-4 px-6 ml-6 rounded-lg cursor-pointer">
+                    <FontAwesomeIcon icon={faSliders} className="mr-2" />
+                    Filter
+                </div>
+            </div> */}
             <table className="border border-gray-200 w-full rounded-t-2xl">
                 <thead className="text-gray-400 text-left bg-gray-100 rounded-2xl overflow-hidden">
                     <tr>
                         <th className="py-6 w-[80px]"></th>
-                        <th className="py-6 w-[140px]">OrderID</th>
-                        <th className="py-6 w-[140px]">Date</th>
-                        <th className="py-6 w-[100px]">Items</th>
+                        <th className="py-6 w-[180px]">OrderID</th>
+                        <th className="py-6 w-[180px]">Date</th>
+                        <th className="py-6 w-[120px]">Items</th>
                         <th className="py-6 w-[200px]">Total amound</th>
                         <th className="py-6 w-[200px]">Status</th>
                         <th className="py-6 text-center">Action</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <UserOrderDetail />
-                    <UserOrderDetail />
-                    <UserOrderDetail />
+                    {listBill.length > 0 && listBill.map((bill) => <UserOrderDetail key={bill._id} data={bill} />)}
                 </tbody>
             </table>
         </div>

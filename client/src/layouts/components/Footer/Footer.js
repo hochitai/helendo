@@ -67,7 +67,7 @@ function Footer() {
                                     <Button
                                         text
                                         className="font-normal leading-[28px] transition-all hover:text-primary"
-                                        href="/contact"
+                                        // href="/contact"
                                     >
                                         Help &amp; Contact Us
                                     </Button>
@@ -76,7 +76,7 @@ function Footer() {
                                     <Button
                                         text
                                         className="font-normal leading-[28px] transition-all hover:text-primary"
-                                        href="/contact"
+                                        // href="/contact"
                                     >
                                         Returns &amp; Refunds
                                     </Button>
@@ -94,7 +94,7 @@ function Footer() {
                                     <Button
                                         text
                                         className="font-normal leading-[28px] transition-all hover:text-primary"
-                                        href="/contact"
+                                        // href="/contact"
                                     >
                                         Terms &amp; Conditions
                                     </Button>
@@ -110,7 +110,7 @@ function Footer() {
                                     <Button
                                         text
                                         className="font-normal leading-[28px] transition-all hover:text-primary"
-                                        href="/about"
+                                        // href="/about"
                                     >
                                         About Us
                                     </Button>
@@ -119,7 +119,7 @@ function Footer() {
                                     <Button
                                         text
                                         className="font-normal leading-[28px] transition-all hover:text-primary"
-                                        href="/about"
+                                        // href="/about"
                                     >
                                         What We Do
                                     </Button>
@@ -128,7 +128,7 @@ function Footer() {
                                     <Button
                                         text
                                         className="font-normal leading-[28px] transition-all hover:text-primary"
-                                        href="/about"
+                                        // href="/about"
                                     >
                                         FAQ Page
                                     </Button>
@@ -137,7 +137,7 @@ function Footer() {
                                     <Button
                                         text
                                         className="font-normal leading-[28px] transition-all hover:text-primary"
-                                        href="/about"
+                                        // href="/about"
                                     >
                                         Contact Us
                                     </Button>
@@ -169,7 +169,7 @@ function Footer() {
                                     <Button
                                         text
                                         className="font-normal leading-[28px] transition-all hover:text-primary"
-                                        href="/about"
+                                        // href="/about"
                                     >
                                         Term & Condition
                                     </Button>
@@ -178,7 +178,7 @@ function Footer() {
                                     <Button
                                         text
                                         className="font-normal leading-[28px] transition-all hover:text-primary"
-                                        href="/about"
+                                        // href="/about"
                                     >
                                         Policy
                                     </Button>
@@ -187,7 +187,7 @@ function Footer() {
                                     <Button
                                         text
                                         className="font-normal leading-[28px] transition-all hover:text-primary"
-                                        href="/about"
+                                        // href="/about"
                                     >
                                         Map
                                     </Button>
@@ -204,7 +204,7 @@ function Footer() {
                             <Button
                                 text
                                 className="font-normal leading-[28px] transition-all hover:text-primary"
-                                href="/about"
+                                // href="/about"
                             >
                                 Term & Condition
                             </Button>
@@ -213,7 +213,7 @@ function Footer() {
                             <Button
                                 text
                                 className="font-normal leading-[28px] transition-all hover:text-primary"
-                                href="/about"
+                                // href="/about"
                             >
                                 Policy
                             </Button>
@@ -222,7 +222,7 @@ function Footer() {
                             <Button
                                 text
                                 className="font-normal leading-[28px] transition-all hover:text-primary"
-                                href="/about"
+                                // href="/about"
                             >
                                 Map
                             </Button>

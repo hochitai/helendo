@@ -13,7 +13,6 @@ import Button from '~/components/Button';
 import { Link } from 'react-router-dom';
 import config from '~/config';
 import request from '~/utils/httpRequest';
-import { is } from 'date-fns/locale';
 import { SuccessDialog } from '~/components/Dialog';
 
 const cx = classNames.bind(styles);

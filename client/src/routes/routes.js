@@ -9,13 +9,13 @@ import Blogs from '~/pages/Blogs';
 import BlogDetail from '~/pages/BlogDetail';
 import User from '~/pages/User';
 import Admin from '~/pages/Admin';
-import UserLayout from '~/layouts/UserLayout';
 import AdminLayout from '~/layouts/AdminLayout/AdminLayout';
 import { ProductAdmin } from '~/pages/Admin/Product';
 import { OrderAdmin } from '~/pages/Admin/Order';
 import { CustomerAdmin } from '~/pages/Admin/Customer';
 import { OrderDetailAdmin } from '~/pages/Admin/OrderDetail';
 import { ProductDetailAdmin } from '~/pages/Admin/ProductDetail';
+import { ErrorPage } from '~/pages/Error';
 
 // Public Routes
 const publicRoutes = [
@@ -51,6 +51,10 @@ const publicRoutes = [
     {
         path: config.routes.blogDetail,
         component: BlogDetail,
+    },
+    {
+        path: config.routes.error,
+        component: ErrorPage,
     },
 
     {

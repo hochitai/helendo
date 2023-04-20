@@ -1,9 +1,11 @@
 import classNames from 'classnames/bind';
+import { format } from 'date-fns';
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronRight, faEllipsisVertical } from '@fortawesome/free-solid-svg-icons';
 import styles from './UserOrderDetail.module.scss';
 import UserOrderDetailItem from './UserOrderDetailItem';
-import { Fragment, useState } from 'react';
+import { useState } from 'react';
 
 const cx = classNames.bind(styles);
 
@@ -28,17 +30,28 @@ function UserOrderDetail({ data }) {
                         />
                     </span>
                 </td>
-                <td className="py-6">#112234</td>
-                <td className="py-6">09/11/2022</td>
-                <td className="py-6">3</td>
-                <td className="py-6">$752.12</td>
+                <td className="py-6">#{data._id.slice(0, 8)}</td>
+                <td className="py-6">{format(new Date(data.createdAt), 'dd/MM/yyyy')}</td>
+                <td className="py-6">{data.billDetail.length}</td>
+                <td className="py-6">${data.total.toFixed(2)}</td>
                 <td className="py-6">
-                    <span className="py-3 px-4 rounded-full bg-green-200 text-green-600 font-medium">Shipped</span>
+                    <span
+                        className={cx('py-3 px-4 rounded-full font-medium', {
+                            'bg-green-200 text-green-600': data.state === 'Complete',
+                            'bg-yellow-200 text-yellow-600': data.state === 'Waiting to accept',
+                            'bg-red-200 text-red-600': data.state === 'Cancel',
+                            'bg-blue-200 text-blue-600': data.state === 'Shipping',
+                        })}
+                    >
+                        {data.state}
+                    </span>
                 </td>
                 <td className="py-6 text-center">
-                    <button className="border border-solid border-gray-300 hover:bg-gray-100 transition-all px-5 py-3 rounded-lg min-w-fit">
-                        Cancel
-                    </button>
+                    {data.state === 'Waiting to accept' && (
+                        <button className="border border-solid border-gray-300 hover:bg-gray-100 transition-all px-5 py-3 rounded-lg min-w-fit">
+                            Cancel
+                        </button>
+                    )}
                 </td>
             </tr>
 
@@ -62,7 +75,10 @@ function UserOrderDetail({ data }) {
                         </thead>
                         <tbody>
                             <tr>
-                                <td className="p-6 ">12 phuong a tp ho chi minh viet nam</td>
+                                <td className="p-6 ">
+                                    <p>{data.address}</p>
+                                    <p>{data.phone}</p>
+                                </td>
                                 <td className="py-6 ">Same as shipping address</td>
                                 <td className="py-6 ">Express delivery (DHL Express)</td>
                                 <td className="py-6 text-center">VISA xxxx 5642</td>
@@ -94,10 +110,13 @@ function UserOrderDetail({ data }) {
                             </tr>
                         </thead>
                         <tbody>
+                            {data.billDetail.map((item) => (
+                                <UserOrderDetailItem key={item._id} data={item} />
+                            ))}
+
+                            {/* <UserOrderDetailItem />
                             <UserOrderDetailItem />
-                            <UserOrderDetailItem />
-                            <UserOrderDetailItem />
-                            <UserOrderDetailItem />
+                            <UserOrderDetailItem /> */}
                             {/* <tr>
                                     <td className="p-6 flex ">
                                         <Link className="product-img w-[100px]" to={config.routes.products}>

@@ -3,12 +3,14 @@ import classNames from 'classnames/bind';
 import FormInput from '../FormInput/FormInput';
 import request from '~/utils/httpRequest';
 import config from '~/config';
+import { SuccessDialog } from '~/components/Dialog';
 import styles from './UserChangePassword.module.scss';
 
 const cx = classNames.bind(styles);
 
 function UserChangePassword() {
     const [message, setMessage] = useState('');
+    const [isShowDialog, setIsShowDialog] = useState(false);
     const [values, setValues] = useState({
         password: '',
         newPassword: '',
@@ -50,22 +52,32 @@ function UserChangePassword() {
 
     const handleChange = (e) => {
         e.preventDefault();
-        if (!(values['name'] === '' || values['address'] === '' || values['phone'] === '')) {
-            console.log('Khong rong');
+        const regPassword = `^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,20}$`;
+        if (
+            values['password'] !== '' &&
+            values['newPassword'] !== '' &&
+            values['repeatNewPassword'] !== '' &&
+            values['newPassword'].match(regPassword) &&
+            values['password'] !== values['newPassword'] &&
+            values['newPassword'] === values['repeatNewPassword']
+        ) {
             request
                 .post(config.apis.changePassword, values)
                 .then((result) => {
                     if (result.data.statusId === 0) {
-                        setMessage('Changed successfully');
+                        setIsShowDialog(true);
                     } else {
                         setMessage(result.data.message);
                     }
                 })
                 .catch((error) => {
-                    console.log(error);
                     setMessage('Changed failure');
                 });
         }
+    };
+
+    const onAccept = () => {
+        setIsShowDialog(false);
     };
 
     return (
@@ -94,6 +106,7 @@ function UserChangePassword() {
                 </button>
             </form>
             <div className="my-6 mr-20 font-medium text-red-400">{message}</div>
+            {isShowDialog && <SuccessDialog title="Changed information successfully" onAccept={onAccept} />}
         </div>
     );
 }

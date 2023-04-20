@@ -141,8 +141,7 @@ class CustomersController {
                                         )
                                         .catch((error) => res.status(400).json({ statusId: 2, message: "Error!!!" }));
                                 } else {
-                                    console.log("loi");
-                                    return res.status(400).json({ statusId: 2, message: "Error!!!" });
+                                    return res.status(200).json({ statusId: 1, message: "Error!!!" });
                                 }
                             } else {
                                 return res.status(200).json({ statusId: 1, message: "Password is not true!!!" });

@@ -57,7 +57,7 @@ function App() {
                             );
                         })}
 
-                    <Route path="*" element={<Navigate to="/" />} />
+                    <Route path="*" element={<Navigate to="/error" />} />
                 </Routes>
             </div>
         </Router>
