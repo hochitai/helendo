@@ -14,8 +14,8 @@ app.use(
     })
 );
 app.use(express.json());
-app.use(cors({ credentials: true, origin: "localhost:8321" }));
 app.use(cors({ credentials: true, origin: "https://helendo-weld.vercel.app" }));
+app.use(cors({ credentials: true, origin: "localhost:8321" }));
 app.use(cookieParser());
 
 const db = require("./config/db");
