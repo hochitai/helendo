@@ -1,10 +1,10 @@
 import axios from 'axios';
 
 const request = axios.create({
-    baseURL: 'http://localhost:3000/api',
+    baseURL: 'https://helendo-server.onrender.com/api',
     withCredentials: true,
     headers: {
-        'Access-Control-Allow-Origin': 'http://localhost:3000',
+        'Access-Control-Allow-Origin': 'https://helendo-server.onrender.com',
     },
 });
 
