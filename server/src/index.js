@@ -8,13 +8,25 @@ const port = process.env.PORT || 3000;
 
 const route = require("./routes");
 
+var whitelist = ["https://helendo-weld.vercel.app", "localhost:8321"];
+var corsOptions = {
+    credentials: true,
+    origin: function (origin, callback) {
+        if (whitelist.indexOf(origin) !== -1) {
+            callback(null, true);
+        } else {
+            callback(new Error("Not allowed by CORS"));
+        }
+    },
+};
+
 app.use(
     express.urlencoded({
         extended: true,
     })
 );
 app.use(express.json());
-app.use(cors({ credentials: true, origin: ["https://helendo-weld.vercel.app", "localhost:8321"] }));
+app.use(cors(corsOptions));
 app.use(cookieParser());
 
 const db = require("./config/db");
