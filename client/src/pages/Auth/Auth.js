@@ -121,8 +121,8 @@ function Auth() {
                 .then((res) => {
                     setResultLogin(res.data);
                     if (res.data.statusId === 0) {
-                        cookies.set('token', res.data.token, { path: '/' });
-                        cookies.set('info', res.data.data, { path: '/' });
+                        // cookies.set('token', res.data.token, { path: '/' });
+                        // cookies.set('info', res.data.data, { path: '/' });
                         navigate('/');
                     }
                 })

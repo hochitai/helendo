@@ -14,7 +14,7 @@ class BillsController {
         // const year = req.query.year;
         try {
             if (user) {
-                jwt.verify(token, process.env.ACCESS_TOKEN_SECREC);
+                jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
                 Bill.aggregate([
                     {
                         $group: {
@@ -38,10 +38,9 @@ class BillsController {
         const token = req.cookies.token;
         const user = req.cookies.resource;
         const state = req.query.state;
-        console.log(state);
         try {
             if (user) {
-                jwt.verify(token, process.env.ACCESS_TOKEN_SECREC);
+                jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
                 await Bill.find({ state: state })
                     .sort({ createdAt: -1 })
                     .then((result) => res.status(200).json(result))
@@ -60,7 +59,7 @@ class BillsController {
         const user = req.cookies.resource;
         try {
             if (user) {
-                jwt.verify(token, process.env.ACCESS_TOKEN_SECREC);
+                jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
                 await Bill.find({})
                     .sort({ createdAt: -1 })
                     .then((result) => res.status(200).json(result))
@@ -79,7 +78,7 @@ class BillsController {
         const id = req.params.id;
         const customerID = req.params.customerID;
         try {
-            jwt.verify(token, process.env.ACCESS_TOKEN_SECREC);
+            jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
 
             let billInfo;
 
@@ -121,7 +120,7 @@ class BillsController {
         const customerID = customer.id;
         const id = req.params.id;
         try {
-            jwt.verify(token, process.env.ACCESS_TOKEN_SECREC);
+            jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
 
             let billInfo;
 
@@ -161,9 +160,10 @@ class BillsController {
         try {
             const mongoose = require("mongoose");
             const token = req.cookies.token;
-            const customer = JSON.parse(req.cookies.info);
+            const customer = req.cookies.info;
             const customerID = customer.id;
-            jwt.verify(token, process.env.ACCESS_TOKEN_SECREC);
+            jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
+
             await Bill.aggregate([
                 {
                     $match: {
@@ -245,7 +245,7 @@ class BillsController {
         const billID = request.billID;
         const state = request.state;
         try {
-            jwt.verify(token, process.env.ACCESS_TOKEN_SECREC);
+            jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
             Bill.findByIdAndUpdate({ _id: billID }, { $set: { state: state } }).then((result) => {
                 res.status(200).json({
                     statusId: 0,
@@ -266,7 +266,7 @@ class BillsController {
         const state = "Waiting to accept";
 
         try {
-            jwt.verify(token, process.env.ACCESS_TOKEN_SECREC);
+            jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
             console.log(req.body);
             const request = req.body;
             const billValues = request.billValues;

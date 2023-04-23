@@ -23,7 +23,7 @@ class UsersController {
                             .then(async (isEqual) => {
                                 if (isEqual) {
                                     console.log(user);
-                                    const token = jwt.sign({ name: user.name }, process.env.ACCESS_TOKEN_SECREC);
+                                    const token = jwt.sign({ name: user.name }, process.env.ACCESS_TOKEN_SECRET);
                                     await UserPermissionResource.aggregate([
                                         {
                                             $match: {
@@ -81,7 +81,7 @@ class UsersController {
         const user = req.cookies.resource;
         try {
             if (user) {
-                jwt.verify(token, process.env.ACCESS_TOKEN_SECREC);
+                jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
                 await User.find({})
                     .then((result) =>
                         res.status(200).json({ statusId: 0, message: "Created product successful!!!", data: result })

@@ -149,7 +149,7 @@ class ProductsController {
         console.log(product);
         try {
             if (user) {
-                jwt.verify(token, process.env.ACCESS_TOKEN_SECREC);
+                jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
                 await Product.create(product)
                     .then((result) => res.status(200).json({ statusId: 0, message: "Created product successful!!!" }))
                     .catch(() => res.status(400).json({ statusId: 2, message: "Error!!!" }));
@@ -169,7 +169,7 @@ class ProductsController {
         console.log(product);
         try {
             if (user) {
-                jwt.verify(token, process.env.ACCESS_TOKEN_SECREC);
+                jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
                 await Product.findByIdAndUpdate(
                     { _id: product._id },
                     {

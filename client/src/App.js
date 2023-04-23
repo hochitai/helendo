@@ -35,27 +35,26 @@ function App() {
                             />
                         );
                     })}
-                    {!!token &&
-                        privateRoutes.map((route, index) => {
-                            const Page = route.component;
-                            let Layout = DefaultLayout;
+                    {privateRoutes.map((route, index) => {
+                        const Page = route.component;
+                        let Layout = DefaultLayout;
 
-                            if (route.layout) {
-                                Layout = route.layout;
-                            }
+                        if (route.layout) {
+                            Layout = route.layout;
+                        }
 
-                            return (
-                                <Route
-                                    key={index}
-                                    path={route.path}
-                                    element={
-                                        <Layout>
-                                            <Page />
-                                        </Layout>
-                                    }
-                                />
-                            );
-                        })}
+                        return (
+                            <Route
+                                key={index}
+                                path={route.path}
+                                element={
+                                    <Layout>
+                                        <Page />
+                                    </Layout>
+                                }
+                            />
+                        );
+                    })}
 
                     <Route path="*" element={<Navigate to="/error" />} />
                 </Routes>
