@@ -1,6 +1,15 @@
 # Website ecommerce Helendo selling furniture
 
-# Mô tả website
+## Demo
+
+Link: https://helendo-weld.vercel.app
+
+## Ý tưởng
+
+Link website: https://helendo.jamstacktemplates.dev
+Link desgin: https://dribbble.com/shots/20902983-Fashion-E-commerce-Order-History
+
+## Mô tả website
 
 -   Bảng thiết kế các lớp:
     [Link bảng thiết kế class](https://drive.google.com/file/d/11JSxrB7UKw69p-p2fQTfUwzM5ABYs5nx/view?usp=share_link)
@@ -11,6 +20,8 @@
 1. Hiển thị thông tin sản phẩm và tìm kiếm sản phẩm
 2. Xem giỏ hàng
 3. Tạo hóa đơn
+4. Quản lý thông tin, đổi mật khẩu, xem lại lịch sử mua hàng
+5. Admin đang trong quá trình phát triển...
 
 -   Một số hình ảnh:
 
