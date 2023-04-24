@@ -5,6 +5,7 @@ const Bill = require("../models/Bill");
 const BillDetail = require("../models/BillDetail");
 const Product = require("../models/Product");
 const Customer = require("../models/Customer");
+const authService = require("../services/authService");
 
 class BillsController {
     //  [GET] /bills/statistic
@@ -157,12 +158,11 @@ class BillsController {
 
     // [GET] /bills
     async getByID(req, res, next) {
-        try {
-            const mongoose = require("mongoose");
-            const token = req.cookies.token;
-            const customer = req.cookies.info;
+        const mongoose = require("mongoose");
+        const token = req.cookies.token;
+        if (authService.checkAccessToken(token)) {
+            const customer = JSON.parse(req.cookies.info);
             const customerID = customer.id;
-            jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
 
             await Bill.aggregate([
                 {
@@ -200,7 +200,7 @@ class BillsController {
                 },
             ])
                 .then((result) => res.status(200).json(result))
-                .catch(() => res.status(400).json({ statusId: 2, message: "Error!!!" }));
+                .catch(() => res.status(200).json({ statusId: 2, message: "Error!!!" }));
 
             // await Bill.find({customerID: customerID })
             //     .then(async (result) => {
@@ -233,8 +233,8 @@ class BillsController {
             // })
             //     .then((result) => res.status(200).json(result))
             //     .catch(() => res.status(400).json({ statusId: 2, message: "Error!!!" }));
-        } catch (error) {
-            return res.status(400).json({ statusId: 2, message: "Error!!!" });
+        } else {
+            res.status(200).json({ statusId: 2, message: "Error!!!", error });
         }
     }
 

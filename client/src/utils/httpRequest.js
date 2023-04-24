@@ -5,7 +5,9 @@ const request = axios.create({
     withCredentials: true,
     headers: {
         'Access-Control-Allow-Origin': 'https://helendo-server.onrender.com',
+        'access-control-expose-headers': 'Set-Cookie',
     },
+    credentials: 'include',
 });
 
 export default request;

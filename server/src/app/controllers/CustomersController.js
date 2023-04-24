@@ -58,20 +58,18 @@ class CustomersController {
                                         { name: user.name },
                                         constants.EXPIRE_TIME_REFRESH_TOKEN
                                     );
-                                    res.cookie("token", token, { maxAge: constants.EXPIRE_TIME_ACCESS_TOKEN });
-                                    res.cookie("refresh-token", refreshToken, {
-                                        maxAge: constants.EXPIRE_TIME_REFRESH_TOKEN,
-                                    });
-                                    res.cookie("info", {
-                                        id: user._id,
-                                        name: user.name,
-                                        avatar: user.avatar,
-                                        phone: user.phone,
-                                        address: user.address,
-                                    });
                                     res.status(200).json({
                                         statusId: 0,
                                         message: "Correct!!!",
+                                        token,
+                                        refreshToken,
+                                        data: {
+                                            id: user._id,
+                                            name: user.name,
+                                            avatar: user.avatar,
+                                            phone: user.phone,
+                                            address: user.address,
+                                        },
                                     });
                                 } else {
                                     return res
