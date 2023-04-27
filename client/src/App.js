@@ -7,6 +7,7 @@ import './index.css';
 function App() {
     const cookies = new Cookies();
     const token = cookies.get('token');
+    const refreshToken = cookies.get('refreshToken');
     return (
         <Router>
             <div className="App">
@@ -24,7 +25,7 @@ function App() {
                                 key={index}
                                 path={route.path}
                                 element={
-                                    route.isAuth && !!token ? (
+                                    route.isAuth && !!token && !!refreshToken ? (
                                         <Navigate to="/" />
                                     ) : (
                                         <Layout>

@@ -1,4 +1,5 @@
-import { Fragment, useState } from 'react';
+import { useState } from 'react';
+import Cookies from 'universal-cookie';
 import classNames from 'classnames/bind';
 import FormInput from '../FormInput/FormInput';
 import request from '~/utils/httpRequest';
@@ -9,6 +10,7 @@ import styles from './UserChangePassword.module.scss';
 const cx = classNames.bind(styles);
 
 function UserChangePassword() {
+    const cookies = new Cookies();
     const [message, setMessage] = useState('');
     const [isShowDialog, setIsShowDialog] = useState(false);
     const [values, setValues] = useState({
@@ -71,7 +73,16 @@ function UserChangePassword() {
                     }
                 })
                 .catch((error) => {
-                    setMessage('Changed failure');
+                    if (error.response.status === 401) {
+                        cookies.set('token', error.response.data.token);
+                        setMessage('Please submit again!!');
+                    } else if (error.response.status === 403) {
+                        cookies.remove('refreshToken');
+                        cookies.remove('token');
+                        cookies.remove('info');
+                    } else {
+                        setMessage('Changed failure');
+                    }
                 });
         }
     };
@@ -81,7 +92,7 @@ function UserChangePassword() {
     };
 
     return (
-        <div className="border p-[30px] rounded-2xl">
+        <div className={cx('border p-[30px] rounded-2xl')}>
             <div className="mb-[40px]">
                 <h2 className="text-[24px] font-medium">Change password</h2>
                 <h3 className="text-[18px] text-gray-400">Here you can change your password</h3>

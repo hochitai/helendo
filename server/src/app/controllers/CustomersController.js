@@ -52,11 +52,11 @@ class CustomersController {
                                 if (isEqual) {
                                     const token = authService.generateAccessToken(
                                         { name: user.name },
-                                        constants.EXPIRE_TIME_ACCESS_TOKEN
+                                        constants.EXPIRE_TIME_ACCESS_TOKEN.toString()
                                     );
                                     const refreshToken = authService.generateRefreshToken(
                                         { name: user.name },
-                                        constants.EXPIRE_TIME_REFRESH_TOKEN
+                                        constants.EXPIRE_TIME_REFRESH_TOKEN.toString()
                                     );
                                     res.status(200).json({
                                         statusId: 0,

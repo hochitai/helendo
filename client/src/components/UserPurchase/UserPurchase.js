@@ -1,5 +1,6 @@
 import classNames from 'classnames/bind';
 import { useEffect, useState } from 'react';
+import Cookies from 'universal-cookie';
 
 import config from '~/config';
 import request from '~/utils/httpRequest';
@@ -9,6 +10,7 @@ import styles from './UserPurchase.module.scss';
 const cx = classNames.bind(styles);
 
 function UserPurchase() {
+    const cookies = new Cookies();
     const [listBill, setListBill] = useState([]);
 
     useEffect(() => {
@@ -17,11 +19,20 @@ function UserPurchase() {
             .then((res) => {
                 setListBill(res.data);
             })
-            .catch((error) => console.log(error));
+            .catch((error) => {
+                if (error.response.status === 401) {
+                    cookies.set('token', error.response.data.token);
+                } else if (error.response.status === 403) {
+                    cookies.remove('refreshToken');
+                    cookies.remove('token');
+                    cookies.remove('info');
+                }
+            });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return (
-        <div className="border p-[30px] rounded-2xl">
+        <div className={cx('border p-[30px] rounded-2xl')}>
             <div className="mb-[40px]">
                 <h2 className="text-[24px] font-medium">Order history</h2>
                 <h3 className="text-[18px] text-gray-400">Here you can manage your order</h3>

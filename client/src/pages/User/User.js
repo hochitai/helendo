@@ -1,4 +1,3 @@
-import { useParams } from 'react-router-dom';
 import classNames from 'classnames/bind';
 import Cookies from 'universal-cookie';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -17,7 +16,7 @@ const cx = classNames.bind(styles);
 
 function User() {
     const cookies = new Cookies();
-    const [isAuth] = useState(!!cookies.get('info') && !!cookies.get('token'));
+    const [isAuth] = useState(!!cookies.get('info') && !!cookies.get('token') && !!cookies.get('refreshToken'));
     const Component = {
         Information() {
             return <UserInformation />;

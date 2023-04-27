@@ -90,8 +90,16 @@ function UserInformation() {
                     }
                 })
                 .catch((error) => {
-                    console.log(error);
-                    setMessage('Changed failure');
+                    if (error.response.status === 401) {
+                        cookies.set('token', error.response.data.token);
+                        setMessage('Please submit again!!');
+                    } else if (error.response.status === 403) {
+                        cookies.remove('refreshToken');
+                        cookies.remove('token');
+                        cookies.remove('info');
+                    } else {
+                        setMessage('Changed failure');
+                    }
                 });
         }
     };
@@ -101,7 +109,7 @@ function UserInformation() {
     };
 
     return (
-        <div className="border p-[30px] rounded-2xl">
+        <div className={cx('border p-[30px] rounded-2xl')}>
             <div className="mb-[40px]">
                 <h2 className="text-[24px] font-medium">Information</h2>
                 <h3 className="text-[18px] text-gray-400">Here you can manage your informatiton</h3>

@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import Cookies from 'universal-cookie';
 import { Link } from 'react-router-dom';
 import classNames from 'classnames/bind';
@@ -12,7 +11,6 @@ const cx = classNames.bind(styles);
 
 function Login() {
     const cookies = new Cookies();
-    const navigate = useNavigate();
     const [message, setMessage] = useState('');
     const [values, setValues] = useState({
         userName: '',
@@ -44,9 +42,9 @@ function Login() {
             console.log(res.data);
             if (res.data.statusId === 0) {
                 cookies.set('token', res.data.token, { path: '/' });
+                cookies.set('refreshToken', res.data.refreshToken, { path: '/' });
                 cookies.set('info', res.data.data, { path: '/' });
                 cookies.set('resource', res.data.resource, { path: '/' });
-                // navigate('/admin');
                 window.location.reload();
             } else {
                 setMessage(res.data.message);
@@ -55,7 +53,7 @@ function Login() {
     };
 
     return (
-        <div className="bg-slate-200 fixed inset-0 flex justify-center items-center">
+        <div className={cx('bg-slate-200 fixed inset-0 flex justify-center items-center')}>
             <div className="relative flex w-[800px] h-[500px] bg-white rounded-3xl overflow-hidden">
                 <div className="login-image absolute flex-1 -left-1/3 rotate-12 -top-1/4 shadow-2xl">
                     <img src={images.bgLoginAdmin} alt="login" className="" />

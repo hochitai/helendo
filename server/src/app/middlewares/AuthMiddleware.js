@@ -3,19 +3,23 @@ const constants = require("../constants");
 
 module.exports = function AuthMiddleware(req, res, next) {
     const cookies = req.cookies;
-    if (cookies["refresh-token"]) {
-        if (authService.checkRefreshToken(cookies["refresh-token"])) {
+    if (cookies.refreshToken) {
+        if (authService.checkRefreshToken(cookies.refreshToken)) {
             if (!cookies.token || !authService.checkAccessToken(cookies.token)) {
                 if (req.cookies.info) {
-                    const customer = req.cookies.info;
-                    const token = authService.generateAccessToken({ name: customer.name });
-                    res.cookie("token", token, { maxAge: constants.EXPIRE_TIME_ACCESS_TOKEN });
                     console.log("Cap nhat lai access token");
+                    const customer = req.cookies.info;
+                    const token = authService.generateAccessToken(
+                        { name: customer.name },
+                        constants.EXPIRE_TIME_ACCESS_TOKEN.toString()
+                    );
+                    return res.status(401).json({ status: 1, message: "Update your token", token });
                 } else {
                     return res.status(403).json({ status: 1, message: "Your session is expired" });
                 }
+            } else {
+                next();
             }
-            next();
         } else {
             return res.status(403).json({ status: 1, message: "Your session is expired" });
         }

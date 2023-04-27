@@ -14,7 +14,7 @@ const cx = classNames.bind(styles);
 
 function ProductDetail() {
     const navigate = useNavigate();
-    const [searchParams, setSearchParams] = useSearchParams();
+    const [searchParams] = useSearchParams();
     const [values, setValues] = useState({
         name: '',
         price: 0,
@@ -103,7 +103,7 @@ function ProductDetail() {
 
     return (
         <Fragment>
-            <div className="title flex">
+            <div className={cx('title flex')}>
                 <button className="text-[20px] mr-10" onClick={() => navigate(-1)}>
                     <FontAwesomeIcon icon={faChevronLeft} />
                 </button>

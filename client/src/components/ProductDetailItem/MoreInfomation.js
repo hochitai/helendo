@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import classNames from 'classnames';
 
-import images from '~/assets/images';
 import Button from '~/components/Button';
 import { RightTriangleIcon, StarIcon } from '~/components/Icons';
 import styles from './ProductDetailItem.module.scss';

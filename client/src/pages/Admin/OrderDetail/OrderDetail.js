@@ -13,7 +13,7 @@ const cx = classNames.bind(styles);
 function OrderDetail() {
     const navigate = useNavigate();
 
-    const [searchParams, setSearchParams] = useSearchParams();
+    const [searchParams] = useSearchParams();
     const [billDetail, setBillDetail] = useState({});
 
     useEffect(() => {

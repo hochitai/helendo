@@ -160,82 +160,78 @@ class BillsController {
     async getByID(req, res, next) {
         const mongoose = require("mongoose");
         const token = req.cookies.token;
-        if (authService.checkAccessToken(token)) {
-            const customer = JSON.parse(req.cookies.info);
-            const customerID = customer.id;
+        const customer = JSON.parse(req.cookies.info);
+        const customerID = customer.id;
 
-            await Bill.aggregate([
-                {
-                    $match: {
-                        customerID: new mongoose.Types.ObjectId(customerID),
-                    },
+        await Bill.aggregate([
+            {
+                $match: {
+                    customerID: new mongoose.Types.ObjectId(customerID),
                 },
-                {
-                    $lookup: {
-                        from: "billDetails",
-                        let: { billID: "$_id" },
-                        pipeline: [
-                            { $match: { $expr: { $eq: ["$billID", "$$billID"] } } },
-                            {
-                                $lookup: {
-                                    from: "products",
-                                    let: {
-                                        productID: "$productID",
-                                    },
-                                    pipeline: [
-                                        {
-                                            $match: {
-                                                $expr: {
-                                                    $eq: ["$_id", "$$productID"],
-                                                },
+            },
+            {
+                $lookup: {
+                    from: "billDetails",
+                    let: { billID: "$_id" },
+                    pipeline: [
+                        { $match: { $expr: { $eq: ["$billID", "$$billID"] } } },
+                        {
+                            $lookup: {
+                                from: "products",
+                                let: {
+                                    productID: "$productID",
+                                },
+                                pipeline: [
+                                    {
+                                        $match: {
+                                            $expr: {
+                                                $eq: ["$_id", "$$productID"],
                                             },
                                         },
-                                    ],
-                                    as: "productDetail",
-                                },
+                                    },
+                                ],
+                                as: "productDetail",
                             },
-                        ],
-                        as: "billDetail",
-                    },
+                        },
+                    ],
+                    as: "billDetail",
                 },
-            ])
-                .then((result) => res.status(200).json(result))
-                .catch(() => res.status(200).json({ statusId: 2, message: "Error!!!" }));
+            },
+        ])
+            .then((result) => res.status(200).json(result))
+            .catch(() => res.status(200).json({ statusId: 2, message: "Error!!!" }));
 
-            // await Bill.find({customerID: customerID })
-            //     .then(async (result) => {
-            //         console.log(result);
-            //         billInfo = result;
-            //         await BillDetail.aggregate([
-            //             {
-            //                 $match: {
-            //                     billID: billInfo._id,
-            //                 },
-            //             },
-            //             {
-            //                 $lookup: {
-            //                     from: "products",
-            //                     localField: "productID",
-            //                     foreignField: "_id",
-            //                     as: "product",
-            //                 },
-            //             },
-            //         ])
-            //             .then((result) => {
-            //                 console.log(result);
-            //                 res.status(200).json({ billInfo, data: result });
-            //             })
-            //             .catch(() => res.status(400).json({ statusId: 2, message: "Error!!!" }));
-            //     })
-            //     .catch(() => res.status(400).json({ statusId: 2, message: "Error!!!" }));
-            // await Bill.find({
-            //     customerID: customerID,
-            // })
-            //     .then((result) => res.status(200).json(result))
-            //     .catch(() => res.status(400).json({ statusId: 2, message: "Error!!!" }));
-        } else {
-            res.status(200).json({ statusId: 2, message: "Error!!!", error });
-        }
+        // await Bill.find({customerID: customerID })
+        //     .then(async (result) => {
+        //         console.log(result);
+        //         billInfo = result;
+        //         await BillDetail.aggregate([
+        //             {
+        //                 $match: {
+        //                     billID: billInfo._id,
+        //                 },
+        //             },
+        //             {
+        //                 $lookup: {
+        //                     from: "products",
+        //                     localField: "productID",
+        //                     foreignField: "_id",
+        //                     as: "product",
+        //                 },
+        //             },
+        //         ])
+        //             .then((result) => {
+        //                 console.log(result);
+        //                 res.status(200).json({ billInfo, data: result });
+        //             })
+        //             .catch(() => res.status(400).json({ statusId: 2, message: "Error!!!" }));
+        //     })
+        //     .catch(() => res.status(400).json({ statusId: 2, message: "Error!!!" }));
+        // await Bill.find({
+        //     customerID: customerID,
+        // })
+        //     .then((result) => res.status(200).json(result))
+        //     .catch(() => res.status(400).json({ statusId: 2, message: "Error!!!" }));
     }
 
     // [POST] /bills/changeState
