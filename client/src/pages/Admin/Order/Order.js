@@ -1,17 +1,13 @@
-import { useNavigate } from 'react-router-dom';
 import classNames from 'classnames/bind';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faXmark } from '@fortawesome/free-solid-svg-icons';
-import { Fragment, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import request from '~/utils/httpRequest';
 import config from '~/config';
-import { format } from 'date-fns';
+import UserOrderDetail from '~/components/UserOrderDetail/UserOrderDetail';
 import styles from './Order.module.scss';
 
 const cx = classNames.bind(styles);
 
 function Order() {
-    const navigate = useNavigate();
     const [type, setType] = useState('All');
     const [orders, setOrders] = useState([]);
 
@@ -48,11 +44,6 @@ function Order() {
                 break;
         }
     };
-
-    const showDetail = (id, customerID) => {
-        navigate(config.routes.orderDetailAdmin + '?id=' + id + '&customerID=' + customerID);
-    };
-
     const handleChangeBillState = async (e, billID, state, isCancel) => {
         e.preventDefault();
         e.stopPropagation();
@@ -80,9 +71,9 @@ function Order() {
     };
 
     return (
-        <div className="wrapper">
+        <div className="wrapper px-16">
             <h1>Order</h1>
-            <div className="tab flex">
+            <div className="tab flex mb-4">
                 <div
                     className={cx('tab-item border px-6 py-2 mr-4 rounded-tl-3xl rounded-br-3xl select-none', {
                         'bg-primary text-white pointer-events-none': type === 'All',
@@ -129,64 +120,23 @@ function Order() {
                     Cancel
                 </div>
             </div>
-            <table className="cart-table w-full text-sm text-left mt-5">
-                <thead className="text-[18px] bg-[#f4f5f7]">
+            <table className="border border-gray-200 w-full rounded-t-2xl">
+                <thead className="text-gray-400 text-left bg-gray-100 rounded-2xl overflow-hidden">
                     <tr>
-                        <th className="font-medium py-5 pl-4 w-1/5">ID</th>
-                        <th className="font-medium py-5 ">Date</th>
-                        <th className="font-medium py-5 w-1/5">CustomerID</th>
-                        <th className="font-medium py-5 w-[300px]">State</th>
-                        <th className="font-medium py-5 ">Total</th>
-                        <th className="font-medium py-5 w-[120px] "></th>
+                        <th className="py-6 w-[80px]"></th>
+                        <th className="py-6 w-[180px]">OrderID</th>
+                        <th className="py-6 w-[180px]">Date</th>
+                        <th className="py-6 w-[120px]">Items</th>
+                        <th className="py-6 w-[200px]">Total amound</th>
+                        <th className="py-6 w-[200px]">Status</th>
+                        <th className="py-6 text-center">Action</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {orders.map((order) => (
-                        <tr
-                            className="cursor-pointer hover:bg-slate-50"
-                            key={order._id}
-                            onClick={() => showDetail(order._id, order.customerID)}
-                        >
-                            <td className="py-10 text-[16px]">{order._id}</td>
-                            <td className="py-10 text-[16px]"> {format(new Date(order.createdAt), 'dd/MM/yyyy')}</td>
-                            <td className="py-10 text-[16px]">{order.customerID}</td>
-
-                            <td className="py-10 text-[16px] flex items-center">
-                                <span
-                                    className={cx('w-[10px] h-[10px] rounded-full', {
-                                        'bg-orange-400': order.state === 'Waiting to accept',
-                                        'bg-yellow-300': order.state === 'Shipping',
-                                        'bg-green-400': order.state === 'Complete',
-                                        'bg-gray-400': order.state === 'Cancel',
-                                    })}
-                                ></span>
-                                <span className="ml-4">{order.state}</span>
-                            </td>
-                            <td className="py-10 text-[16px] ">${order.total}</td>
-                            <td className="font-medium flex justify-center">
-                                {order.state === 'Complete' || order.state === 'Cancel' ? (
-                                    ''
-                                ) : (
-                                    <Fragment>
-                                        <button
-                                            className="text-[16px] text-white bg-primary w-[80px] py-2 px-4 rounded-full"
-                                            onClick={(e) => handleChangeBillState(e, order._id, order.state, false)}
-                                        >
-                                            Accept
-                                        </button>
-                                        {order.state === 'Waiting to accept' && (
-                                            <button
-                                                className="text-[20px] text-red-500 w-[20px] mx-4"
-                                                onClick={(e) => handleChangeBillState(e, order._id, order.state, true)}
-                                            >
-                                                <FontAwesomeIcon icon={faXmark} />
-                                            </button>
-                                        )}
-                                    </Fragment>
-                                )}
-                            </td>
-                        </tr>
-                    ))}
+                    {orders.length > 0 &&
+                        orders.map((bill) => (
+                            <UserOrderDetail key={bill._id} data={bill} action={handleChangeBillState} />
+                        ))}
                 </tbody>
             </table>
         </div>

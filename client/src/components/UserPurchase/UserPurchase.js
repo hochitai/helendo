@@ -26,6 +26,7 @@ function UserPurchase() {
                     cookies.remove('refreshToken');
                     cookies.remove('token');
                     cookies.remove('info');
+                    cookies.remove('resource');
                 }
             });
         // eslint-disable-next-line react-hooks/exhaustive-deps

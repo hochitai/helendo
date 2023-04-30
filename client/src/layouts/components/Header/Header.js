@@ -38,6 +38,7 @@ function Header({ type = 'block', fixed = false }) {
         !fixed && window.addEventListener('scroll', toggleVisibility);
 
         return () => window.removeEventListener('scroll', toggleVisibility);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     useEffect(() => {
@@ -61,10 +62,10 @@ function Header({ type = 'block', fixed = false }) {
     };
 
     const handleLogout = () => {
-        cookies.remove('token');
-        cookies.remove('info');
-        cookies.remove('refresh-token');
-        cookies.remove('resource');
+        cookies.remove('token', { path: '/' });
+        cookies.remove('info', { path: '/' });
+        cookies.remove('refreshToken', { path: '/' });
+        cookies.remove('resource', { path: '/' });
         window.location.reload(false);
     };
 

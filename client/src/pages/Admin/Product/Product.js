@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import classNames from 'classnames/bind';
 
 import styles from './Product.module.scss';
@@ -21,7 +21,7 @@ function Product() {
     }, []);
 
     return (
-        <Fragment>
+        <div className="px-16">
             <div className="flex justify-between items-center">
                 <h1>Product</h1>
                 <Link
@@ -87,7 +87,7 @@ function Product() {
                         ))}
                 </tbody>
             </table>
-        </Fragment>
+        </div>
     );
 }
 

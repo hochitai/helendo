@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import classNames from 'classnames/bind';
 
 import styles from './Customer.module.scss';
@@ -20,7 +20,7 @@ function Login() {
     }, []);
 
     return (
-        <Fragment>
+        <div className="px-16">
             <div className="flex justify-between items-center">
                 <h1>Customer</h1>
             </div>
@@ -73,7 +73,7 @@ function Login() {
                         ))}
                 </tbody>
             </table>
-        </Fragment>
+        </div>
     );
 }
 

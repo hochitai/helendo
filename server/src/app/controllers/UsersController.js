@@ -5,6 +5,8 @@ const bcrypt = require("bcrypt");
 const saltRounds = 10;
 const User = require("../models/User");
 const UserPermissionResource = require("../models/UserPermissionResource");
+const authService = require("../services/authService");
+const constants = require("../constants");
 
 class UsersController {
     // [POST] /users/register
@@ -13,7 +15,6 @@ class UsersController {
     // [POST] /users/login
     async login(req, res, next) {
         const data = req.body;
-        console.log(data.password);
         if (validator.isAlphanumeric(data.userName) && validator.isLength(data.userName, { min: 3, max: 16 })) {
             await User.findOne({ userName: data.userName })
                 .then(async (user) => {
@@ -23,7 +24,14 @@ class UsersController {
                             .then(async (isEqual) => {
                                 if (isEqual) {
                                     console.log(user);
-                                    const token = jwt.sign({ name: user.name }, process.env.ACCESS_TOKEN_SECRET);
+                                    const token = authService.generateAccessToken(
+                                        { name: user.name },
+                                        constants.EXPIRE_TIME_ACCESS_TOKEN.toString()
+                                    );
+                                    const refreshToken = authService.generateRefreshToken(
+                                        { name: user.name },
+                                        constants.EXPIRE_TIME_REFRESH_TOKEN.toString()
+                                    );
                                     await UserPermissionResource.aggregate([
                                         {
                                             $match: {
@@ -46,6 +54,7 @@ class UsersController {
                                                 statusId: 0,
                                                 message: "Correct!!!",
                                                 token,
+                                                refreshToken,
                                                 data: {
                                                     id: user._id,
                                                     name: user.name,
