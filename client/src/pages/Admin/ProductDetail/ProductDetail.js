@@ -102,7 +102,7 @@ function ProductDetail() {
     };
 
     return (
-        <Fragment>
+        <div className="px-16">
             <div className={cx('title flex')}>
                 <button className="text-[20px] mr-10" onClick={() => navigate(-1)}>
                     <FontAwesomeIcon icon={faChevronLeft} />
@@ -191,7 +191,7 @@ function ProductDetail() {
                     Save
                 </button>
             </form>
-        </Fragment>
+        </div>
     );
 }
 

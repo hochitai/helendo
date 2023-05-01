@@ -15,6 +15,8 @@ const routes = {
     productAdmin: '/admin/products',
     productEditAdmin: '/admin/products/edit',
     customerAdmin: '/admin/customer',
+    productOrderAdmin: '/admin/product-orders',
+    productOrderEditAdmin: '/admin/product-orders/edit',
 };
 
 export default routes;

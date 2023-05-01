@@ -16,6 +16,8 @@ import { CustomerAdmin } from '~/pages/Admin/Customer';
 import { OrderDetailAdmin } from '~/pages/Admin/OrderDetail';
 import { ProductDetailAdmin } from '~/pages/Admin/ProductDetail';
 import { ErrorPage } from '~/pages/Error';
+import { ProductOrderAdmin } from '~/pages/Admin/ProductOrder';
+import { ProductOrderDetailEditAdmin } from '~/pages/Admin/ProductOrderDetailEdit';
 
 // Public Routes
 const publicRoutes = [
@@ -94,6 +96,16 @@ const privateRoutes = [
     {
         path: config.routes.customerAdmin,
         component: CustomerAdmin,
+        layout: AdminLayout,
+    },
+    {
+        path: config.routes.productOrderAdmin,
+        component: ProductOrderAdmin,
+        layout: AdminLayout,
+    },
+    {
+        path: config.routes.productOrderEditAdmin,
+        component: ProductOrderDetailEditAdmin,
         layout: AdminLayout,
     },
 ];

@@ -5,7 +5,7 @@ import styles from './AdminLayout.module.scss';
 import config from '~/config';
 import { LoginAdmin } from '~/pages/Admin/Login';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowRightFromBracket, faBox, faHome, faList, faUser } from '@fortawesome/free-solid-svg-icons';
+import { faArrowRightFromBracket, faBox, faHome, faList, faTruck, faUser } from '@fortawesome/free-solid-svg-icons';
 import images from '~/assets/images';
 
 const cx = classNames.bind(styles);
@@ -71,6 +71,17 @@ function AdminLayout({ children }) {
                         to={config.routes.customerAdmin}
                     >
                         <FontAwesomeIcon icon={faUser} />
+                    </NavLink>
+                    <NavLink
+                        className={(nav) =>
+                            cx('nav-item', 'w-full text-[18px]  p-4 mb-4 text-center', {
+                                'bg-white/20 text-gray-100 rounded-2xl': nav.isActive,
+                                'text-gray-300/70': !nav.isActive,
+                            })
+                        }
+                        to={config.routes.productOrderAdmin}
+                    >
+                        <FontAwesomeIcon icon={faTruck} />
                     </NavLink>
                 </nav>
                 <button className="w-full text-[18px] p-4 mb-20 text-center flex-end" onClick={handleLogout}>
