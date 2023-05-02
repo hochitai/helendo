@@ -11,42 +11,16 @@ import { faPlus } from '@fortawesome/free-solid-svg-icons';
 const cx = classNames.bind(styles);
 
 function ProductOrder() {
-    const [type] = useState('All');
     const [orders, setOrders] = useState([]);
 
     useEffect(() => {
-        getBills(type);
-    }, [type]);
-
-    const getBills = async (type) => {
-        switch (type) {
-            case 'All':
-                await request
-                    .get(config.apis.getAllBill)
-                    .then((result) => {
-                        setOrders(result.data);
-                    })
-                    .catch((error) => console.log(error));
-                break;
-            case 'Waiting to accept':
-            case 'Shipping':
-            case 'Complete':
-            case 'Cancel':
-                await request
-                    .get(config.apis.getBillByState, {
-                        params: {
-                            state: type,
-                        },
-                    })
-                    .then((result) => {
-                        setOrders(result.data);
-                    })
-                    .catch((error) => console.log(error));
-                break;
-            default:
-                break;
-        }
-    };
+        request
+            .get(config.apis.getAllOrder)
+            .then((result) => {
+                setOrders(result.data);
+            })
+            .catch((error) => console.log(error));
+    }, []);
 
     return (
         <div className="wrapper px-16">

@@ -32,21 +32,10 @@ function ProductOrderDetail({ data }) {
                 </td>
                 <td className="py-6">#{data._id.slice(0, 8)}</td>
                 <td className="py-6">{format(new Date(data.createdAt), 'dd/MM/yyyy')}</td>
-                <td className="py-6">{data.billDetail.length}</td>
+                <td className="py-6">{data.orderDetail.length}</td>
                 <td className="py-6">${data.total.toFixed(2)}</td>
-                <td className="py-6">
-                    <span
-                        className={cx('py-3 px-4 rounded-full font-medium', {
-                            'bg-green-200 text-green-600': data.state === 'Complete',
-                            'bg-yellow-200 text-yellow-600': data.state === 'Waiting to accept',
-                            'bg-red-200 text-red-600': data.state === 'Cancel',
-                            'bg-blue-200 text-blue-600': data.state === 'Shipping',
-                        })}
-                    >
-                        {data.state}
-                    </span>
-                </td>
-                <td className="py-6 text-center"></td>
+                <td className="py-6">{data.name}</td>
+                <td className="py-6 text-center">{data.address}</td>
             </tr>
 
             <tr
@@ -66,7 +55,7 @@ function ProductOrderDetail({ data }) {
                             </tr>
                         </thead>
                         <tbody>
-                            {data.billDetail.map((item) => (
+                            {data.orderDetail.map((item) => (
                                 <ProductOrderDetailItem key={item._id} data={item} />
                             ))}
                         </tbody>

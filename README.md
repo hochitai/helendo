@@ -21,7 +21,11 @@ Link desgin: https://dribbble.com/shots/20902983-Fashion-E-commerce-Order-Histor
 2. Xem giỏ hàng
 3. Tạo hóa đơn
 4. Quản lý thông tin, đổi mật khẩu, xem lại lịch sử mua hàng
-5. Admin đang trong quá trình phát triển...
+5. Quản lý sản phẩm
+6. Quản lý đơn hàng
+7. Quản lý khách hàng
+8. Quản lý đặt hàng sản phẩm
+9. Thống kê đơn hàng
 
 -   Một số hình ảnh:
 
@@ -49,3 +53,5 @@ Link desgin: https://dribbble.com/shots/20902983-Fashion-E-commerce-Order-Histor
     ![Manage customer](img/web11.png)
 12. Statistic
     ![Statistic](img/web12.png)
+13. Order
+    ![Statistic](img/web13.png)

@@ -19,6 +19,8 @@ const apis = {
     updateInfo: '/customers/updateInfo',
     changePassword: '/customers/changePassword',
     loginAdmin: '/users/login',
+    getAllOrder: '/orders/all',
+    createOrder: '/orders/create',
 };
 
 export default apis;
